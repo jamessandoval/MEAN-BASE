@@ -1,0 +1,21 @@
+{
+  "name": "nodelab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "james sandoval",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "1.14.1",
+    "method-override": "^2.3.10",
+    "mongoose": "^5.0.2",
+    "morgan": "^1.9.0"
+  }
+}
