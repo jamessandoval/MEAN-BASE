@@ -1,10 +1,10 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
-// Set the 'development' environment configuration object
+// Set the 'production' environment configuration object
 module.exports = {
 	db: 'mongodb://127.0.0.1/mean-node-lab',
-	sessionSecret: 'developmentSessionSecret',
+	sessionSecret: 'productionSessionSecret',
 	facebook: {
 		clientID: 'Facebook Application ID',
 		clientSecret: 'Facebook Application Secret',
@@ -20,4 +20,3 @@ module.exports = {
 		clientSecret: 'Google Application Secret',
 		callbackURL: 'http://localhost:3000/oauth/google/callback'
 	}
-};
