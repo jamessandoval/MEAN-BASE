@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>
-        <%=title %>
-    </title>
-</head>
-
+<%- include('header') %>
 <body>
     <% for(var i in messages) { %>
         <div class="flash">
@@ -40,4 +32,4 @@
             </form>
 </body>
 
-</html>
+<%- include('footer') %>
