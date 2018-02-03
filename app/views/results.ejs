@@ -1,14 +1,18 @@
 <%- include('header') %>
 <body>
     <h1><%= title %></h1>
-    <% if ( userFullName ) { %>
-        <h2>Hello <%=userFullName%> </h2>
-        <a href="/signout">Sign out</a>
-        <% } else { %>
-            <a href="/signup">Signup</a>
-            <a href="/signin">Signin</a>
-            <% } %>
-                <br>
-                <img src="img/logo.png" alt="Logo">
+    <br>
+    <table>
+    <% for(var i=0; i < results.length; i++) { %>
+   <tr>
+     <td><%= results[i].id %></td>
+     <td><%= results[i].RunDate %></td> 
+     <td><%= results[i].Template %></td>
+     <td><%= results[i].Result %></td>
+     <td><%= results[i].URLs %></td>
+     <td><%= results[i].Output %></td>
+   </tr>
+    <% } %>
+</table>
 </body>
 <%- include('footer') %>

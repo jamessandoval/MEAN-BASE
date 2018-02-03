@@ -46,12 +46,12 @@ module.exports = function() {
     app.use(flash());
 
     // Configure the Passport middleware
-    app.use(passport.initialize());
-    app.use(passport.session());
+    //app.use(passport.initialize());
+    //app.use(passport.session());
 
     // Load the routing files
     require('../app/routes/index.server.routes.js')(app);
-    require('../app/routes/users.server.routes.js')(app);
+    //require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/results.server.routes.js')(app);
 
     // Configure static file serving

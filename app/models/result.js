@@ -7,8 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     RunDate: {
       type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      allowNull: true
     },
     Template: {
       type: DataTypes.CHAR(4),
@@ -24,14 +23,6 @@ module.exports = function(sequelize, DataTypes) {
     },
     Output: {
       type: "BLOB",
-      allowNull: false
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
       allowNull: false
     }
   }, {

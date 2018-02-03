@@ -11,10 +11,15 @@ var rootPath = path.normalize(__dirname + '/..');
 var modelsDir = rootPath + '/app/models';
 // create your instance of sequelize
 
+console.log('the rootpath is' + rootPath);
+
 var sequelize = new Sequelize('mean', 'root', 'root', {
         host: 'localhost',
         port: '3306',
         dialect: 'mysql',
+        define: {
+        timestamps: false
+    	},
 
         pool: {
 			max: 5,
@@ -24,6 +29,15 @@ var sequelize = new Sequelize('mean', 'root', 'root', {
 		}
 });
 
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+});
+
 // loop through all files in models directory ignoring hidden files and this file
 fs.readdirSync(modelsDir)
     .filter(function (file) {
@@ -31,7 +45,6 @@ fs.readdirSync(modelsDir)
     })
     // import model files and save model names
     .forEach(function (file) {
-        winston.info('Loading model file ' + file);
         var model = sequelize.import(path.join(modelsDir, file));
         db[model.name] = model;
     });
@@ -43,7 +56,7 @@ Object.keys(db).forEach(function (modelName) {
     }
 });
 
-// assign the sequelize variables to the db object and returning the db. 
+// assign the sequelize variables to the db object and return the db. 
 module.exports = lodash.extend({
     sequelize: sequelize,
     Sequelize: Sequelize
