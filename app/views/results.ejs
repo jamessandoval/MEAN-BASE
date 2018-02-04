@@ -1,10 +1,23 @@
 <%- include('header') %>
-<body>
+
     <h1><%= title %></h1>
     <br>
-    <table>
+    <h4>Results: <%= length %></h4>
+    <table class="table">
+            <tr>
+        <th>ID:</th>
+        <th>Run Date:</th>
+        <th>Template: </th>
+        <th>Result: </th>
+        <th>URL:</th>
+        <th>Output:</th>
+
+    </tr>
+    <% if(results){ %>
     <% for(var i=0; i < results.length; i++) { %>
+
    <tr>
+
      <td><%= results[i].id %></td>
      <td><%= results[i].RunDate %></td> 
      <td><%= results[i].Template %></td>
@@ -12,7 +25,7 @@
      <td><%= results[i].URLs %></td>
      <td><%= results[i].Output %></td>
    </tr>
-    <% } %>
+    <% }} %>
 </table>
-</body>
+
 <%- include('footer') %>

@@ -4,7 +4,6 @@
 // Load the module dependencies
 var config = require('./config'),
     express = require('express'),
-    morgan = require('morgan'),
     compress = require('compression'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
@@ -12,17 +11,14 @@ var config = require('./config'),
     flash = require('connect-flash'),
     passport = require('passport');
 
+
 // Define the Express configuration method
 module.exports = function() {
     // Create a new Express application instance
     var app = express();
 
-    // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
-    if (process.env.NODE_ENV === 'development') {
-        app.use(morgan('dev'));
-    } else if (process.env.NODE_ENV === 'production') {
-        app.use(compress());
-    }
+    // Configure static file serving
+    app.use(express.static('./public'));
 
     // Use the 'body-parser' and 'method-override' middleware functions
     app.use(bodyParser.urlencoded({
@@ -49,13 +45,14 @@ module.exports = function() {
     //app.use(passport.initialize());
     //app.use(passport.session());
 
-    // Load the routing files
-    require('../app/routes/index.server.routes.js')(app);
-    //require('../app/routes/users.server.routes.js')(app);
-    require('../app/routes/results.server.routes.js')(app);
 
-    // Configure static file serving
-    app.use(express.static('./public'));
+    // Load the routing files
+
+    //require('express-load-routes')(app, '../app/routes');
+
+    require('../app/routes/index.server.routes.js')(app);
+    require('../app/routes/dashboard.server.routes.js')(app);
+    require('../app/routes/results.server.routes.js')(app);
 
     // Return the Express application instance
     return app;

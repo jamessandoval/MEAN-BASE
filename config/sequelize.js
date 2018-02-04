@@ -11,7 +11,6 @@ var rootPath = path.normalize(__dirname + '/..');
 var modelsDir = rootPath + '/app/models';
 // create your instance of sequelize
 
-console.log('the rootpath is' + rootPath);
 
 var sequelize = new Sequelize('mean', 'root', 'root', {
         host: 'localhost',
