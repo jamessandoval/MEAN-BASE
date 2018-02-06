@@ -1,0 +1,29 @@
+<div class="container-fluid">
+<h1>Results</h1>
+<table class="table">
+<thead>
+<tr>
+<th>ID</th>
+<th>RunDate</th>
+<th>Template</th>
+<th>Language</th>
+<th>Result</th>
+<th>URLs</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let result of results">
+     <td>{{ result.id }}</td>
+     <td>{{ result.RunDate }}</td> 
+     <td>{{ result.Template }}</td>
+     <td>{{ result.Language }}</td> 
+     <td>{{ result.Result }}</td>
+     <td>{{ result.URLs }}</td>
+     <td>{{ result.Output }}</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+

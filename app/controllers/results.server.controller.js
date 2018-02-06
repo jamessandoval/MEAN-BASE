@@ -4,6 +4,8 @@
 var db = require('../../config/sequelize');
 var Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+
 var length = 0;
 
 /**

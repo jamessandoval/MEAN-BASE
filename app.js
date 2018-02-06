@@ -1,4 +1,3 @@
-
 // To set the Node Env 
 // Use $ export NODE_ENV=development
 //
@@ -13,6 +12,6 @@ const configureExpress = require('./config/express');
 const app = configureExpress();
 //const passport = configurePassport();
 
-app.listen(3000);
+console.log('Express Server Running.');
+
 module.exports = app;
-console.log('Server running at http://localhost:3000/');

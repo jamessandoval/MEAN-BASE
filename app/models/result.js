@@ -13,6 +13,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.CHAR(4),
       allowNull: false
     },
+    Language: {
+      type: DataTypes.CHAR(5),
+      allowNull: true
+    },
     Result: {
       type: DataTypes.CHAR(5),
       allowNull: false
