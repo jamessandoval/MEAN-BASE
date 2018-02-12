@@ -37,6 +37,8 @@ sequelize
     console.error('Unable to connect to the database:', err);
 });
 
+module.export = sequelize;
+
 // loop through all files in models directory ignoring hidden files and this file
 fs.readdirSync(modelsDir)
     .filter(function (file) {

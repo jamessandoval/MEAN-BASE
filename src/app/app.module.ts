@@ -12,9 +12,8 @@ const appRoutes: Routes = [
     path: 'results',
     component: ResultComponent,
     data: { title: 'Result List' }
-  },
-  { path: '',
-    redirectTo: '/results',
+  },{ path: '',
+    redirectTo: '/books',
     pathMatch: 'full'
   }
 ];

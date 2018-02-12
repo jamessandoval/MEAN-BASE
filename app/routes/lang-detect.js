@@ -1,11 +1,10 @@
 'use strict';
 
-var db = require('../../config/sequelize');
-var Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+var franc = require('franc');
+
+
 var express = require('express');
 var router = express.Router();
-
 
 /* GET ALL Results */
 router.get('/', function(req, res) {

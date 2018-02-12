@@ -13,14 +13,22 @@ var config = require('./config'),
   logger = require('morgan'),
   path = require('path');
 
-// Angular Addition
-var result_test = require('../app/routes/angular_results');
+// Angular REST ROUTES
+var api_results = require('../app/routes/api_results');
+var api_file_data = require('../app/routes/api_file_data');
 
 // Define the Express configuration method
 module.exports = function() {
 
   // Create a new Express application instance
   var app = express();
+
+    // Use the 'body-parser' and 'method-override' middleware functions
+  app.use(bodyParser.urlencoded({
+    extended: false
+  }));
+
+  app.use(bodyParser.json());
 
   // Morgan plugin
   app.use(logger('dev'));
@@ -30,14 +38,21 @@ module.exports = function() {
 
   // Angular Addition
   app.use(express.static(path.join(__dirname, '../dist')));
-  app.use('/results', express.static(path.join(__dirname, '../dist')));
-  app.use('/result', result_test);
 
-  // Use the 'body-parser' and 'method-override' middleware functions
-  app.use(bodyParser.urlencoded({
-    extended: false
-  }));
-  app.use(bodyParser.json());
+  // Results Paths
+  app.use('/results', express.static(path.join(__dirname, '../dist')));
+
+
+  
+  // Express Routing Routes
+  app.use('/result', api_results);
+
+
+
+  app.use('/result/:template/:language/:result', api_results);
+
+  app.use('/files', api_file_data);
+
   app.use(methodOverride());
 
   // Configure the 'session' middleware
@@ -74,7 +89,9 @@ module.exports = function() {
       err : {};
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.render('error',{
+      title: 'Default Error Page',
+    });
   });
 
   // Load the routing files
