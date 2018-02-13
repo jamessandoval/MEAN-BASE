@@ -4,6 +4,7 @@
 <thead>
 <tr>
 <th>ID</th>
+<th>Test Run Id</th>
 <th>RunDate</th>
 <th>Template</th>
 <th>Language</th>
@@ -15,6 +16,7 @@
 <tbody>
 <tr *ngFor="let result of results">
      <td>{{ result.id }}</td>
+     <td>{{ result.TestRunId }}</td>
      <td>{{ result.RunDate }}</td> 
      <td>{{ result.Template }}</td>
      <td>{{ result.Language }}</td> 

@@ -5,6 +5,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
+    TestRunId: {
+      type: DataTypes.CHAR(50),
+      allowNull: true
+    },
     RunDate: {
       type: DataTypes.DATE,
       allowNull: true

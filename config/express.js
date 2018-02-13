@@ -17,6 +17,8 @@ var config = require('./config'),
 var api_results = require('../app/routes/api_results');
 var api_file_data = require('../app/routes/api_file_data');
 
+var lang_detect = require('../app/routes/lang_detect');
+
 // Define the Express configuration method
 module.exports = function() {
 
@@ -42,12 +44,11 @@ module.exports = function() {
   // Results Paths
   app.use('/results', express.static(path.join(__dirname, '../dist')));
 
-
-  
   // Express Routing Routes
   app.use('/result', api_results);
 
-
+  // Language Detection Routing
+  app.use('/language', lang_detect)
 
   app.use('/result/:template/:language/:result', api_results);
 

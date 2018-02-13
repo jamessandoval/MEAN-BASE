@@ -33,27 +33,3 @@ exports.render = function(req, res) {
     });
 }
 
-exports.filter = function(req, res) {
-
-  var template =  req.params.template;
-  var result = req.params.result;
-
-  console.log(template);
-  console.log(result);
-
-  db.results.findAll({
-    where: {
-      [Op.and]: [{Template: template}, {Result: result}]
-    }
-  }).then(results => {
-      //console.log(results)
-
-      var length = results.length;
-
-      res.render('results', {
-        length: length,
-        results: results,
-      title: 'This is results page with filter'
-    });
-  });
-}
