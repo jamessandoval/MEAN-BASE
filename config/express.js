@@ -13,11 +13,12 @@ var config = require('./config'),
   logger = require('morgan'),
   path = require('path');
 
-// Angular REST ROUTES
+//  REST ROUTES
 var api_results = require('../app/routes/api_results');
 var api_file_data = require('../app/routes/api_file_data');
-
 var lang_detect = require('../app/routes/lang_detect');
+var main = require('../app/routes/main');
+var output = require('../app/routes/output');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -25,7 +26,8 @@ module.exports = function() {
   // Create a new Express application instance
   var app = express();
 
-    // Use the 'body-parser' and 'method-override' middleware functions
+  // Configure the socket stream for the web socket.
+  // Use the 'body-parser' and 'method-override' middleware functions
   app.use(bodyParser.urlencoded({
     extended: false
   }));
@@ -37,12 +39,19 @@ module.exports = function() {
 
   // Configure static file serving
   app.use(express.static('./public'));
+  app.use(express.static('./node_modules'));
 
   // Angular Addition
   app.use(express.static(path.join(__dirname, '../dist')));
 
   // Results Paths
   app.use('/results', express.static(path.join(__dirname, '../dist')));
+
+  // test output page
+  app.use('/output', output);
+
+  // Main Path
+  app.use('/main', main);
 
   // Express Routing Routes
   app.use('/result', api_results);
@@ -90,8 +99,9 @@ module.exports = function() {
       err : {};
     // render the error page
     res.status(err.status || 500);
-    res.render('error',{
+    res.render('error', {
       title: 'Default Error Page',
+      error: err.message
     });
   });
 

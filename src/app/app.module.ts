@@ -12,9 +12,6 @@ const appRoutes: Routes = [
     path: 'results',
     component: ResultComponent,
     data: { title: 'Result List' }
-  },{ path: '',
-    redirectTo: '/books',
-    pathMatch: 'full'
   }
 ];
 @NgModule({
