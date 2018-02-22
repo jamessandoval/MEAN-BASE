@@ -108,6 +108,15 @@ exports.getProcesses = function(req, res, next) {
       // clean file script names for display and query purposes
       scriptData.scripts[i] = scriptData.scripts[i].replace("behat_run_", "");
       scriptData.scripts[i] = scriptData.scripts[i].replace(".sh", "");
+      scriptData.scripts[i] = scriptData.scripts[i].replace("f", "");
+
+    }
+
+    scriptData.scripts = scriptData.scripts.sort((a, b) => a - b)
+
+    for(var i = 0;i < scriptData.scripts.length;i++){
+
+      scriptData.scripts[i] = "f" + scriptData.scripts[i];
     }
 
     console.log("processes: \n");
@@ -118,7 +127,7 @@ exports.getProcesses = function(req, res, next) {
 
     }
 
-    scriptData.scripts
+    
 
     res.render('test_runner', {
       title: 'Test Runner',
@@ -127,7 +136,6 @@ exports.getProcesses = function(req, res, next) {
       processes: processes
 
     })
-
   });
 }
 

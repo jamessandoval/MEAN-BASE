@@ -4,17 +4,22 @@
 function displayChecked(checkedID) {
   
   var checkBox = document.getElementById(checkedID);  // Get the checkbox
-  var parent = document.getElementById(checkedID).parentNode; 
+  var parent = document.getElementById(checkedID).parentNode;
+  var parent2 = document.getElementById(checkedID).parentNode;  
   var text = parent.textContent; // Get the checkbox's text
+  var text2 = parent.textContent; // Get the checkbox's text
   //console.log(text);
   var paragraph = document.createElement("p");
+  var paragraph2 = document.createElement("p");
   var content = document.createTextNode(text);
+  var content2 = document.createTextNode(text);
 
   if(checkBox.className == "FX"){
   	var placement = document.getElementById("pageChildren");
   }
   else {
   	var placement = document.getElementById("langChildren");
+  	var placement2 = document.getElementById("langChildren2");
   }
 
   var checkboxes = new Array();
@@ -24,13 +29,20 @@ function displayChecked(checkedID) {
   
   if (checkBox.checked == true){  // If the checkbox is checked, create a paragraph element and input the checkbox's text
     paragraph.appendChild(content);
+	paragraph2.appendChild(content2);
 	paragraph.setAttribute('id',checkedID+'x');
+	paragraph2.setAttribute('id',checkedID+'x');
 	placement.appendChild(paragraph);
+	placement2.appendChild(paragraph2);
 	
 	if (checkedID == "all"){
 		while (placement.firstChild){
 			placement.removeChild(placement.firstChild);
 		}
+		while (placement2.firstChild){
+			placement2.removeChild(placement2.firstChild);
+		}
+		placement2.appendChild(paragraph);
 		placement.appendChild(paragraph);
 		for(var i=0; i<checkboxes.length; i++){
 		checkboxes[i].checked = true;
@@ -62,10 +74,12 @@ function displayChecked(checkedID) {
 					var paragraph = document.createElement("p");
 					var content = document.createTextNode(text);
 					var placement = document.getElementById("pageChildren");
+					var placement2 = document.getElementById("pageChildren2");
 					if (ID != eliminator){
 						paragraph.appendChild(content);
 						paragraph.setAttribute('id',"option"+i+'x');
 						placement.appendChild(paragraph);
+						placement2 = document.getElementById("pageChildren2");
 					}
 				}
 			}

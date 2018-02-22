@@ -44,16 +44,54 @@ function runTest() {
         data: {json: myJSON},
         contentType: "application/json",
         error: function(data){
-        	console.log(data);
+          console.log(data);
         },
         success: function(data){
-        	console.log(data);
+          console.log(data);
         }
 
     });
    //dataType: 'json'
 */
 
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST", "/export", true);
+  xmlhttp.setRequestHeader("Content-type", "application/json");
+
+  try {
+    xmlhttp.send(myJSON);
+  } catch (err) {
+    console.log("AJAX error: " + err);
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      console.log(xmlhttp);
+      window.location = xmlhttp.responseURL;
+    }
+  }
+}
+
+function exportLanguageSet() {
+
+  var arrayOfObjects = new Array();
+
+  var checkboxes2 = document.getElementsByClassName('lang');
+
+  for (var x = 0; x < checkboxes2.length; x++) {
+
+    if (checkboxes2[x].checked == true) {
+      var theLocale = checkboxes2[x].id;
+
+      var obj = { "name": "all", "locale": theLocale };
+      arrayOfObjects.push(obj);
+    }
+  }
+
+  var finalObject = { "features": arrayOfObjects };
+  var myJSON = JSON.stringify(finalObject);
+
+  // Send data to server
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("POST", "/export", true);
   xmlhttp.setRequestHeader("Content-type", "application/json");

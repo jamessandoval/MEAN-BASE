@@ -5,43 +5,42 @@
   </div>
   <!-- end .col-sm-12 -->
   </div>
-   <% if(languages){ %>
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="button-group">
-        <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
-        <ul class="dropdown-menu btn-block">
-          <% for(var i=0; i < languages.length; i++) { %>
-          <li>
-            <a href="#" data-value="optionA" tabIndex="-1">
+  <% if(languages){ %>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="button-group">
+          <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
+          <ul class="dropdown-menu btn-block">
+            <% for(var i=0; i < languages.length; i++) { %>
+              <li>
+                <a href="#" data-value="optionA" tabIndex="-1">
               <input id="<%= languages[i] %>" class="lang" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></a>
-          </li>
-          <% }%>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <% }%>
-  <br>
-  <!-- end .row -->
-  <% if(features){ %>
-    
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="button-group">
-            <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
-            <ul class="dropdown-menu btn-block">
-              <li class="dropdown-item">
-                <a href="#">
-                  <input id="all" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
-              </li>
-              <% for(var i=0; i < features.length; i++) { %>
-              <li class="dropdown-item">
-                <a href="#">
-                  <input id="<%= features[i] %>" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; <%= features[i] %></a>
               </li>
               <% }%>
-              <!--
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% }%>
+      <br>
+      <!-- end .row -->
+      <% if(features){ %>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="button-group">
+              <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
+              <ul class="dropdown-menu btn-block">
+                <li class="dropdown-item">
+                  <a href="#">
+                    <input id="all" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+                </li>
+                <% for(var i=0; i < features.length; i++) { %>
+                  <li class="dropdown-item">
+                    <a href="#">
+                  <input id="<%= features[i] %>" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; <%= features[i] %></a>
+                  </li>
+                  <% }%>
+                    <!--
           <li class="dropdown-item">
             <a href="#">
               <input id="F2" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;(F2) Product Table of Contents</a>
@@ -139,12 +138,12 @@
               <input id="F25" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;(F25) Promotions and Contests Page</a>
           </li>
         -->
-            </ul>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <% } %>
-        <!--
+        <% } %>
+          <!--
   <div class="row hidden">
     <div class="col-lg-12">
       <div class="button-group">
@@ -153,38 +152,49 @@
     </div>
   </div>
 -->
-        <br>
-
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="button-group">
-              <button type="button" class="btn btn-lg" id="runTest" onclick="runTest()"><b>Export Data</b></button>
+          <br>
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <div class="button-group">
+                <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button> 
+                <button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>
+              </div>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-sm-12">
+              <h2>Export Data Selection:</h2>
+              <div class="col-sm-6" id="displaySelections">
+                <p>
+                  <h3>Feature:</h3></p>
+                <div id="pageChildren"></div>
+              </div>
+              <div class="col-sm-6" id="langSelection">
+                <p>
+                  <h3>Language:</h3></p>
+                <div id="langChildren"></div>
+              </div>
             </div>
           </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-sm-12">
-            <h2>Current Selection:</h2>
-            <div class="col-sm-6" id="displaySelections">
-              <p>
-                <h3>Feature:</h3></p>
-              <div id="pageChildren"></div>
-            </div>
-            <div class="col-sm-6" id="langSelection">
-              <p>
-                <h3>Language:</h3></p>
-              <div id="langChildren"></div>
+                    <div class="row">
+            <div class="col-sm-12">
+              <h2>Export Language Selection:</h2>
+              <div class="col-sm-12" id="langSelection2">
+                  <h3 class="text-center">Language:</h3>
+                <div id="langChildren2"></div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4"></div>
-          <!-- end .col-sm-6 -->
-        </div>
-        <!-- end .row -->
-        <p id="jsonStuff"></p>
-        <br>
-        <br>
-        </div>
-        <%- include('footer') %>
+          <div class="row">
+            <div class="col-4"></div>
+            <!-- end .col-sm-6 -->
+          </div>
+          <!-- end .row -->
+          <p id="jsonStuff"></p>
+          <br>
+          <br>
+          </div>
+          <%- include('footer') %>

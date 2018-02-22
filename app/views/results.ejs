@@ -116,48 +116,5 @@
                       </div>
                     </div>
                     <% }} %>
-                      <% if(results){ %>
-                        <% for(var i=0; i < results.length; i++) { %>
-                          <% if(results[i].Template === features[0]) { %>
-                            <!-- Sorting begins here -->
-                            <div class="tab-content clearfix">
-                              <div class="tab-pane" id="<%= features[0] %>">
-                                <tr>
-                                  <td>
-                                    <%= results[i].ID %>
-                                      <td>
-                                        <%= results[i].TestRunId %>
-                                      </td>
-                                  </td>
-                                  <td>
-                                    <%= results[i].RunDate %>
-                                  </td>
-                                  <td>
-                                    <%= results[i].Template %>
-                                  </td>
-                                  <td>
-                                    <%= results[i].Language %>
-                                  </td>
-                                  <td>
-                                    <%if (results[i].Result === "PASS") { %>
-                                      <button type="button" class="btn btn-success">PASS</button>
-                                      <% }else if(results[i].Result === "FAIL"){ %>
-                                        <button type="button" class="btn btn-danger">FAIL</button>
-                                        <% }else{%>
-                                          <button type="button" class="btn btn-warning">SKIP</button>
-                                          <% } %>
-                                  </td>
-                                  <td>
-                                    <a href="<%= results[i].URLs %>">
-                                      <%= results[i].URLs %>
-                                    </a>
-                                  </td>
-                                  <td>
-                                    <%= results[i].Output %>
-                                  </td>
-                                </tr>
-                              </div>
-                            </div>
-                            <% }}} %>
               </table>
               <%- include('footer') %>

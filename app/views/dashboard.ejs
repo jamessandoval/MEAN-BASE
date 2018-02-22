@@ -1,4 +1,67 @@
 <%- include('header') %>
-    <br>
-    Dashboard should load
+
+   <!--<h1><%= title %></h1>-->
+     <script> 
+    
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      var passes = <%= ourPasses %>;
+      var fails = <%= ourFails %>;
+      var others = <%= ourOthers %>;
+      // Draw the chart and set the chart values
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+        ['Test', 'Passed or Failed'],
+        ['Passed', passes],
+        ['Failed', fails],
+        ['Other', others],
+      ]);
+          // Optional; add a title and set the width and height of the chart
+          // Options can be variables such as title: $Title
+        var options = {
+          'title': 'Run, View, and Pull test results.',
+          'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
+          'colors': ['green', '#E2453C', 'grey'], 
+          'backgroundColor':'', 
+          'is3D': true,
+          'chartArea':{width:'350', height:'80%'},
+          'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
+          'slices': { 0: {offset:0.0},
+                    1: {offset: 0.2},
+                    2: {offset: 0.0}}
+          };
+        // Display the chart inside the <div> element with id="pieChart"
+        var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+        chart.draw(data, options);
+      }
+  </script> 
+        <p></p>
+      </div><!-- end .col-sm-12 -->
+
+    </div><!-- end .row -->
+	<br><br>
+
+     <div class="col-lg-6 row myChart">
+     	
+       	<div id="pieChart">Chart</div>
+
+
+    </div>
+
+
+    <div class="col-lg-6 row">
+        <p>Select from a list of Feature Pages (F1, F2, etc) to run tests, storing results to our database.</p>
+        <a href="/results"> <button type="button" id="mybutton" class="btn btn-lg dashboard">Run Tests </button></a>
+        <br><br><br><br>
+      	<p>Pull data from our database to review results by Feature Page, Language, and Test Date.</p>
+        <a href="/results"><button type="button" class="btn btn-lg dashboard">View Results</button></a>
+        <br><br><br><br>
+      	<p>Export selected results to an excel document for sharing.</p>
+        <a href="/unique"><button type="button" class="btn btn-lg dashboard">Pull Reports</button></a>
+        <br><br><br><br>
+
+    </div>
+
+<br><br><br>
+</div>
 <%- include('footer') %>
