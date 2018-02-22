@@ -1,6 +1,5 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
-
 //pie
 // Load google charts
 google.charts.load('current', {'packages':['corechart']});

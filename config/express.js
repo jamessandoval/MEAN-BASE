@@ -2,7 +2,7 @@
 'use strict';
 
 // Load the module dependencies
-var config = require('./config'),
+const config = require('./config'),
   express = require('express'),
   compress = require('compression'),
   bodyParser = require('body-parser'),
@@ -41,12 +41,34 @@ module.exports = function() {
   app.use(express.static('./public'));
   app.use(express.static('./node_modules'));
 
-  // Angular Addition
-  app.use(express.static(path.join(__dirname, '../dist')));
+  // Congfigure Angular Routing 
+  //app.use(express.static(path.join(__dirname, '../dist')));
 
-  // Results Paths
-  app.use('/results', express.static(path.join(__dirname, '../dist')));
+  // Example of Angular Path
+  // --> app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
 
+  //
+  // Begin Restructuring Routes to use middleware
+  //
+
+  // Test Results Paths
+  app.get('/results', api_results.getResults);
+  app.post('/export', api_results.postResults, api_results.export_to_excel);
+
+  // Test Information Paths
+  app.get('/files', api_file_data.getAvailableTests);
+  app.post('/run-test', api_file_data.runTest);
+
+  app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
+  app.get('/test-runner/:script', api_file_data.runTest);
+
+  app.get('/', main.getHome);
+
+  //
+  // Old Routing Method
+  //
+
+  /*
   // test output page
   app.use('/output', output);
 
@@ -62,6 +84,9 @@ module.exports = function() {
   app.use('/result/:template/:language/:result', api_results);
 
   app.use('/files', api_file_data);
+
+
+  */
 
   app.use(methodOverride());
 
@@ -87,7 +112,7 @@ module.exports = function() {
   // Error Handling -> 404, 500, & All Errors
   // 
   app.use(function(req, res, next) {
-    var err = new Error('Not Found');
+    var err = new Error('404 PAGE NOT FOUND');
     err.status = 404;
     next(err);
   });
@@ -99,8 +124,11 @@ module.exports = function() {
       err : {};
     // render the error page
     res.status(err.status || 500);
+
+    console.log('\x1b[31m',err);
+
     res.render('error', {
-      title: 'Default Error Page',
+      title: 'YOU\'VE REACHED THE ERROR PAGE',
       error: err.message
     });
   });

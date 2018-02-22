@@ -1,14 +1,37 @@
 'use strict';
 
-var express = require('express');
-var router = express.Router();
+var db = require('../../config/sequelize');
 
-router.get('/', function(req, res){
+exports.getHome = function(req, res) {
 
-  // Features is an arrays
-  res.render('index', {
-  	title: 'Main Page'
+  db.results.findAll().then(results => {
+
+    var features = [];
+    var languages = [];
+
+    // Needed To convert the blob object into a string 
+    // Otherwise it returns a buffer array object.
+    for (var i = 0; i < results.length; i++) {
+      results[i].Output = String(results[i].Output);
+
+      // Save each unique template
+      if (!features.includes(results[i].Template)) {
+        features.push(results[i].Template);
+      }
+
+      // Save Each unique Language
+      if (!languages.includes(results[i].Language)) {
+        languages.push(results[i].Language);
+      }
+    }
+
+    res.render('index', {
+      title: 'Export Tool',
+      features: features,
+      languages: languages
+    });
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
   });
-});
-
-module.exports = router;
+};

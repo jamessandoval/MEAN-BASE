@@ -9,7 +9,7 @@ import { ResultComponent } from './result/result.component';
 
 const appRoutes: Routes = [
   {
-    path: 'results',
+    path: 'results_angular',
     component: ResultComponent,
     data: { title: 'Result List' }
   }
