@@ -19,6 +19,7 @@ var api_file_data = require('../app/routes/api_file_data');
 var language = require('../app/routes/language');
 var main = require('../app/routes/main');
 var output = require('../app/routes/output');
+var api_dashboard= require('../app/routes/api_dashboard');
 
 // Define the Express configuration method
 module.exports = function() {
@@ -69,13 +70,14 @@ module.exports = function() {
   //
   // Old Routing Method
   //
-
+   app.use('/dashboard', api_dashboard);
   /*
   // test output page
   app.use('/output', output);
 
   // Main Path
   app.use('/main', main);
+  
 
   // Express Routing Routes
   app.use('/result', api_results);
