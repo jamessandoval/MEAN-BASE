@@ -99,6 +99,18 @@ exports.postResults = function(req, res, next) {
 // and a language Combination.
 exports.export_to_excel = function(req, res, next) {
 
+  /*
+  // read from a file
+  var workbook = new Excel.Workbook();
+  workbook.xlsx.readFile(filename)
+    .then(function() {
+      // use workbook
+    });
+
+    */
+
+  /*
+
   let results = req.results;
   const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
   let workbook = new Excel.Workbook();
@@ -137,17 +149,31 @@ exports.export_to_excel = function(req, res, next) {
         Output: results[j].Output
       });
       setTimeout(() => { processItems(j + 1); });
-    
-    } else {
-      workbook.xlsx.writeFile(filepath);
 
+    } else {
+      workbook.xlsx.writeFile(filepath).then(function() {
+        console.log("great success");
+        res.sendFile(filepath);
+      });
     }
   };
 
-  console.log("great success");
-  //res.sendFile('filepath' , { root : __dirname});
-  //res.redirect(301, '/');
-  //res.sendFile(filepath);
+  fs.readdir(rootPath, function(err, items) {
+
+    for (var i = 0; i < items.length; i++) {
+
+      console.log("this is the item: " + items[i]);
+
+    }
+
+    res.send(items);
+
+  });  
+
+  */
+
+  res.send("no problem");
+
 };
 
 /* GET ALL Results */

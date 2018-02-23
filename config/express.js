@@ -16,7 +16,7 @@ const config = require('./config'),
 //  REST ROUTES
 var api_results = require('../app/routes/api_results');
 var api_file_data = require('../app/routes/api_file_data');
-var lang_detect = require('../app/routes/lang_detect');
+var language = require('../app/routes/language');
 var main = require('../app/routes/main');
 var output = require('../app/routes/output');
 
@@ -63,6 +63,8 @@ module.exports = function() {
   app.get('/test-runner/:script', api_file_data.runTest);
 
   app.get('/', main.getHome);
+
+  app.post('/detect', language.postLanguage)
 
   //
   // Old Routing Method

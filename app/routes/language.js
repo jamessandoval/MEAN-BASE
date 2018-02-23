@@ -3,12 +3,9 @@
 //https://github.com/dachev/node-cld
 var cld = require('cld');
 
-var express = require('express');
-var router = express.Router();
-
 
 // Return a translation detection result based on a post request.
-router.post('/', function(req, res) {  
+exports.postLanguage = function(req, res, next) {
 
   var text = req.body.text;
 
@@ -24,6 +21,5 @@ router.post('/', function(req, res) {
       }
   })
 
-});
+};
 
-module.exports = router;
