@@ -43,7 +43,7 @@ module.exports = function() {
   app.use(express.static('./node_modules'));
 
   // Congfigure Angular Routing 
-  //app.use(express.static(path.join(__dirname, '../dist')));
+  app.use(express.static(path.join(__dirname, '../dist')));
 
   // Example of Angular Path
   // --> app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
@@ -63,14 +63,14 @@ module.exports = function() {
   app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', api_file_data.runTest);
 
-  app.get('/', main.getHome);
+  app.get('/dashboard', main.getHome);
 
-  app.post('/detect', language.postLanguage)
+  app.post('/detect', language.postLanguage);
 
   //
   // Old Routing Method
   //
-   app.use('/dashboard', api_dashboard);
+  //app.use('/dashboard', api_dashboard);
   /*
   // test output page
   app.use('/output', output);

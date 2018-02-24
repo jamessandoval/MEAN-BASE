@@ -5,9 +5,9 @@
     
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
-      var passes = <%= ourPasses %>;
-      var fails = <%= ourFails %>;
-      var others = <%= ourOthers %>;
+      var passes = <%= pass %>;
+      var fails = <%= fail %>;
+      var others = <%= skip %>;
       // Draw the chart and set the chart values
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
