@@ -26,8 +26,9 @@ exports.postResults = function(req, res, next) {
   // Features is an array of objects
   var resultCompilation = [];
 
-  if (features[0].name === "all") {
+  console.log("The features 0 name is: " + features[0].name);
 
+  if (features[0].name === "all") {
 
     getResultsTotalLanguages(features);
 
@@ -148,7 +149,6 @@ exports.export_to_excel = function(req, res, next) {
 
     } else {
       workbook.xlsx.writeFile(filepath).then(function() {
-        res.sendFile(filepath);
         console.log("The Export File has been written.");
       });
     }
