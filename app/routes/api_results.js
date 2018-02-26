@@ -108,51 +108,55 @@ exports.export_to_excel = function(req, res, next) {
     });
   */
 
-  let results = req.results;
-  const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
-  let workbook = new Excel.Workbook();
-  workbook.created = new Date();
-  workbook.properties.date1904 = true;
-  let status = "fail";
+  setTimeout(() => {
 
-  var worksheet = workbook.addWorksheet('Test report');
+    let results = req.results;
+    const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
+    let workbook = new Excel.Workbook();
+    workbook.created = new Date();
+    workbook.properties.date1904 = true;
+    let status = "fail";
 
-  worksheet.columns = [
-    { header: 'ID:', key: 'id', width: 10 },
-    { header: 'Test Run Id:', key: 'TestRunId', width: 32 },
-    { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
-    { header: 'Template:', key: 'Template', width: 10 },
-    { header: 'Language:', key: 'Language', width: 10 },
-    { header: 'Result:', key: 'Result', width: 10 },
-    { header: 'URL:', key: 'URLs', width: 50 },
-    { header: 'Output:', key: 'Output', width: 100 }
-  ];
+    var worksheet = workbook.addWorksheet('Test report');
 
-  console.log("the size of results is " + results.length);
-  processItems(0);
+    worksheet.columns = [
+      { header: 'ID:', key: 'id', width: 10 },
+      { header: 'Test Run Id:', key: 'TestRunId', width: 32 },
+      { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
+      { header: 'Template:', key: 'Template', width: 10 },
+      { header: 'Language:', key: 'Language', width: 10 },
+      { header: 'Result:', key: 'Result', width: 10 },
+      { header: 'URL:', key: 'URLs', width: 50 },
+      { header: 'Output:', key: 'Output', width: 100 }
+    ];
 
-  function processItems(j) {
+    console.log("the size of results is " + results.length);
+    processItems(0);
 
-    if (j < results.length) {
+    function processItems(j) {
 
-      worksheet.addRow({
-        id: results[j].ID,
-        TestRunId: results[j].TestRunId,
-        RunDate: results[j].RunDate,
-        Template: results[j].Template,
-        Language: results[j].Language,
-        Result: results[j].Result,
-        URLs: results[j].URLs,
-        Output: results[j].Output
-      });
-      setTimeout(() => { processItems(j + 1); });
+      if (j < results.length) {
 
-    } else {
-      workbook.xlsx.writeFile(filepath).then(function() {
-        console.log("The Export File has been written.");
-      });
-    }
-  };
+        worksheet.addRow({
+          id: results[j].ID,
+          TestRunId: results[j].TestRunId,
+          RunDate: results[j].RunDate,
+          Template: results[j].Template,
+          Language: results[j].Language,
+          Result: results[j].Result,
+          URLs: results[j].URLs,
+          Output: results[j].Output
+        });
+        setTimeout(() => { processItems(j + 1); });
+
+      } else {
+        workbook.xlsx.writeFile(filepath).then(function() {
+          console.log("The Export File has been written.");
+        });
+      }
+    };
+
+  });
 
 };
 
