@@ -13,13 +13,16 @@ const config = require('./config'),
   logger = require('morgan'),
   path = require('path');
 
-//  REST ROUTES
-var api_results = require('../app/routes/api_results');
-var api_file_data = require('../app/routes/api_file_data');
-var language = require('../app/routes/language');
-var main = require('../app/routes/main');
-var output = require('../app/routes/output');
-var api_dashboard= require('../app/routes/api_dashboard');
+//  Main Site Routes
+const api_results = require('../app/routes/api_results');
+const api_file_data = require('../app/routes/api_file_data');
+const language = require('../app/routes/language');
+const main = require('../app/routes/main');
+const output = require('../app/routes/output');
+const api_dashboard= require('../app/routes/api_dashboard');
+
+// Angular App Routes
+const angular_results = require('../app/routes/angular_results')
 
 // Define the Express configuration method
 module.exports = function() {
@@ -52,6 +55,15 @@ module.exports = function() {
   // Begin Restructuring Routes to use middleware
   //
 
+  // <-- Angular Rest Routes Begin Here -->
+
+  // All files include
+   // app.get('/', )
+
+  app.get('/angular-results', angular_results.all)
+
+  // <-- Angular Rest Routes End Here --> 
+
   // Test Results Paths
   app.get('/results', api_results.getResults);
   app.post('/export', api_results.postResults, api_results.export_to_excel);
@@ -75,15 +87,12 @@ module.exports = function() {
   // test output page
   app.use('/output', output);
 
-  // Main Path
-  app.use('/main', main);
-  
+ app.use('/main', main);  
 
   // Express Routing Routes
   app.use('/result', api_results);
 
-  // Language Detection Routing
-  app.use('/language', lang_detect)
+BGX  app.use('/language', lang_detect)
 
   app.use('/result/:template/:language/:result', api_results);
 

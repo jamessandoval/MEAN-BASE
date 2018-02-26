@@ -15,7 +15,7 @@ export class ResultComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.http.get('/result').subscribe(data => {
+    this.http.get('/angular-results').subscribe(data => {
 
       this.results = data;
     });

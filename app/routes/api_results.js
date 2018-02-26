@@ -2,7 +2,6 @@
 
 const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
-var asyncLoop = require('node-async-loop');
 
 const Op = Sequelize.Op;
 
@@ -106,10 +105,7 @@ exports.export_to_excel = function(req, res, next) {
     .then(function() {
       // use workbook
     });
-
-    */
-
-  /*
+  */
 
   let results = req.results;
   const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
@@ -152,27 +148,11 @@ exports.export_to_excel = function(req, res, next) {
 
     } else {
       workbook.xlsx.writeFile(filepath).then(function() {
-        console.log("great success");
         res.sendFile(filepath);
+        console.log("The Export File has been written.");
       });
     }
   };
-
-  fs.readdir(rootPath, function(err, items) {
-
-    for (var i = 0; i < items.length; i++) {
-
-      console.log("this is the item: " + items[i]);
-
-    }
-
-    res.send(items);
-
-  });  
-
-  */
-
-  res.send("no problem");
 
 };
 
