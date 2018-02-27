@@ -5,7 +5,7 @@
 exports.render = function(req, res) {
   res.render('dashboard', {
     title: 'Dashboard',
-   	pass: '1000',
+    pass: '1000',
     fail: '100',
     skip: '150'
   });
