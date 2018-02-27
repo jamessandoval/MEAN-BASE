@@ -6,10 +6,11 @@
   <div class="row">
     <div class="col-sm-12">
       <h3>Run Tests:</h3>
+      <p>Select Tests to Run.  Results will be pushed to QA folder.  Refresh to see current test statuses.</p>
       <p>
-        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div> <b> - Running Test</b></p>
+        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div> <b>- Running Test </b></p>
       <p>
-        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div> <b> - Stopped Test</b></p>
+        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div> <b> - Test No Longer Running</b></p>
     </div>
     <div class="col-4">
     </div>
@@ -22,9 +23,9 @@
             <b>Run Test: <%= scripts[i] %></b>
             <br>
             <% if(status[i] === "running"){%>
-              <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div>
+              <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div>
               <% }else{ %>
-                <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div>
+                <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div>
                 <% }%>
                 
           </button>

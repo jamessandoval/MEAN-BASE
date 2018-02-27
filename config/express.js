@@ -19,7 +19,7 @@ const api_file_data = require('../app/routes/api_file_data');
 const language = require('../app/routes/language');
 const main = require('../app/routes/main');
 const output = require('../app/routes/output');
-const api_dashboard= require('../app/routes/api_dashboard');
+const api_dashboard = require('../app/routes/api_dashboard');
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -46,7 +46,7 @@ module.exports = function() {
   app.use(express.static('./node_modules'));
 
   // Congfigure Angular Routing 
-  app.use(express.static(path.join(__dirname, '../dist')));
+  //app.use(express.static(path.join(__dirname, '../dist')));
 
   // Example of Angular Path
   // --> app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
@@ -64,8 +64,14 @@ module.exports = function() {
 
   // <-- Angular Rest Routes End Here --> 
 
+  app.get('/', api_dashboard.render);
+
   // Test Results Paths
   app.get('/results', api_results.getResults);
+
+  app.get('/results/:id')
+
+
   app.post('/export', api_results.postResults, api_results.export_to_excel);
 
   // Test Information Paths

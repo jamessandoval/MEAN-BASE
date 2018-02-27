@@ -14,7 +14,7 @@
             <% for(var i=0; i < languages.length; i++) { %>
               <li>
                 <a href="#" data-value="optionA" tabIndex="-1">
-              <input id="<%= languages[i] %>" class="lang" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></a>
+              <input id="<%= languages[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></a>
               </li>
               <% }%>
           </ul>
@@ -32,7 +32,7 @@
               <ul class="dropdown-menu btn-block">
                 <li class="dropdown-item">
                   <a href="#">
-                    <input id="all" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+                    <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
                 </li>
                 <% for(var i=0; i < features.length; i++) { %>
                   <li class="dropdown-item">
@@ -158,7 +158,7 @@
             <div class="col-md-8">
               <div class="button-group">
                 <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button>&nbsp; 
-                <button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp; 
+                <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;--> 
                 <button type="button" class="btn btn-md btn-success" id="exportAll" onclick="exportAll()"><b>Build Comprehensive Report</b></button>
               </div>
             </div>

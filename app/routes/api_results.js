@@ -212,7 +212,7 @@ exports.getResults = function(req, res) {
 
       }
       res.render('results', {
-        title: 'All Possible Results',
+        title: 'All Possible Results - Most Recent Only',
         features: features,
         languages: languages,
         results: results,

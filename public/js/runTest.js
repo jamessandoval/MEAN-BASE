@@ -3,8 +3,9 @@
 
 function runTest() {
 
-  var arrayOfObjects = new Array();
+  alert("test is running.");
 
+  var arrayOfObjects = new Array();
 
   var checkboxes1 = document.getElementsByClassName('FX');
 
@@ -74,6 +75,8 @@ function runTest() {
 
 function exportLanguageSet() {
 
+  alert("Results have been exported to QA Folder.");
+
   var arrayOfObjects = new Array();
 
   var checkboxes2 = document.getElementsByClassName('lang');
@@ -110,6 +113,8 @@ function exportLanguageSet() {
 }
 
 function exportAll() {
+
+  alert("Results have been exported to QA Folder.");
 
   var arrayOfObjects = new Array();
 
