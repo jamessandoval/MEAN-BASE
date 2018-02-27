@@ -108,3 +108,32 @@ function exportLanguageSet() {
     }
   }
 }
+
+function exportAll() {
+
+  var arrayOfObjects = new Array();
+
+  var obj = { "name": "all", "locale": "all" };
+  arrayOfObjects.push(obj);
+
+  var finalObject = { "features": arrayOfObjects };
+  var myJSON = JSON.stringify(finalObject);
+
+  // Send data to server
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("POST", "/export", true);
+  xmlhttp.setRequestHeader("Content-type", "application/json");
+
+  try {
+    xmlhttp.send(myJSON);
+  } catch (err) {
+    console.log("AJAX error: " + err);
+  }
+
+  xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      console.log(xmlhttp);
+    }
+  }
+
+}
