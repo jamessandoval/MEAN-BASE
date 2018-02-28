@@ -55,7 +55,7 @@ module.exports = function() {
   // All files include
    // app.get('/', )
 
-  app.get('/angular-results', angular_results.all)
+  //app.get('/angular-results', angular_results.all)
 
   // <-- Angular Rest Routes End Here --> 
 
@@ -69,8 +69,8 @@ module.exports = function() {
   // get Result Counts
   app.get('/result-count', api_results.getTotalResultCount);
 
-  app.get('/result-by-feature', api_dashboard.getResultMetaByLocale);
-
+  app.get('/result-by-language', api_dashboard.getResultMetaByLocale);
+  app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
 
   app.post('/export', api_results.postResults, api_results.export_to_excel);
 
@@ -78,8 +78,10 @@ module.exports = function() {
   app.get('/files', api_file_data.getAvailableTests);
   app.post('/run-test', api_file_data.runTest);
 
+
   app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', api_file_data.runTest);
+  app.get('/test-runner/:script/:locale', api_file_data.runTest);
 
   app.get('/dashboard', main.getHome);
 

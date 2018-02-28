@@ -85,10 +85,9 @@ exports.render = function(req, res) {
   })
 };
 
-//`SELECT count(*) FROM results WHERE Template = ${features[i++]} AND result = '${result}' and Language = '${locale}';`)
 exports.getResultMetaByLocale = function(req, res) {
 
-  let locale = 'cn'; //req.params.locale;
+  let locale = req.params.locale;
   let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
   let pass = null;
   let fail = null;
