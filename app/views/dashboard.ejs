@@ -4,12 +4,20 @@
      <script> 
     
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(drawCharts);
       var passes = <%= pass %>;
       var fails = <%= fail %>;
       var others = <%= skip %>;
+
+      var passesArr= <%= passesArray %>;
+      var failsArr= <%= failsArray %>;
+      var othersArr= <%= othersArray %>;
       // Draw the chart and set the chart values
-      function drawChart() {
+      function drawCharts() {
+
+         /////////////////////////////////// Pie Chart /////////////////////
+
+
         var data = google.visualization.arrayToDataTable([
         ['Test', 'Passed or Failed'],
         ['Passed', passes],
@@ -19,7 +27,7 @@
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options = {
-          'title': 'Run, View, and Pull test results.',
+          'title': 'China, overall test results.',
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
           'backgroundColor':'', 
@@ -33,6 +41,60 @@
         // Display the chart inside the <div> element with id="pieChart"
         var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
         chart.draw(data, options);
+
+          /////////////////////////////////// Bar Chart /////////////////////
+
+        var data2 = google.visualization.arrayToDataTable([
+        ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation'} ],
+
+        <% for(var i=0; i < results.length; i++) { %>
+         ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
+         <% } %>
+         
+        // ['F1', 10,12,45,''],
+        // ['F2', 5,15,61,''],
+        // ['F3', 33,21,42,''],
+        // ['F4', 33,21,42,''],
+        // ['F5', 33,21,42,''],
+        // ['F6', 33,21,42,''],
+        // ['F7', 33,21,42,''],
+        // ['F8', 33,21,42,''],
+        // ['F9', 33,19,42,''],
+        // ['F10', 12,21,42,''],
+        // ['F11', 33,21,42,''],
+        // ['F12', 17,21,42,''],
+        // ['F13', 33,21,42,''],
+        // ['F14', 33,21,20,''],
+        // ['F15', 11,21,42,''],
+        // ['F16', 33,18,42,''],
+        // ['F17', 33,21,42,''],
+        // ['F18', 10,30,42,''],
+        // ['F19', 33,21,42,''],
+        // ['F20', 9,21,6,''],
+        // ['F21', 33,21,42,''],
+        // ['F22', 33,21,42,''],
+        // ['F23', 33,21,3,''],
+        // ['F24', 11,21,42,''],
+      ]);
+          // Optional; add a title and set the width and height of the chart
+          // Options can be variables such as title: $Title
+        var options2 = {
+          'title': 'China, by Feature Page',
+          'isStacked':'percent',
+          'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
+          'colors': ['green', '#E2453C', 'grey'], 
+          'backgroundColor':'', 
+          'is3D': true,
+          'chartArea':{width:'350', height:'80%'},
+          'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
+          'hAxis': {
+            'minValue':0,
+            'ticks':[0, .3, .6, .9, 1]
+           }
+          };
+        // Display the chart inside the <div> element with id="pieChart"
+        var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
+        chart2.draw(data2, options2);
       }
   </script> 
         <p></p>
@@ -50,17 +112,10 @@
 
 
     <div class="col-lg-6 row">
-        <p>Select from a list of Feature Pages (F1, F2, etc) to run tests, storing results to our database.</p>
-        <a href="/test-runner"> <button type="button" id="mybutton" class="btn btn-lg dashboard">Run Tests </button></a>
-        <br><br><br><br>
-      	<p>Pull data from our database to review results by Feature Page, Language, and Test Date.</p>
-        <a href="/results"><button type="button" class="btn btn-lg dashboard">View Results</button></a>
-        <br><br><br><br>
-      	<p>Export selected results to an excel document for sharing.</p>
-        <a href="/dashboard"><button type="button" class="btn btn-lg dashboard">Pull Reports</button></a>
-        <br><br><br><br>
+        <div id="barGraph" class="pieChart">BarGraph</div>
 
     </div>
+
 
 <br><br><br>
 </div>

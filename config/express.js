@@ -20,6 +20,7 @@ const language = require('../app/routes/language');
 const main = require('../app/routes/main');
 const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
+const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -59,6 +60,7 @@ module.exports = function() {
   // <-- Angular Rest Routes End Here --> 
 
   app.get('/', api_dashboard.render);
+  app.get('/dashboardTWO', api_dashboardTWO.render);
 
   // Test Results Paths
   app.get('/results', api_results.getResults);

@@ -30,7 +30,7 @@ io.on('connection', function(socket) {
 });
 
 module.export = io;
-
+console.log("port:"+ port);
 /**
  * Listen on provided port, on all network interfaces
  */

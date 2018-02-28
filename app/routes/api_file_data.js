@@ -24,6 +24,9 @@ exports.getAvailableTests = function(req, res, next) {
         items[i]
         items.splice(i, 1);
       }
+      else{
+        
+      }
     }
 
     req.shellScripts = items;

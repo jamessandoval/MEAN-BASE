@@ -7,6 +7,9 @@ exports.render = function(req, res) {
     title: 'Dashboard',
     pass: '1000',
     fail: '100',
-    skip: '150'
+    skip: '150',
+    passesArray: '[22, 3, 12]',
+    failsArray:  '[22, 3, 12]',
+    othersArray: '[4,23,10]'
   });
 };
