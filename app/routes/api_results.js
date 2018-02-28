@@ -256,33 +256,29 @@ exports.getResults = function(req, res) {
 /* QEURY SINGLE TEST CASES */
 exports.getResultByIdAndLanguage = function(req, res) {
 
-  console.log("hello from this path");
-
-  console.log(req.query.template);
-
-  var template = "f4";
-  var language = "en-us";
+  var template = 'f2';//req.query.template;
+  var language = 'en'//req.query.locale;
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language LIKE '${language}';`).then(results => {
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}';`).then(results => {
+
+    results = results[0]; 
 
     for (var i = results.length - 1; i >= 0; i--) {
       results[i].Output = String(results[i].Output);
+      console.log(results[i].Output); 
 
     }
 
     var total = results.length;
-    res.send(res.locals.dataProcessed);
 
-    res.render('results', {
+    console.log("total length is " + total);
+  
+    res.render('results_custom', {
       results: results,
       title: 'Report Page',
-      length: total,
-      pass: 100,
-      fail: 20,
-      skip: 5
+      length: total
     });
-
 
   }).catch(function(err) {
     console.log('error: ' + err);

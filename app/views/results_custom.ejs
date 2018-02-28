@@ -1,0 +1,58 @@
+<%- include('header') %>
+  <table class="table">
+    <tr>
+      <th colspan="2" style="border-top: none !important; padding: 0px !important">
+        <h2>Results: <%= length %></h2></th>
+    </tr>
+    <tr>
+      <th>TR ID:</th>
+      <th>Run Date:</th>
+      <th>Template: </th>
+      <th>Language: </th>
+      <th>Result: </th>
+      <th class="text-center">URL:</th>
+      <th class="text-center">Output:</th>
+    </tr>
+    <!-- ###                                                               -->
+    <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
+    <!-- ###                                                               -->
+    <% if(results){ %>
+      <% for(var i=0; i < results.length; i++) { %>
+        <div class="tab-content clearfix">
+          <div class="tab-pane active" id="all">
+            <tr>
+              <td>
+                <%= results[i].TestRunId %>
+              </td>
+              <td>
+                <%= results[i].RunDate %>
+              </td>
+              <td>
+                <%= results[i].Template %>
+              </td>
+              <td>
+                <%= results[i].Language %>
+              </td>
+              <td>
+                <%if (results[i].Result === "PASS") { %>
+                  <button type="button" class="btn btn-success">PASS</button>
+                  <% }else if(results[i].Result === "FAIL"){ %>
+                    <button type="button" class="btn btn-danger">FAIL</button>
+                    <% }else{%>
+                      <button type="button" class="btn btn-warning">SKIP</button>
+                      <% } %>
+              </td>
+              <td>
+                <a href="<%= results[i].URLs %>">
+                  <%= results[i].URLs %>
+                </a>
+              </td>
+              <td>
+                <%= results[i].Output %>
+              </td>
+            </tr>
+          </div>
+        </div>
+        <% }} %>
+  </table>
+  <%- include('footer') %>

@@ -41,12 +41,6 @@ module.exports = function() {
   // Morgan plugin
   app.use(logger('dev'));
 
-  // Configure static file serving
-  app.use(express.static('./public'));
-  app.use(express.static('./node_modules'));
-
-  // Congfigure Angular Routing 
-  //app.use(express.static(path.join(__dirname, '../dist')));
 
   // Example of Angular Path
   // --> app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
@@ -69,8 +63,7 @@ module.exports = function() {
   // Test Results Paths
   app.get('/results', api_results.getResults);
 
-  app.get('/results/:id')
-
+  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
 
   app.post('/export', api_results.postResults, api_results.export_to_excel);
 
@@ -84,6 +77,14 @@ module.exports = function() {
   app.get('/dashboard', main.getHome);
 
   app.post('/detect', language.postLanguage);
+
+
+  // Configure static file serving
+  app.use(express.static('public'));
+  app.use(express.static('node_modules'));
+
+  // Congfigure Angular Routing 
+  //app.use(express.static(path.join(__dirname, '../dist')));
 
   //
   // Old Routing Method
