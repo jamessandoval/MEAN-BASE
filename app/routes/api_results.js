@@ -256,26 +256,30 @@ exports.getResults = function(req, res) {
 /* QEURY SINGLE TEST CASES */
 exports.getResultByIdAndLanguage = function(req, res) {
 
-  var template = 'f2';//req.query.template;
-  var language = 'en'//req.query.locale;
+  console.log(req.params.template);
+
+  var template = req.params.template;
+  var language = req.params.locale;
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
   db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}';`).then(results => {
 
-    results = results[0]; 
+    results = results[0];
 
     for (var i = results.length - 1; i >= 0; i--) {
       results[i].Output = String(results[i].Output);
-      console.log(results[i].Output); 
+      //console.log(results[i].Output); 
 
     }
 
     var total = results.length;
 
     console.log("total length is " + total);
-  
+
     res.render('results_custom', {
       results: results,
+      template: template,
+      language: language,
       title: 'Report Page',
       length: total
     });
@@ -285,4 +289,72 @@ exports.getResultByIdAndLanguage = function(req, res) {
     return err;
 
   })
+};
+
+exports.getTotalResultCount = function(req, res) {
+
+  let feature = "ALL";
+  let language = "ALL";
+  let pass = 0;
+  let fail = 0;
+  let skip = 0;
+
+  // select count(*) from results where result = 'PASS';
+  db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
+
+    results = results[0];
+
+    pass = JSON.stringify(results[0]);
+    pass = pass.replace("{\"count(*)\":", "");
+    pass = pass.replace("}", "");
+    pass = parseInt(pass);
+
+    // Call next query:
+
+    // select count(*) from results where result = 'FAIL';
+    db.sequelize.query(`select count(*) from results where result = 'FAIL';`).then(results => {
+
+      results = results[0];
+
+      fail = JSON.stringify(results[0]);
+      fail = fail.replace("{\"count(*)\":", "");
+      fail = fail.replace("}", "");
+      fail = parseInt(fail);
+
+      // select count(*) from results where result = 'SKIP';
+      db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
+
+        results = results[0];
+
+        skip = JSON.stringify(results[0]);
+        skip = skip.replace("{\"count(*)\":", "");
+        skip = skip.replace("}", "");
+        skip = parseInt(skip);
+
+        res.send({
+          feature: feature,
+          language: language,
+          pass: pass,
+          fail: fail,
+          skip: skip
+        });
+
+      }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+
+      })
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+
 };
