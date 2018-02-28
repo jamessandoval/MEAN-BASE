@@ -67,6 +67,9 @@ module.exports = function() {
   // get Result Counts
   app.get('/result-count', api_results.getTotalResultCount);
 
+  app.get('/result-by-feature', api_dashboard.getResultMetaByLocale);
+
+
   app.post('/export', api_results.postResults, api_results.export_to_excel);
 
   // Test Information Paths
