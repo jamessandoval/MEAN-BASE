@@ -62,8 +62,10 @@ module.exports = function() {
 
   // Test Results Paths
   app.get('/results', api_results.getResults);
-
   app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
+
+  // get Result Counts
+  app.get('/result-count', api_results.getTotalResultCount);
 
   app.post('/export', api_results.postResults, api_results.export_to_excel);
 
