@@ -1,17 +1,13 @@
 <%- include('header') %>
 
-   <!--<h1><%= title %></h1>-->
      <script> 
     
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawCharts);
-      var passes = <%= pass %>;
-      var fails = <%= fail %>;
-      var others = <%= skip %>;
+      var passes = <%= overall.pass %>;
+      var fails = <%= overall.fail %>;
+      var others = <%= overall.skip %>;
 
-      var passesArr= <%= passesArray %>;
-      var failsArr= <%= failsArray %>;
-      var othersArr= <%= othersArray %>;
       // Draw the chart and set the chart values
       function drawCharts() {
 
@@ -47,7 +43,7 @@
         var data2 = google.visualization.arrayToDataTable([
         ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation'} ],
 
-        <% for(var i=0; i < results.length; i++) { %>
+        <% for(var i=0; i < resultsTotal.length; i++) { %>
          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
          <% } %>
          
