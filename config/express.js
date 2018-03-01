@@ -16,6 +16,7 @@ const config = require('./config'),
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
 const api_file_data = require('../app/routes/api_file_data');
+const api_export = require('../app/routes/api_export');
 const language = require('../app/routes/language');
 const main = require('../app/routes/main');
 const output = require('../app/routes/output');
@@ -42,51 +43,40 @@ module.exports = function() {
   // Morgan plugin
   app.use(logger('dev'));
 
-
-  // Example of Angular Path
-  // --> app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
-
-  //
-  // Begin Restructuring Routes to use middleware
-  //
+  // --app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
 
   // <-- Angular Rest Routes Begin Here -->
-
-  // All files include
-   // app.get('/', )
 
   //app.get('/angular-results', angular_results.all)
 
   // <-- Angular Rest Routes End Here --> 
 
-  app.get('/', api_dashboard.render);
+  // Landing Page
+  app.get('/', main.getHome);
+
+  // Dashboards
+  app.get('/dashboard', api_dashboard.getOverview);
   app.get('/dashboardTWO', api_dashboardTWO.render);
 
-  // Test Results Paths
+  // Test Results
   app.get('/results', api_results.getResults);
-  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
-
-  // get Result Counts
-  app.get('/result-count', api_results.getTotalResultCount);
-
-  app.get('/result-by-language', api_dashboard.getResultMetaByLocale);
   app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
 
+  // Export Tool
+  app.get('/export', api_export.getExport);
   app.post('/export', api_results.postResults, api_results.export_to_excel);
 
-  // Test Information Paths
+  // Test Information Routes
   app.get('/files', api_file_data.getAvailableTests);
   app.post('/run-test', api_file_data.runTest);
 
-
+  // Test Runner Routes
   app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', api_file_data.runTest);
-  app.get('/test-runner/:script/:locale', api_file_data.runTest);
+  app.get('/test-runner/:script/:locale', api_file_data.runTest); 
 
-  app.get('/dashboard', main.getHome);
-
+  // Language Detection Route
   app.post('/detect', language.postLanguage);
-
 
   // Configure static file serving
   app.use(express.static('public'));
