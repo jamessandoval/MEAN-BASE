@@ -158,9 +158,9 @@ exports.getResultMetaByLocale = function(req, res) {
             //res.send(overall);
 
             res.render('dashboard', {
-              title: 'Dashboard',
               language: language,
               feature: "all",
+              title: 'Results by Language',
               resultsTotal : resultsTotal,
               overall: overall
             });

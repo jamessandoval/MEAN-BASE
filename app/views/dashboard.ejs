@@ -4,9 +4,12 @@
     
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawCharts);
+
       var passes = <%= overall.pass %>;
       var fails = <%= overall.fail %>;
       var others = <%= overall.skip %>;
+      var lang = <%= resultsTotal[0].locale %>;
+
 
       // Draw the chart and set the chart values
       function drawCharts() {
@@ -23,7 +26,9 @@
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options = {
+
           'title': '<%= language %> Languages, by <%= feature %> Feature Page(s)',
+
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
           'backgroundColor':'', 
@@ -46,37 +51,17 @@
         <% if(resultsTotal){ %>
         <% for(var i=0; i < resultsTotal.length; i++) { %>
          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
-         <% }} %>
-         
-        // ['F1', 10,12,45,''],
-        // ['F2', 5,15,61,''],
-        // ['F3', 33,21,42,''],
-        // ['F4', 33,21,42,''],
-        // ['F5', 33,21,42,''],
-        // ['F6', 33,21,42,''],
-        // ['F7', 33,21,42,''],
-        // ['F8', 33,21,42,''],
-        // ['F9', 33,19,42,''],
-        // ['F10', 12,21,42,''],
-        // ['F11', 33,21,42,''],
-        // ['F12', 17,21,42,''],
-        // ['F13', 33,21,42,''],
-        // ['F14', 33,21,20,''],
-        // ['F15', 11,21,42,''],
-        // ['F16', 33,18,42,''],
-        // ['F17', 33,21,42,''],
-        // ['F18', 10,30,42,''],
-        // ['F19', 33,21,42,''],
-        // ['F20', 9,21,6,''],
-        // ['F21', 33,21,42,''],
-        // ['F22', 33,21,42,''],
-        // ['F23', 33,21,3,''],
-        // ['F24', 11,21,42,''],
+
+         <% } %>
+
+
       ]);
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options2 = {
+
           'title': '<%= language %> language(s), by <%= feature %> Feature Page(s)',
+
           'isStacked':'percent',
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
@@ -94,7 +79,7 @@
         chart2.draw(data2, options2);
       }
   </script> 
-        <p></p>
+        <h1><%= resultsTotal[0].locale %></h1>
       </div><!-- end .col-sm-12 -->
 
     </div><!-- end .row -->
