@@ -14,8 +14,8 @@
       // Draw the chart and set the chart values
       function drawCharts() {
 
-         /////////////////////////////////// Pie Chart /////////////////////
 
+         /////////////////////////////////// Pie Chart /////////////////////
 
         var data = google.visualization.arrayToDataTable([
           ['Test', 'Passed or Failed'],
@@ -27,7 +27,7 @@
           // Options can be variables such as title: $Title
         var options = {
 
-          'title': '<%= language %> Languages, by <%= feature %> Feature Page(s)',
+          'title': '<%= language %> Languages, <%= feature %> Feature Pages',
 
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
@@ -39,9 +39,11 @@
                     1: {offset: 0.2},
                     2: {offset: 0.0}}
         };
+
         // Display the chart inside the <div> element with id="pieChart"
         var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
         chart.draw(data, options);
+
 
           /////////////////////////////////// Bar Chart /////////////////////
 
@@ -51,18 +53,15 @@
           <% if(resultsTotal){ %>
           <% for(var i=0; i < resultsTotal.length; i++) { %>
           ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
-
-
           <% }} %>
 
-
-
         ]);
+
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options2 = {
 
-          'title': '<%= language %> language(s), by <%= feature %> Feature Page(s)',
+          'title': '<%= language %> language, by Feature Pages',
 
           'isStacked':'percent',
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
@@ -75,7 +74,8 @@
             'minValue':0,
             'ticks':[0, .3, .6, .9, 1]
            }
-          };
+        };
+
         // Display the chart inside the <div> element with id="pieChart"
         var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
         chart2.draw(data2, options2);
@@ -83,26 +83,38 @@
 
   </script> 
 
-        <h1><%= language %></h1>
-
-      </div><!-- end .col-sm-12 -->
-
-    </div><!-- end .row -->
+      <h1><%= language %></h1>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
 	<br><br>
 
-     <div class="col-lg-6 row myChart">
-     	
-       	<div id="pieChart">Chart</div>
 
-    </div>
+  <div class="col-lg-6 row myChart">
+   	<div id="pieChart">Chart</div>
 
-    <%if(resultsTotal){ %>
-    <div class="col-lg-6 row">
-        <div id="barGraph" class="pieChart">BarGraph</div>
+      <p> See individual test results by Feature Page.</p>
+      
+      <% for(var i=1; i < 25; i++) { %>
 
-    </div>
-    <% } %>
+      <a href='/results/f<%= [i] %>/<%= language %>'>
+        <button type="button" class="btn btn-primary" style="width: 15%; height:25px; margin:1px; margin-bottom:5px;">
+          <b>F<%= [i] %></b>
+          <br>
+        </button>
+      </a>
+      <%}%>
 
-<br><br><br>
+
+  </div>
+
+
+  <%if(resultsTotal){ %>
+  <div class="col-lg-6 row">
+      <div id="barGraph" class="pieChart">BarGraph</div>
+  </div>
+  <% } %>
+
+
+<br><br><br><br><br><br>
 </div>
 <%- include('footer') %>
