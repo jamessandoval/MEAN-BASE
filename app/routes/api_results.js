@@ -256,33 +256,80 @@ exports.getResults = function(req, res) {
 /* QEURY SINGLE TEST CASES */
 exports.getResultByIdAndLanguage = function(req, res) {
 
-  console.log(req.params.template);
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+  let template = req.params.template;
+  let language = req.params.locale;
+  let total = null
 
-  var template = req.params.template;
-  var language = req.params.locale;
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  }else{
+
+    page = page - 1;
+
+  }
+
+  start = page* rowsToReturn;
+  
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}';`).then(results => {
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
 
-    results = results[0];
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}'`).then(count => {
 
-    for (var i = results.length - 1; i >= 0; i--) {
-      results[i].Output = String(results[i].Output);
-      //console.log(results[i].Output); 
+      // Obtain Total count from query
+      let Totalcount = count[0];
 
-    }
+      Totalcount = JSON.stringify(count[0]);
 
-    var total = results.length;
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
 
-    console.log("total length is " + total);
+      // Parse Results based on previous Query
+      total = Totalcount;
 
-    res.render('results_custom', {
-      results: results,
-      template: template,
-      language: language,
-      title: 'Report Page',
-      length: total
-    });
+      results = results[0];
+
+      end = start + results.length;
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      res.render('results_custom', {
+        title: 'Report Page',
+        start: start,
+        end: end,
+        page: page,
+        results: results,
+        template: template,
+        language: language,
+        length: total
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
 
   }).catch(function(err) {
     console.log('error: ' + err);
