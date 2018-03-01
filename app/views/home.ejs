@@ -1,106 +1,11 @@
 <%- include('header') %>
 
 <h1>This is the home page View</h1>
-<script type="text/javascript"> 
-    
-      google.charts.load('current', {'packages':['corechart', 'controls']});
-      google.charts.setOnLoadCallback(drawDashboard);
-
-
-      function drawDashboard(){
-
-          
-          var data = google.visualization.arrayToDataTable([
-            ['Passes', 'Percent'],
-            ['F1', 3],
-            ['F2', 4],
-            ['F3', 9],
-            ['F4', 50],
-            ['F5', 80],
-            ['F6', 10],
-            ['F7', 7],
-            ['F8', 60],
-            ['F9', 77],
-            ['F10', 44]
-          ]);
-      
-
-          var dashboard = new google.visualization.Dashboard(
-            document.getElementById('dashboard_div'));
-
-          var donutRangeSlider = new google.visualization.ControlWrapper({
-            'controlType': 'NumberRangeFilter',
-            'containerId': 'filter_div',
-            'options': {
-              'filterColumnLabel': 's'
-            }
-          });
-
-
-          // Optional; add a title and set the width and height of the chart
-          // Options can be variables such as title: $Title
-          var pieChart = new google.visualization.ChartWrapper({
-            'chartType': 'PieChart',
-            'containerId': 'chart_div',
-            'options': {
-              'width': 300,
-              'height': 300,
-              'pieSliceText': 'value',
-              'legend': 'right'
-            }
-          });
-          // Display the chart inside the <div> element with id="pieChart"
-          dashboard.bind(donutRangeSlider, pieChart);
-          dashboard.draw(data);
-      }
-  </script> 
-  <p></p>
-    </div><!-- end .col-sm-12 -->
-
-    </div><!-- end .row -->
-	<br><br>
-
-    <div class="col-lg-12 row">
-        <p>NOTE: These test results do not reflect how important each test is on an individual basis.  Some test results are more crucial than other test results.</p>
-        <div id="dashboard_div" class="">dashboard</div>
-        <div id="filter_div">filter</div>
-        <div id="chart_div">chart</div>
-    </div>
-
-     <div class="col-lg-6 row myChart">
-     	
-       	<div id="pieChart2" class="pieChart">Chart</div>
-
-
-    </div>
-
-
-    <div class="col-lg-6 row">
-        <p>Select from a list of Feature Pages (F1, F2, etc) to run tests, storing results to our database.</p>
-        <a href="/test-runner"> <button type="button" id="mybutton" class="btn btn-lg dashboard">Run Tests </button></a>
-        <br><br><br><br>
-      	<p>Pull data from our database to review results by Feature Page, Language, and Test Date.</p>
-        <a href="/results"><button type="button" class="btn btn-lg dashboard">View Results</button></a>
-        <br><br><br><br>
-      	<p>Export selected results to an excel document for sharing.</p>
-        <a href="/dashboard"><button type="button" class="btn btn-lg dashboard">Pull Reports</button></a>
-        <br><br><br><br>
-
-    </div>
-    <div class="col-lg-12 row">
-        <p>xxx</p>
-        <div id="" class="">Chart</div>
-       
-
-
-    </div>
-
-    </div>
-
-<br><br><br>
-</div>
 
 <h3>Example of Overview by Language Page</h3>
+<h4><a href="http://localhost:3000/result-by-language/cn">Result by Language in cn</a></h4>
+
+<h3>Example of Results by Feature/Language</h3>
 <h4><a href="http://localhost:3000/result-by-language/cn">Result by Language in cn</a></h4>
 
 

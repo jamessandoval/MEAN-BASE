@@ -56,11 +56,13 @@ module.exports = function() {
 
   // Dashboards
   app.get('/dashboard', api_dashboard.getOverview);
+  app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
   app.get('/dashboardTWO', api_dashboardTWO.render);
 
   // Test Results
   app.get('/results', api_results.getResults);
-  app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
+  app.get('results/:')
+  
 
   // Export Tool
   app.get('/export', api_export.getExport);
