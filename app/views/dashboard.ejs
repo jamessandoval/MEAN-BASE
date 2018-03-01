@@ -26,7 +26,9 @@
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options = {
-          'title': 'Overall test results.',
+
+          'title': '<%= language %> Languages, by <%= feature %> Feature Page(s)',
+
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
           'backgroundColor':'', 
@@ -46,15 +48,20 @@
         var data2 = google.visualization.arrayToDataTable([
         ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation'} ],
 
+        <% if(resultsTotal){ %>
         <% for(var i=0; i < resultsTotal.length; i++) { %>
          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
+
          <% } %>
+
 
       ]);
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options2 = {
-          'title': 'Broken Down by Feature Page',
+
+          'title': '<%= language %> language(s), by <%= feature %> Feature Page(s)',
+
           'isStacked':'percent',
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
@@ -82,15 +89,14 @@
      	
        	<div id="pieChart">Chart</div>
 
-
     </div>
 
-
+    <%if(resultsTotal){ %>
     <div class="col-lg-6 row">
         <div id="barGraph" class="pieChart">BarGraph</div>
 
     </div>
-
+    <% } %>
 
 <br><br><br>
 </div>

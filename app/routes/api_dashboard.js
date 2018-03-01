@@ -7,24 +7,26 @@ const Sequelize = require('sequelize');
 
 
 // Create a new 'render' controller method
-exports.render = function(req, res) {
-
+exports.getOverview = function(req, res) {
 
   let feature = "ALL";
   let language = "ALL";
-  let pass = 0;
-  let fail = 0;
-  let skip = 0;
+
+  let overall = {
+  	pass: 0,
+  	fail: 0,
+  	skip: 0 
+  }
 
   // select count(*) from results where result = 'PASS';
   db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
 
     results = results[0];
 
-    pass = JSON.stringify(results[0]);
-    pass = pass.replace("{\"count(*)\":", "");
-    pass = pass.replace("}", "");
-    pass = parseInt(pass);
+    overall.pass = JSON.stringify(results[0]);
+    overall.pass = overall.pass.replace("{\"count(*)\":", "");
+    overall.pass = overall.pass.replace("}", "");
+    overall.pass = parseInt(overall.pass);
 
     // Call next query:
 
@@ -33,37 +35,27 @@ exports.render = function(req, res) {
 
       results = results[0];
 
-      fail = JSON.stringify(results[0]);
-      fail = fail.replace("{\"count(*)\":", "");
-      fail = fail.replace("}", "");
-      fail = parseInt(fail);
+      overall.fail = JSON.stringify(results[0]);
+      overall.fail = overall.fail.replace("{\"count(*)\":", "");
+      overall.fail = overall.fail.replace("}", "");
+      overall.fail = parseInt(overall.fail);
 
       // select count(*) from results where result = 'SKIP';
       db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
 
         results = results[0];
 
-        skip = JSON.stringify(results[0]);
-        skip = skip.replace("{\"count(*)\":", "");
-        skip = skip.replace("}", "");
-        skip = parseInt(skip);
-
-        /*
-        res.send({
-          feature: feature,
-          language: language,
-          pass: pass,
-          fail: fail,
-          skip: skip
-        });
-
-        */
+        overall.skip = JSON.stringify(results[0]);
+        overall.skip = overall.skip.replace("{\"count(*)\":", "");
+        overall.skip = overall.skip.replace("}", "");
+        overall.skip = parseInt(overall.skip);
 
         res.render('dashboard', {
           title: 'Dashboard',
-          pass: pass,
-          fail: fail,
-          skip: skip
+          feature: feature,
+          language: language,
+          overall: overall,
+          resultsTotal: null
         });
 
       }).catch(function(err) {
