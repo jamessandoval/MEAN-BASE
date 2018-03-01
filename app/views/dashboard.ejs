@@ -4,9 +4,12 @@
     
       google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawCharts);
+
       var passes = <%= overall.pass %>;
       var fails = <%= overall.fail %>;
       var others = <%= overall.skip %>;
+      var lang = <%= resultsTotal[0].locale %>;
+
 
       // Draw the chart and set the chart values
       function drawCharts() {
@@ -23,7 +26,7 @@
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options = {
-          'title': 'China, overall test results.',
+          'title': 'Overall test results.',
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
           'backgroundColor':'', 
@@ -51,7 +54,7 @@
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options2 = {
-          'title': 'China, by Feature Page',
+          'title': 'Broken Down by Feature Page',
           'isStacked':'percent',
           'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
           'colors': ['green', '#E2453C', 'grey'], 
@@ -69,7 +72,7 @@
         chart2.draw(data2, options2);
       }
   </script> 
-        <p></p>
+        <h1><%= resultsTotal[0].locale %></h1>
       </div><!-- end .col-sm-12 -->
 
     </div><!-- end .row -->
