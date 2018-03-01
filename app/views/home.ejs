@@ -1,12 +1,11 @@
 <%- include('header') %>
 
-
-
 <h1>This is the home page View</h1>
 <script type="text/javascript"> 
     
       google.charts.load('current', {'packages':['corechart', 'controls']});
       google.charts.setOnLoadCallback(drawDashboard);
+
 
       function drawDashboard(){
 
@@ -100,5 +99,9 @@
 
 <br><br><br>
 </div>
+
+<h3>Example of Overview by Language Page</h3>
+<h4><a href="http://localhost:3000/result-by-language/cn">Result by Language in cn</a></h4>
+
 
 <%- include('footer') %>

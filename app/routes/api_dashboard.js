@@ -80,6 +80,7 @@ exports.getOverview = function(req, res) {
 exports.getResultMetaByLocale = function(req, res) {
 
   let locale = req.params.locale;
+  let language = locale;
   let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
   let pass = null;
   let fail = null;
@@ -143,7 +144,7 @@ exports.getResultMetaByLocale = function(req, res) {
           // Now push to the array
 
           resultsTotal.push({
-            locale: locale,
+            language: language,
             feature: features[i],
             pass: pass,
             fail: fail,
@@ -157,6 +158,8 @@ exports.getResultMetaByLocale = function(req, res) {
             //res.send(overall);
 
             res.render('dashboard', {
+              language: language,
+              feature: "all",
               title: 'Results by Language',
               resultsTotal : resultsTotal,
               overall: overall
