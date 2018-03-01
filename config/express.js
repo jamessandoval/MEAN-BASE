@@ -61,9 +61,8 @@ module.exports = function() {
 
   // Test Results
   app.get('/results', api_results.getResults);
-  app.get('results/:')
+  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage)
   
-
   // Export Tool
   app.get('/export', api_export.getExport);
   app.post('/export', api_results.postResults, api_results.export_to_excel);
