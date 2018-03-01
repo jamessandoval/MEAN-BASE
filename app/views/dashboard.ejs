@@ -18,11 +18,11 @@
 
 
         var data = google.visualization.arrayToDataTable([
-        ['Test', 'Passed or Failed'],
-        ['Passed', passes],
-        ['Failed', fails],
-        ['Other', others],
-      ]);
+          ['Test', 'Passed or Failed'],
+          ['Passed', passes],
+          ['Failed', fails],
+          ['Other', others],
+        ]);
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options = {
@@ -38,7 +38,7 @@
           'slices': { 0: {offset:0.0},
                     1: {offset: 0.2},
                     2: {offset: 0.0}}
-          };
+        };
         // Display the chart inside the <div> element with id="pieChart"
         var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
         chart.draw(data, options);
@@ -46,16 +46,16 @@
           /////////////////////////////////// Bar Chart /////////////////////
 
         var data2 = google.visualization.arrayToDataTable([
-        ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation'} ],
+          ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation'} ],
 
-        <% if(resultsTotal){ %>
-        <% for(var i=0; i < resultsTotal.length; i++) { %>
-         ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
+          <% if(resultsTotal){ %>
+          <% for(var i=0; i < resultsTotal.length; i++) { %>
+          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
 
-         <% } %>
+          <% }} %>
 
 
-      ]);
+        ]);
           // Optional; add a title and set the width and height of the chart
           // Options can be variables such as title: $Title
         var options2 = {
@@ -78,7 +78,10 @@
         var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
         chart2.draw(data2, options2);
       }
+
   </script> 
+
+  
         <h1><%= resultsTotal[0].locale %></h1>
       </div><!-- end .col-sm-12 -->
 
