@@ -8,7 +8,7 @@
       var passes = <%= overall.pass %>;
       var fails = <%= overall.fail %>;
       var others = <%= overall.skip %>;
-      var lang = <%= resultsTotal[0].locale %>;
+      var lang = <%= language %>;
 
 
       // Draw the chart and set the chart values
@@ -50,9 +50,9 @@
 
         <% if(resultsTotal){ %>
         <% for(var i=0; i < resultsTotal.length; i++) { %>
-         ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
+         ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass %>, <%= resultsTotal[i].fail %>, <%= resultsTotal[i].skip %>, ''], 
 
-         <% } %>
+         <% }} %>
 
 
       ]);
@@ -79,7 +79,7 @@
         chart2.draw(data2, options2);
       }
   </script> 
-        <h1><%= resultsTotal[0].locale %></h1>
+        <h1><%= language %></h1>
       </div><!-- end .col-sm-12 -->
 
     </div><!-- end .row -->
@@ -91,7 +91,7 @@
 
     </div>
 
-    <%if(resultsTotal){ %>
+    <% if(resultsTotal){ %>
     <div class="col-lg-6 row">
         <div id="barGraph" class="pieChart">BarGraph</div>
 
