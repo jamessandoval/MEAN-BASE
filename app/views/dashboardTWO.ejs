@@ -2,100 +2,156 @@
 
    <!--<h1><%= title %></h1>-->
      
-     <script type="text/javascript"> 
-    
-      google.charts.load('current', {'packages':['corechart', 'controls']});
-      google.charts.setOnLoadCallback(drawDashboard);
+     <script type="text/javascript">
 
-      function drawDashboard(){
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawCharts);
 
-          
-          var data = google.visualization.arrayToDataTable([
-            ['Passes', 'Percent'],
-            ['F1', 3],
-            ['F2', 4],
-            ['F3', 9],
-            ['F4', 50],
-            ['F5', 80],
-            ['F6', 10],
-            ['F7', 7],
-            ['F8', 60],
-            ['F9', 77],
-            ['F10', 44]
+      function drawCharts(){
+
+        //Data for top charts by language
+        var Langdata = new google.visualization.DataTable();
+        Langdata.addColumn('string', 'Language');
+        Langdata.addColumn('number', 'Pass');
+        Langdata.addColumn('number', 'Fail');
+        Langdata.addColumn('number', 'Skip')
+        Langdata.addRows([
+          ['en', 3,2,1],
+          ['cn', 1,3,2],
+          ['de', 1,1,2],
+          ['cz', 1,3,2],
+          ['zu', 2,1,2]
           ]);
       
+        //Creating top Chart - 'All Results by Language (by percent)',
+        var optionsByPercent={
+          'title':'All Results by Language (by percent)',
+          'width':1000,
+          'height':300,
+          'isStacked':'percent',
+          'colors': ['green', 'red', 'gray'],
+          'vAxis':{
+            'minValue':0,
+            'ticks':[0,.3, .6, .9, 1]
+          }
+        };
 
-          var dashboard = new google.visualization.Dashboard(
-            document.getElementById('dashboard_div'));
-
-          var donutRangeSlider = new google.visualization.ControlWrapper({
-            'controlType': 'NumberRangeFilter',
-            'containerId': 'filter_div',
-            'options': {
-              'filterColumnLabel': 's'
-            }
-          });
+        var chart = new google.visualization.ColumnChart(document.getElementById('LangPercent'));
+        chart.draw(Langdata, optionsByPercent);
 
 
-          // Optional; add a title and set the width and height of the chart
-          // Options can be variables such as title: $Title
-          var pieChart = new google.visualization.ChartWrapper({
-            'chartType': 'PieChart',
-            'containerId': 'chart_div',
-            'options': {
-              'width': 300,
-              'height': 300,
-              'pieSliceText': 'value',
-              'legend': 'right'
-            }
-          });
-          // Display the chart inside the <div> element with id="pieChart"
-          dashboard.bind(donutRangeSlider, pieChart);
-          dashboard.draw(data);
+        //Creating Second Chart - 'All Results by Language (comparative)',
+        var optionsComparative={
+          'title':'All Results by Language (comparative)',
+          'width':1000,
+          'height':300,
+          'isStacked':true,
+          'colors': ['green', 'red', 'gray'],
+        };
+
+        var chart2 = new google.visualization.ColumnChart(document.getElementById('LangComparative'));
+        chart2.draw(Langdata, optionsComparative);
+
+
+        //Data for Pie Chart (ALL results)
+        var pieData = new google.visualization.arrayToDataTable([
+          ['Test', 'Passed or Failed'],
+          ['Passed', 5],
+          ['Failed', 8],
+          ['Other', 2],
+        ]);
+
+        //Creating Pie Chart - 'All Results'
+        var pieOptions = {
+          'title': 'All Results',
+          'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
+          'colors': ['green', 'red', 'grey'], 
+          'backgroundColor':'', 
+          'is3D': true,
+          'chartArea':{width:'350', height:'80%'},
+          'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
+          'slices': { 0: {offset:0.0},
+                    1: {offset: 0.2},
+                    2: {offset: 0.0}}
+        };
+
+        var chart3 = new google.visualization.PieChart(document.getElementById('pieChart'));
+        chart3.draw(pieData, pieOptions);
+
+
+        //Data for Results by Feature graphs
+        var FeatureData = new google.visualization.arrayToDataTable([
+          ['Feature', 'Passed', 'Failed', 'Skipped'],
+          ['F1', 3,2,5],
+          ['F2', 1,7,5],
+          ['F3', 3,2,1],
+          ['F14', 3,4,5],
+          ['F16', 8,1,5],
+          ['F19', 3,2,4]
+          ]);
+
+
+        //Creating SECOND graph by Feature Pages 'All Results by Feature (comparative)',
+        var FeatureComparative = {
+          'title':'All Results by Feature (comparative)',
+          'width':1000,
+          'height':300,
+          'isStacked':true,
+          'colors': ['green', 'red', 'gray']
+        };
+
+        var chart4 = new google.visualization.BarChart(document.getElementById('FeatureComparison'));
+        chart4.draw(FeatureData, FeatureComparative);
+
+
+        //Creating FIRST graph by Feature pages - 
+        var FeaturePercent = {
+          'title':'All Results by Feature (percent)',
+          'width':1000,
+          'height':300,
+          'isStacked':'percent',
+          'colors': ['green', 'red', 'gray'],
+          'vAxis':{
+            'minValue':0,
+            'ticks':[0,.3, .6, .9, 1]}
+        };
+
+        var chart5 = new google.visualization.BarChart(document.getElementById('FeatureByPercent'));
+        chart5.draw(FeatureData, FeaturePercent);
+
+
       }
-  </script> 
-  <p></p>
-    </div><!-- end .col-sm-12 -->
 
+
+    </script>
+
+
+
+
+
+
+    </div><!-- end .col-sm-12 -->
     </div><!-- end .row -->
 	<br><br>
 
-    <div class="col-lg-12 row">
-        <p>NOTE: These test results do not reflect how important each test is on an individual basis.  Some test results are more crucial than other test results.</p>
-        <div id="dashboard_div" class="">dashboard</div>
-        <div id="filter_div">filter</div>
-        <div id="chart_div">chart</div>
-    </div>
+  
+  <!--Div that will hold the dashboard-->
+  <div id="LangPercent"></div>
+  <br>
+  <div id="LangComparative"></div>
+  <br>
+  <div id="pieChart"></div>
+  <br>
+  <div id="selectLang"></div>
+  <br>
+  <div id="FeatureByPercent"></div>
+  <br>
+  <div id="FeatureComparison"></div>
 
-     <div class="col-lg-6 row myChart">
-     	
-       	<div id="pieChart2" class="pieChart">Chart</div>
+  <br>
+  <div></div>
+  <br><br>
 
-
-    </div>
-
-
-    <div class="col-lg-6 row">
-        <p>Select from a list of Feature Pages (F1, F2, etc) to run tests, storing results to our database.</p>
-        <a href="/test-runner"> <button type="button" id="mybutton" class="btn btn-lg dashboard">Run Tests </button></a>
-        <br><br><br><br>
-      	<p>Pull data from our database to review results by Feature Page, Language, and Test Date.</p>
-        <a href="/results"><button type="button" class="btn btn-lg dashboard">View Results</button></a>
-        <br><br><br><br>
-      	<p>Export selected results to an excel document for sharing.</p>
-        <a href="/dashboard"><button type="button" class="btn btn-lg dashboard">Pull Reports</button></a>
-        <br><br><br><br>
-
-    </div>
-    <div class="col-lg-12 row">
-        <p>xxx</p>
-        <div id="" class="">Chart</div>
-       
-
-
-    </div>
-
-    </div>
 
 <br><br><br>
 </div>
