@@ -58,12 +58,14 @@ module.exports = function() {
   app.get('/dashboard', api_dashboard.getOverview);
   app.get('/dashboardTWO', api_dashboardTWO.render);
 
+  app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
+
   // Test Results
   app.get('/results', api_results.getResults);
   app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
   app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
-  app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
-  app.get('/result-by-language/:locale/:testResult', api_dashboard.getResultByLangAndTestResult);
+  //app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
+  
   
   // Export Tool
   app.get('/export', api_export.getExport);
