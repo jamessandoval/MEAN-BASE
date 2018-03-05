@@ -11,52 +11,71 @@ exports.getOverview = function(req, res) {
 
   let feature = "ALL";
   let language = "ALL";
+  let lang =[];
+
 
   let overall = {
   	pass: 0,
   	fail: 0,
-  	skip: 0 
+  	skip: 0
   }
 
-  // select count(*) from results where result = 'PASS';
-  db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
+
+// select count(*) from results where result = 'PASS';
+  db.sequelize.query(`select distinct Language from results;`).then(results => {
 
     results = results[0];
 
-    overall.pass = JSON.stringify(results[0]);
-    overall.pass = overall.pass.replace("{\"count(*)\":", "");
-    overall.pass = overall.pass.replace("}", "");
-    overall.pass = parseInt(overall.pass);
+    //console.log(results[0].Language);
 
-    // Call next query:
+    lang=results;
 
-    // select count(*) from results where result = 'FAIL';
-    db.sequelize.query(`select count(*) from results where result = 'FAIL';`).then(results => {
+    // select count(*) from results where result = 'PASS';
+    db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
 
       results = results[0];
 
-      overall.fail = JSON.stringify(results[0]);
-      overall.fail = overall.fail.replace("{\"count(*)\":", "");
-      overall.fail = overall.fail.replace("}", "");
-      overall.fail = parseInt(overall.fail);
+      overall.pass = JSON.stringify(results[0]);
+      overall.pass = overall.pass.replace("{\"count(*)\":", "");
+      overall.pass = overall.pass.replace("}", "");
+      overall.pass = parseInt(overall.pass);
 
-      // select count(*) from results where result = 'SKIP';
-      db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
+      // Call next query:
+
+      // select count(*) from results where result = 'FAIL';
+      db.sequelize.query(`select count(*) from results where result = 'FAIL';`).then(results => {
 
         results = results[0];
 
-        overall.skip = JSON.stringify(results[0]);
-        overall.skip = overall.skip.replace("{\"count(*)\":", "");
-        overall.skip = overall.skip.replace("}", "");
-        overall.skip = parseInt(overall.skip);
+        overall.fail = JSON.stringify(results[0]);
+        overall.fail = overall.fail.replace("{\"count(*)\":", "");
+        overall.fail = overall.fail.replace("}", "");
+        overall.fail = parseInt(overall.fail);
 
-        res.render('dashboard', {
-          title: 'Dashboard',
-          feature: feature,
-          language: language,
-          overall: overall,
-          resultsTotal: null
-        });
+        // select count(*) from results where result = 'SKIP';
+        db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
+
+          results = results[0];
+
+          overall.skip = JSON.stringify(results[0]);
+          overall.skip = overall.skip.replace("{\"count(*)\":", "");
+          overall.skip = overall.skip.replace("}", "");
+          overall.skip = parseInt(overall.skip);
+
+          res.render('dashboard', {
+            title: 'Dashboard',
+            feature: feature,
+            language: language,
+            overall: overall,
+            resultsTotal: null,
+            languagesArray: lang
+          });
+
+        }).catch(function(err) {
+          console.log('error: ' + err);
+          return err;
+
+        })
 
       }).catch(function(err) {
         console.log('error: ' + err);
@@ -69,12 +88,12 @@ exports.getOverview = function(req, res) {
       return err;
 
     })
-
   }).catch(function(err) {
     console.log('error: ' + err);
     return err;
 
   })
+
 };
 
 exports.getResultMetaByLocale = function(req, res) {

@@ -35,6 +35,9 @@ button.btn-lg{
 	width:100%;
 	border: 1px solid #E0E0E0;
 }
+.sixty{
+	width:60%;
+}
 .button-group{
 	position: relative;
 	width:95%;
@@ -62,7 +65,22 @@ button.btn-lg{
 }
 a button {
 	color:black;
+
 }
+.btn {
+
+	height:35px; 
+	margin:1px; 
+	font-size:20px;
+	margin-bottom:5px;
+}
+.AtTenPerc{
+	width: 10%; 
+}
+.AtHundPerc{
+	width:100%;
+}
+
 .double {
   zoom:1.25;
   transform:scale(1.25);
