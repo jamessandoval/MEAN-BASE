@@ -1,5 +1,16 @@
 <%- include('header') %>
-
+  <% if(features){ %>
+    <h3>Features Included:</h3>
+    <% for(var i=0; i < features.length; i++) { %>
+      <div style="display: inline-block;">
+        <h4>&nbsp; <%= features[i] %></h4></div>
+      <% }}%>
+        <% if(languages){ %>
+          <h3>Language:</h3>
+          <% for(var i=0; i < languages.length; i++) { %>
+            <div style="display: inline-block;">
+              <h4><%= languages[i]   %></h4></div>
+            <% }}%>
               <table class="table">
                 <tr>
                   <th colspan="2" style="border-top: none !important; padding: 0px !important">

@@ -498,16 +498,16 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 };
 
 // from express.js:
-// app.get('/allresults/:locale', api_results.getResultByLangAndTestResult);
+// app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
 exports.getResultByLangAndTestResult = function(req, res) {
 
   var features = [];
   var languages = [];
   let lang = req.params.locale;
-  let result = req.params.testResult;
+  let testResults = req.params.testResult;
 
   if (!req.results) {
-    db.results.findAll({where:{Language:lang}}).then(results => {
+    db.results.findAll({where:{Language:lang,Result:testResults}}).then(results => {
 
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
@@ -555,13 +555,13 @@ exports.getResultByLangAndTestResult = function(req, res) {
       }
     }
 
-    // res.render('allresults', {
-    //   title: "results from the post request",
-    //   features: features,
-    //   languages: languages,
-    //   results: results,
-    //   length: results.length,
-    //   myVar: "hello word"
-    // })
+    res.render('allresults', {
+      title: "results from the post request",
+      features: features,
+      languages: languages,
+      results: results,
+      length: results.length,
+      myVar: "hello word"
+    })
   };
 };
