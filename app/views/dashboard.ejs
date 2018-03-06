@@ -34,15 +34,29 @@
           'backgroundColor':'', 
           'is3D': true,
           'chartArea':{width:'350', height:'80%'},
-          'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
+          'legend':'none',
           'slices': { 0: {offset:0.0},
                     1: {offset: 0.2},
                     2: {offset: 0.0}}
         };
+         //    'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
+
 
         // Display the chart inside the <div> element with id="pieChart"
         var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
         chart.draw(data, options);
+
+
+
+
+        // google.visualization.events.addListener(piechart, 'select', function() {
+        //     //var selectionIdx = PieChart.getSelection()[0].row;
+        //     //var stateName = data.getValue(selectionIdx, 0);
+          
+        //  // if (value == '1') {
+        //   window.open('https://www.gooogle.com');
+        //   //    });
+        // };
 
 
           /////////////////////////////////// Bar Chart /////////////////////
@@ -84,12 +98,19 @@
   </script> 
 
       <h1><%= language %></h1>
+
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 	<br><br>
 
 
   <div class="col-lg-6 row myChart">
+  
+
+  <div class="legend Pass"></div><div class="LinksToResults">Pass</div>
+  <div class="legend Fail"></div><div class="LinksToResults">Fail</div>
+  <div class="legend Skip"></div><div class="LinksToResults">Skip</div>
+  <br><br>
    	<div id="pieChart">Chart</div>
 
 

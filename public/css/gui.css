@@ -38,6 +38,26 @@ button.btn-lg{
 .sixty{
 	width:60%;
 }
+.legend{
+	width:20px;
+	height:20px;
+	float:left;
+	margin-left:10px;
+}
+.Pass{
+	background-color:green;
+}
+.Fail{
+	background-color:#E2453C;
+}
+.Skip{
+	background-color:grey;
+}
+.LinksToResults{
+	float:left;
+	margin-left:5px;
+	font-size: 17px;
+}
 .button-group{
 	position: relative;
 	width:95%;
