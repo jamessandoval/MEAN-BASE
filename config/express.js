@@ -65,7 +65,10 @@ module.exports = function() {
   app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
   app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
   app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
-  
+
+  app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
+  //app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult);
+
   
   // Export Tool
   app.get('/export', api_export.getExport);

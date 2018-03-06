@@ -107,9 +107,10 @@
   <div class="col-lg-6 row myChart">
   
   <div style="width:200px;float:left;color:transparent;">Centering</div>
-  <div class="legend Pass"></div><div class="LinksToResults">Pass</div>
-  <div class="legend Fail"></div><div class="LinksToResults">Fail</div>
-  <div class="legend Skip"></div><div class="LinksToResults">Skip</div>
+  <!-- app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult); -->
+  <a href="/allresults/<%= language %>/PASS/1"><div class="legend Pass"></div><div class="LinksToResults">Pass</div></a>
+  <a href="/allresults/<%= language %>/FAIL/1"><div class="legend Fail"></div><div class="LinksToResults">Fail</div></a>
+  <a href="/allresults/<%= language %>/SKIP/1"><div class="legend Skip"></div><div class="LinksToResults">Skip</div></a>
   <br><br>
    	<div id="pieChart">Chart</div>
 

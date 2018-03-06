@@ -408,8 +408,7 @@ exports.getTotalResultCount = function(req, res) {
 
 
 
-//by Jen
-//
+
 //From express.js:
 //app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
 
@@ -496,4 +495,73 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
     return err;
 
   })
+};
+
+// from express.js:
+// app.get('/allresults/:locale', api_results.getResultByLangAndTestResult);
+exports.getResultByLangAndTestResult = function(req, res) {
+
+  var features = [];
+  var languages = [];
+  let lang = req.params.locale;
+  let result = req.params.testResult;
+
+  if (!req.results) {
+    db.results.findAll({where:{Language:lang}}).then(results => {
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+        // Save each unique template
+        if (!features.includes(results[i].Template)) {
+          features.push(results[i].Template);
+        }
+
+        // Save Each unique Language
+        if (!languages.includes(results[i].Language)) {
+          languages.push(results[i].Language);
+        }
+
+      }
+      res.render('allresults', {
+        title: 'All Pass / Skip / Fail',
+        features: features,
+        languages: languages,
+        results: results,
+        length: results.length,
+        myVar: "hello word"
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    });
+  } else {
+
+    var results = req.results;
+
+    for (var i = 0; i < results.length; i++) {
+
+      // Save each unique template
+      if (!features.includes(results[i].Template)) {
+        features.push(results[i].Template);
+      }
+
+      // Save Each unique Language
+      if (!languages.includes(results[i].Language)) {
+        languages.push(results[i].Language);
+      }
+    }
+
+    // res.render('allresults', {
+    //   title: "results from the post request",
+    //   features: features,
+    //   languages: languages,
+    //   results: results,
+    //   length: results.length,
+    //   myVar: "hello word"
+    // })
+  };
 };
