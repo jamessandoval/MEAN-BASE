@@ -64,7 +64,7 @@ module.exports = function() {
   app.get('/results', api_results.getResults);
   app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
   app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
-  //app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
+  app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
   
   
   // Export Tool

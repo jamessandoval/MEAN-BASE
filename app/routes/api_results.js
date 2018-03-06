@@ -405,3 +405,95 @@ exports.getTotalResultCount = function(req, res) {
   })
 
 };
+
+
+
+//by Jen
+//
+//From express.js:
+//app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
+
+exports.getResultByLangFeatureAndTestResult = function(req, res) {
+
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+  let template = req.params.template;
+  let language = req.params.locale;
+  let testResults = req.params.testResult;
+  let total = null
+
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  }else{
+
+    page = page - 1;
+
+  }
+
+  start = page* rowsToReturn;
+  
+
+  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}' limit ${start}, ${rowsToReturn};`).then(results => {
+
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}'`).then(count => {
+
+      // Obtain Total count from query
+      let Totalcount = count[0];
+
+      Totalcount = JSON.stringify(count[0]);
+
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
+
+      // Parse Results based on previous Query
+      total = Totalcount;
+
+      results = results[0];
+
+      end = start + results.length;
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      res.render('results_custom', {
+        title: 'Report Page',
+        start: start,
+        end: end,
+        page: page,
+        results: results,
+        template: template,
+        language: language,
+        length: total
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+};
