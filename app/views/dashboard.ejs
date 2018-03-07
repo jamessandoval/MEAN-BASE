@@ -47,24 +47,12 @@
                     1: {offset: 0.2},
                     2: {offset: 0.0}}
         };
-         //    'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
 
 
         // Display the chart inside the <div> element with id="pieChart"
         var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
         chart.draw(data, options);
 
-
-
-
-        // google.visualization.events.addListener(piechart, 'select', function() {
-        //     //var selectionIdx = PieChart.getSelection()[0].row;
-        //     //var stateName = data.getValue(selectionIdx, 0);
-          
-        //  // if (value == '1') {
-        //   window.open('https://www.gooogle.com');
-        //   //    });
-        // };
 
 
           /////////////////////////////////// Bar Chart /////////////////////
@@ -79,8 +67,6 @@
 
         ]);
 
-          // Optional; add a title and set the width and height of the chart
-          // Options can be variables such as title: $Title
         var options2 = {
 
           'title': '<%= language %> language, by Feature Pages',
@@ -114,14 +100,14 @@
 
   <div class="col-lg-6 row myChart">
 
-
+<br>
   <% if(language != "ALL"){ %>
+
   <div style="width:200px;float:left;">Drill-Down Links:</div>
-  <!-- app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult); -->
   <a href="/allresults/<%= language %>/PASS"><div class="legend Pass"></div><div class="LinksToResults">Pass</div></a>
   <a href="/allresults/<%= language %>/FAIL"><div class="legend Fail"></div><div class="LinksToResults">Fail</div></a>
   <a href="/allresults/<%= language %>/SKIP"><div class="legend Skip"></div><div class="LinksToResults">Skip</div></a>
-  <br><br>
+  
   <%}%>
 
 
