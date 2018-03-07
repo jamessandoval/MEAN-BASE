@@ -41,12 +41,10 @@
       <th colspan="4" style="border-top: none !important; padding: 0px !important">
         <h2>Showing <%= start+1 %> thru <%= end %> out of <%= length %> </h2>
 
-
-
-        <% if(results && results[1].Template){ %>
-        <a href="/results/<%= results[1].Template %>/<%= results[1].Language %>/PASS/1"><div class="legend Pass"></div><div class="LinksToResults">Pass</div></a>
-        <a href="/results/<%= results[1].Template %>/<%= results[1].Language %>/FAIL/1"><div class="legend Fail"></div><div class="LinksToResults">Fail</div></a>
-        <a href="/results/<%= results[1].Template %>/<%= results[1].Language %>/SKIP/1"><div class="legend Skip"></div><div class="LinksToResults">Skip</div></a>
+        <% if(results){ %>
+        <a href="/results/<%= template %>/<%= language %>/PASS/1"><div class="legend Pass"></div><div class="LinksToResults">Pass</div></a>
+        <a href="/results/<%= template %>/<%= language %>/FAIL/1"><div class="legend Fail"></div><div class="LinksToResults">Fail</div></a>
+        <a href="/results/<%= template %>/<%= language %>/SKIP/1"><div class="legend Skip"></div><div class="LinksToResults">Skip</div></a>
         <%}%>
 
         </th>
