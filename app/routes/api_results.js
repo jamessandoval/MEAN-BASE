@@ -256,13 +256,17 @@ exports.getResults = function(req, res) {
 /* QEURY SINGLE TEST CASES */
 exports.getResultByIdAndLanguage = function(req, res) {
 
+
+  let template = req.params.template;
+  let language = req.params.locale;
+  let total = null
+
+  // Pagination Logic Part I of II Begins here
+
   let page = null;
   let start = 0;
   let end = 0;
   let rowsToReturn = 25;
-  let template = req.params.template;
-  let language = req.params.locale;
-  let total = null
 
   if (typeof req.params.page === 'undefined') {
     // the variable is define
@@ -279,14 +283,15 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
     page = 0;
 
-  }else{
+  } else {
 
     page = page - 1;
 
   }
 
-  start = page* rowsToReturn;
-  
+  start = page * rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
   db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
@@ -304,21 +309,40 @@ exports.getResultByIdAndLanguage = function(req, res) {
       Totalcount = parseInt(Totalcount);
 
       // Parse Results based on previous Query
+
+      // Pagination Logic Part II Begins Here
+
       total = Totalcount;
 
+      // Get total number of pages
+      let pages = Math.ceil(total / rowsToReturn);
+
       results = results[0];
+      console.log("Number of pages is " + pages);
 
       end = start + results.length;
+
+      if (page === 0) {
+        page = 1;
+      } else {
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
 
       for (let i = results.length - 1; i >= 0; i--) {
         results[i].Output = String(results[i].Output);
       }
+
+      console.log("template is " + template)
 
       res.render('results_custom', {
         title: 'Report Page',
         start: start,
         end: end,
         page: page,
+        pages: pages,
         results: results,
         template: template,
         language: language,
@@ -403,7 +427,6 @@ exports.getTotalResultCount = function(req, res) {
     return err;
 
   })
-
 };
 
 
@@ -414,14 +437,17 @@ exports.getTotalResultCount = function(req, res) {
 
 exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
+  let template = req.params.template;
+  let language = req.params.locale;
+  let testResults = req.params.testResult;
+
+  let total = null
+  // Pagination Logic Part I of II Begins here
+
   let page = null;
   let start = 0;
   let end = 0;
   let rowsToReturn = 25;
-  let template = req.params.template;
-  let language = req.params.locale;
-  let testResults = req.params.testResult;
-  let total = null
 
   if (typeof req.params.page === 'undefined') {
     // the variable is define
@@ -438,14 +464,16 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
     page = 0;
 
-  }else{
+  } else {
 
     page = page - 1;
 
   }
 
-  start = page* rowsToReturn;
-  
+  start = page * rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
+
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
   db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}' limit ${start}, ${rowsToReturn};`).then(results => {
@@ -462,12 +490,26 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
       Totalcount = Totalcount.replace("}]", "");
       Totalcount = parseInt(Totalcount);
 
-      // Parse Results based on previous Query
+      // Pagination Logic Part II Begins Here
+
       total = Totalcount;
 
+      // Get total number of pages
+      let pages = Math.ceil(total / rowsToReturn);
+
       results = results[0];
+      console.log("Number of pages is " + pages);
 
       end = start + results.length;
+
+      if (page === 0) {
+        page = 1;
+      } else {
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
 
       for (let i = results.length - 1; i >= 0; i--) {
         results[i].Output = String(results[i].Output);
@@ -478,6 +520,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         start: start,
         end: end,
         page: page,
+        pages: pages,
         results: results,
         template: template,
         language: language,
@@ -497,6 +540,8 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
   })
 };
 
+
+
 // from express.js:
 // app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
 exports.getResultByLangAndTestResult = function(req, res) {
@@ -507,7 +552,7 @@ exports.getResultByLangAndTestResult = function(req, res) {
   let testResults = req.params.testResult;
 
   if (!req.results) {
-    db.results.findAll({where:{Language:lang,Result:testResults}}).then(results => {
+    db.results.findAll({ where: { Language: lang, Result: testResults } }).then(results => {
 
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
