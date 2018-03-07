@@ -427,3 +427,163 @@ exports.getTotalResultCount = function(req, res) {
 
   })
 };
+
+
+
+
+//From express.js:
+//app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
+
+exports.getResultByLangFeatureAndTestResult = function(req, res) {
+
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+  let template = req.params.template;
+  let language = req.params.locale;
+  let testResults = req.params.testResult;
+  let total = null
+
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  }else{
+
+    page = page - 1;
+
+  }
+
+  start = page* rowsToReturn;
+  
+
+  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}' limit ${start}, ${rowsToReturn};`).then(results => {
+
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}'`).then(count => {
+
+      // Obtain Total count from query
+      let Totalcount = count[0];
+
+      Totalcount = JSON.stringify(count[0]);
+
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
+
+      // Parse Results based on previous Query
+      total = Totalcount;
+
+      results = results[0];
+
+      end = start + results.length;
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      res.render('results_custom', {
+        title: 'Report Page',
+        start: start,
+        end: end,
+        page: page,
+        results: results,
+        template: template,
+        language: language,
+        length: total
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+};
+
+// from express.js:
+// app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
+exports.getResultByLangAndTestResult = function(req, res) {
+
+  var features = [];
+  var languages = [];
+  let lang = req.params.locale;
+  let testResults = req.params.testResult;
+
+  if (!req.results) {
+    db.results.findAll({where:{Language:lang,Result:testResults}}).then(results => {
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+        // Save each unique template
+        if (!features.includes(results[i].Template)) {
+          features.push(results[i].Template);
+        }
+
+        // Save Each unique Language
+        if (!languages.includes(results[i].Language)) {
+          languages.push(results[i].Language);
+        }
+
+      }
+      res.render('allresults', {
+        title: 'All Pass / Skip / Fail',
+        features: features,
+        languages: languages,
+        results: results,
+        length: results.length,
+        myVar: "hello word"
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    });
+  } else {
+
+    var results = req.results;
+
+    for (var i = 0; i < results.length; i++) {
+
+      // Save each unique template
+      if (!features.includes(results[i].Template)) {
+        features.push(results[i].Template);
+      }
+
+      // Save Each unique Language
+      if (!languages.includes(results[i].Language)) {
+        languages.push(results[i].Language);
+      }
+    }
+
+    res.render('allresults', {
+      title: "results from the post request",
+      features: features,
+      languages: languages,
+      results: results,
+      length: results.length,
+      myVar: "hello word"
+    })
+  };
+};
