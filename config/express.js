@@ -60,10 +60,28 @@ module.exports = function() {
 
   app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
 
+  app.get('/results/:locale', api_dashboard.getResultMetaByLocale);
+
+  // TODO : Build pagination
+
   // Test Results
   app.get('/results', api_results.getResults);
+  // Get Results by template and locale
+
   app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
+
+  // TODO Get Results by template and locale with Pagination
+  // TODO ADD PAGINATION
+
+  // Get results by locale and test Result
+  app.get('/results/:locale/:testResult', api_results.getResultByLangAndTestResult);
+
+  // TODO Get results by locale and test result
+  // TODO ADD PAGINATION -->
+
   app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
+
+
   app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
 
   app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
