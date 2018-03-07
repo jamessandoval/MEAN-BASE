@@ -256,13 +256,17 @@ exports.getResults = function(req, res) {
 /* QEURY SINGLE TEST CASES */
 exports.getResultByIdAndLanguage = function(req, res) {
 
+
+  let template = req.params.template;
+  let language = req.params.locale;
+  let total = null
+
+  // Pagination Logic Part I of II Begins here
+
   let page = null;
   let start = 0;
   let end = 0;
   let rowsToReturn = 25;
-  let template = req.params.template;
-  let language = req.params.locale;
-  let total = null
 
   if (typeof req.params.page === 'undefined') {
     // the variable is define
@@ -286,6 +290,8 @@ exports.getResultByIdAndLanguage = function(req, res) {
   }
 
   start = page* rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
   
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
@@ -304,11 +310,27 @@ exports.getResultByIdAndLanguage = function(req, res) {
       Totalcount = parseInt(Totalcount);
 
       // Parse Results based on previous Query
+
+      // Pagination Logic Part II Begins Here
+
       total = Totalcount;
 
+      // Get total number of pages
+      let pages = Math.ceil(total/rowsToReturn);
+
       results = results[0];
+      console.log("Number of pages is " + pages);
 
       end = start + results.length;
+
+      if(page === 0){
+        page = 1;
+      }else{
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
 
       for (let i = results.length - 1; i >= 0; i--) {
         results[i].Output = String(results[i].Output);
@@ -319,6 +341,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
         start: start,
         end: end,
         page: page,
+        pages: pages,
         results: results,
         template: template,
         language: language,
@@ -403,5 +426,4 @@ exports.getTotalResultCount = function(req, res) {
     return err;
 
   })
-
 };

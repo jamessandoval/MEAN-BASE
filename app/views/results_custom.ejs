@@ -1,25 +1,45 @@
 <%- include('header') %>
   <nav aria-label="...">
+    <h1><%= template %> - <%= language %></h1>
     <ul class="pagination">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1">Previous</a>
-      </li>
-      <li class="page-item active">
-        <a class="page-link" href="#">1</a>
-      </li>
-      <li class="page-item ">
-        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
+      <% if(page <= 1 ) { %>
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+      <% } else { %>
+        <li class="page-item">
+          <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= page-1 %>" tabindex="-1">Previous</a>
+         </li>
+      <% }%>
+      <% for(var i = 1; i <= pages; i++){ %>
+        <% if(i === page){ %>
+          <li class="page-item active">
+            <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= i %>">
+              <%= i %>
+             </a>
+           </li>
+        <% }else{ %>
+           <li class="page-item">
+              <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= i %>">
+               <%= i %>
+               </a>
+             </li>
+        <% }}%>
+        <% if(page >= pages){ %>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        <% }else{ %>
+          <li class="page-item">
+            <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= page+1 %>">Next</a>
+           </li>
+        <% } %>
     </ul>
   </nav>
   <table class="table">
     <tr>
       <th colspan="4" style="border-top: none !important; padding: 0px !important">
-        <h2>Showing <%= start+1 %> thru <%= end %> out of <%= length %> </h2></th>
+        <h2>Showing <%= start+1 %> thru <%= end %> of <%= length %> </h2></th>
     </tr>
     <tr>
       <th>TR ID:</th>
@@ -74,19 +94,39 @@
   </table>
   <nav aria-label="...">
     <ul class="pagination">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1">Previous</a>
-      </li>
-      <li class="page-item active">
-        <a class="page-link" href="#">1</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
+      <% if(page <= 1 ) { %>
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+      <% } else { %>
+        <li class="page-item">
+          <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= page-1 %>" tabindex="-1">Previous</a>
+         </li>
+      <% }%>
+      <% for(var i = 1; i <= pages; i++){ %>
+        <% if(i === page){ %>
+          <li class="page-item active">
+            <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= i %>">
+              <%= i %>
+             </a>
+           </li>
+        <% }else{ %>
+           <li class="page-item">
+              <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= i %>">
+               <%= i %>
+               </a>
+             </li>
+        <% }}%>
+        <% if(page >= pages){ %>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        <% }else{ %>
+          <li class="page-item">
+            <a class="page-link" href="http://localhost:3000/results/<%= template %>/<%= language %>/<%= page+1 %>">Next</a>
+           </li>
+        <% } %>
     </ul>
   </nav>
+  <br><br><br><br><br><br><br>
   <%- include('footer') %>
