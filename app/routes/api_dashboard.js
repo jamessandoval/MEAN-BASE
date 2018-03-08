@@ -100,10 +100,7 @@ exports.getOverview = function(req, res) {
 
 exports.getResultMetaByCustom = function(req, res) {
 
-
   let custom = req.params.custom;
-
-  custom = "H1 in the correct language";
 
   let language = "all";
   let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
