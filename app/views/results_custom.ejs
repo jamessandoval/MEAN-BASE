@@ -1,168 +1,154 @@
 <%- include('header') %>
-    <h1><%= template %> - <%= language %></h1>
-
-<!-- pagination Begins here -->
-  <nav aria-label="...">
-
-    <ul class="pagination">
-      <% if(page <= 1 ) { %>
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-      <% } else { %>
-        <li class="page-item">
-          <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page-1 %>" tabindex="-1">Previous</a>
-         </li>
-      <% }%>
-      <% for(var i = 1; i <= pages; i++){ %>
-      <% var j = page + 10 %>
-      <% var k = page - 10 %>
-      <% if(i < j && i >= page-10 || i === pages){ %>
-      <% if(i === pages){ %>
-                <li class="page-item disabled">
-            <a class="page-link" href="#">
-              ...
-             </a>
-           </li>
-      <% }%>
-        <% if(i === page){ %>
-            <li class="page-item active">
-            <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= i %>">
-              <%= i %>
-             </a>
-           </li>
-        <% }else{ %>
-           <li class="page-item">
-              <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= i %>">
-               <%= i %>
+  <h1 class="text-center">Locale: <%= template %> - <%= language %></h1>
+  <!-- pagination Begins here -->
+  <div class="row">
+    <div class="col-3" style="padding-left:5em;">
+      <nav aria-label="...">
+        <ul class="pagination">
+          <% if(page <= 1 ) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <% } else { %>
+              <li class="page-item">
+                <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page-1 %>" tabindex="-1">Previous</a>
+              </li>
+              <% }%>
+                <li class="page-item active">
+                  <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= i %>">
+              <%= page %> of <%= pages %>
                </a>
-             </li>
-
-        <% }}}%>
-        <% if(page >= pages){ %>
-          <li class="page-item disabled">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        <% }else{ %>
-          <li class="page-item">
-            <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page+1 %>">Next</a>
-           </li>
-        <% } %>
-    </ul>
-  </nav>
+                </li>
+                <% if(page >= pages){ %>
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                  <% }else{ %>
+                    <li class="page-item">
+                      <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page+1 %>">Next</a>
+                    </li>
+                    <% } %>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-9"></div>
+  </div>
   <!-- pagination Ends here -->
   <table class="table">
-    <tr>
-      <th colspan="7" style="border-top: none !important; padding: 0px !important">
-        <h2>Showing <%= start+1 %> thru <%= end %> out of <%= length %> </h2>
-
-        <% if(results){ %>
-        <a href="/results/<%= template %>/<%= language %>/PASS/1"><div class="legend Pass"></div><div class="LinksToResults">Pass</div></a>
-        <a href="/results/<%= template %>/<%= language %>/FAIL/1"><div class="legend Fail"></div><div class="LinksToResults">Fail</div></a>
-        <a href="/results/<%= template %>/<%= language %>/SKIP/1"><div class="legend Skip"></div><div class="LinksToResults">Skip</div></a>
-        <%}%>
-
+    <tr style="border: none !important">
+      <td colspan="9" style="border: none !important">
+      </td>
+      <!-- Pass/Fail/Skip Links here -->
+      <tr>
+        <th colspan="6" style="border-top: none !important; padding-bottom: .5em">
+          <% if(results){ %>
+            <a href="/results/<%= template %>/<%= language %>/PASS/1">
+              <div class="legend Pass"></div>
+              <div class="LinksToResults">Pass</div>
+            </a>
+            <a href="/results/<%= template %>/<%= language %>/FAIL/1">
+              <div class="legend Fail"></div>
+              <div class="LinksToResults">Fail</div>
+            </a>
+            <a href="/results/<%= template %>/<%= language %>/SKIP/1">
+              <div class="legend Skip"></div>
+              <div class="LinksToResults">Skip</div>
+            </a>
+            <%}%>
         </th>
-    </tr>
-    <tr>
-      <th>TR ID:</th>
-      <th>Run Date:</th>
-      <th>Template: </th>
-      <th>Language: </th>
-      <th>Result: </th>
-      <th class="text-center">URL:</th>
-      <th class="text-center">Output:</th>
-    </tr>
-    <!-- ###                                                               -->
-    <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
-    <!-- ###                                                               -->
-    <% if(results){ %>
-      <% for(var i=0; i < results.length; i++) { %>
-        <div class="tab-content clearfix">
-          <div class="tab-pane active" id="all">
-            <tr>
-              <td>
-                <%= results[i].TestRunId %>
-              </td>
-              <td>
-                <%= results[i].RunDate %>
-              </td>
-              <td>
-                <%= results[i].Template %>
-              </td>
-              <td>
-                <%= results[i].Language %>
-              </td>
-              <td>
-                <%if (results[i].Result === "PASS") { %>
-                  <button type="button" class="btn btn-success">PASS</button>
-                  <% }else if(results[i].Result === "FAIL"){ %>
-                    <button type="button" class="btn btn-danger">FAIL</button>
-                    <% }else{%>
-                      <button type="button" class="btn btn-warning">SKIP</button>
-                      <% } %>
-              </td>
-              <td>
-                <a href="<%= results[i].URLs %>" target="_blank">
-                  <%= results[i].URLs %>
-                </a>
-              </td>
-              <td>
-                <%= results[i].Output %>
-              </td>
-            </tr>
-          </div>
-        </div>
-        <% }} %>
+        <th colsan="3" style="border: none !important">
+          <h2><%= start+1 %> -  <%= end %> of <%= length %> Total Results</h2>
+        </th>
+        <tr>
+          <th>TR ID:</th>
+          <th>Run Date:</th>
+          <th>Template: </th>
+          <th>Language: </th>
+          <th>Result: </th>
+          <th class="text-center">URL:</th>
+          <th class="text-center">Output:</th>
+        </tr>
+        <!-- ###                                                               -->
+        <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
+        <!-- ###                                                               -->
+        <% if(results){ %>
+          <% for(var i=0; i < results.length; i++) { %>
+            <div class="tab-content clearfix">
+              <div class="tab-pane active" id="all">
+                <tr>
+                  <td>
+                    <%= results[i].TestRunId %>
+                  </td>
+                  <td>
+                    <%= results[i].RunDate %>
+                  </td>
+                  <td>
+                    <%= results[i].Template %>
+                  </td>
+                  <td>
+                    <%= results[i].Language %>
+                  </td>
+                  <td>
+                    <%if (results[i].Result === "PASS") { %>
+                      <button type="button" class="btn btn-success">PASS</button>
+                      <% }else if(results[i].Result === "FAIL"){ %>
+                        <button type="button" class="btn btn-danger">FAIL</button>
+                        <% }else{%>
+                          <button type="button" class="btn btn-warning">SKIP</button>
+                          <% } %>
+                  </td>
+                  <td>
+                    <a href="<%= results[i].URLs %>" target="_blank">
+                      <%= results[i].URLs %>
+                    </a>
+                  </td>
+                  <td>
+                    <%= results[i].Output %>
+                  </td>
+                </tr>
+              </div>
+            </div>
+            <% }} %>
   </table>
-<!-- pagination Begins here -->
-  <nav aria-label="...">
-    <ul class="pagination">
-      <% if(page <= 1 ) { %>
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
-      <% } else { %>
-        <li class="page-item">
-          <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page-1 %>" tabindex="-1">Previous</a>
-         </li>
-      <% }%>
-      <% for(var i = 1; i <= pages; i++){ %>
-      <% var j = page + 10 %>
-      <% var k = page - 10 %>
-      <% if(i < j && i >= page-10 || i === pages){ %>
-      <% if(i === pages){ %>
-                <li class="page-item disabled">
-            <a class="page-link" href="#">
-              ...
-             </a>
-           </li>
-      <% }%>
-        <% if(i === page){ %>
-            <li class="page-item active">
-            <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= i %>">
-              <%= i %>
-             </a>
-           </li>
-        <% }else{ %>
-           <li class="page-item">
-              <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= i %>">
-               <%= i %>
+  <!-- pagination Begins here -->
+  <div class="row">
+    <div class="col-3" style="padding-left:5em;">
+      <nav aria-label="...">
+        <ul class="pagination">
+          <% if(page <= 1 ) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <% } else { %>
+              <li class="page-item">
+                <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page-1 %>" tabindex="-1">Previous</a>
+              </li>
+              <% }%>
+                <li class="page-item active">
+                  <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= i %>">
+              <%= page %> of <%= pages %>
                </a>
-             </li>
-
-        <% }}}%>
-        <% if(page >= pages){ %>
-          <li class="page-item disabled">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        <% }else{ %>
-          <li class="page-item">
-            <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page+1 %>">Next</a>
-           </li>
-        <% } %>
-    </ul>
-  </nav>
+                </li>
+                <% if(page >= pages){ %>
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                  <% }else{ %>
+                    <li class="page-item">
+                      <a class="page-link" href="/results/<%= template %>/<%= language %>/<%= page+1 %>">Next</a>
+                    </li>
+                    <% } %>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-9"></div>
+  </div>
   <!-- pagination Ends here -->
-  <br><br><br><br><br><br><br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   <%- include('footer') %>

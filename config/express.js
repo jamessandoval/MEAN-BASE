@@ -43,16 +43,29 @@ module.exports = function() {
   // Morgan plugin
   app.use(logger('dev'));
 
-  // --app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
-
-  // <-- Angular Rest Routes Begin Here -->
-
-  //app.get('/angular-results', angular_results.all)
-
-  // <-- Angular Rest Routes End Here --> 
+  
+  // ## -- Angular Routing for future implementation 
+  // ## -- Need to reconfigure package.json as well.
+  // 
+  // #################################################################################
+  // #
+  // # --- app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
+  // #
+  // # <-- Angular Rest Routes Begin Here -->
+  // #
+  // # ---  app.get('/angular-results', angular_results.all)
+  // #
+  // # <-- Angular Rest Routes End Here --> 
+  // #
+  // #################################################################################
 
   // Landing Page
   app.get('/', main.getHome);
+
+  // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
+  // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
+
+  //app.get('/results/fundamentals/page') 
 
   // Dashboards
   app.get('/dashboard', api_dashboard.getOverview);
@@ -60,24 +73,33 @@ module.exports = function() {
 
   app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
 
-  app.get('/results/:locale', api_dashboard.getResultMetaByLocale);
+  // Should be named :: -->
+  app.get('/dashboard/:locale', api_dashboard.getResultMetaByLocale);
+
+  app.get('/dashboard/custom/:custom', api_dashboard.getResultMetaByCustom);
+
+  app.get('/results/:template/:locale/custom/:custom', api_results.getResultByIdLanguageCustom);
+  app.get('/results/:template/:locale/custom/:custom/:page', api_results.getResultByIdLanguageCustom);
+
+  app.get('/results/:template/:locale/:testresult/custom/:custom', api_results.getResultByIdLanguageCustomTestResult);
+  app.get('/results/:template/:locale/:testresult/custom/:custom/:page', api_results.getResultByIdLanguageCustomTestResult);
 
   // TODO : Build pagination
 
-  // Test Results
+  // ###### DEPRECATION CHOPPING BLOCK ######
+  //
+  // Test Results //
   app.get('/results', api_results.getResults);
-  // Get Results by template and locale
-
-  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
-
-  // TODO Get Results by template and locale with Pagination
-  // TODO ADD PAGINATION
 
   // Get results by locale and test Result
-  app.get('/results/:locale/:testResult', api_results.getResultByLangAndTestResult);
+  //app.get('/results/:locale/:testResult', api_results.getResultByLangAndTestResult);
 
   // TODO Get results by locale and test result
   // TODO ADD PAGINATION -->
+  // 
+  // ###### DEPRECATION CHOPPING BLOCK ######
+
+  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
 
   app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
 
@@ -85,8 +107,10 @@ module.exports = function() {
   app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
 
   app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
-  //app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult);
 
+  // Should be 
+  app.get('/results/:locale/:testResult', api_results.getResultByLangAndTestResult);
+  //app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult);
   
   // Export Tool
   app.get('/export', api_export.getExport);
@@ -100,6 +124,8 @@ module.exports = function() {
   app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', api_file_data.runTest);
   app.get('/test-runner/:script/:locale', api_file_data.runTest); 
+
+  app.get('/test-status', api_file_data.getAvailableTests, api_file_data.getProcesses); 
 
   // Language Detection Route
   app.post('/detect', language.postLanguage);

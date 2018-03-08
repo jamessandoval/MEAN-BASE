@@ -1,166 +1,170 @@
 <%- include('header') %>
+  <script>
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawCharts);
 
-     <script> 
-    
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawCharts);
-
-      var passes = <%= overall.pass %>;
-      var fails = <%= overall.fail %>;
-      var others = <%= overall.skip %>;
-      
-
-
-      // Draw the chart and set the chart values
-      function drawCharts() {
-
-
-         /////////////////////////////////// Pie Chart /////////////////////
-
-        var data = google.visualization.arrayToDataTable([
-          ['Test', 'Passed or Failed'],
-          ['Passed', passes],
-          ['Failed', fails],
-          ['Other', others],
-        ]);
-          // Optional; add a title and set the width and height of the chart
-          // Options can be variables such as title: $Title
-
-        if (<%= language =='ALL' %>) {
-           var legendLocation = {textStyle:{fontSize:20}, alignment: 'center', position: 'left'};
-           var myTitle = '<%= language %> Language, <%= feature %> Feature Pages';
-         } else {
-          var legendLocation = 'none';
-          var myTitle = '';
-         };
-
-        var options = {
-
-          'title':myTitle,
-          'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
-          'colors': ['green', '#E2453C', 'grey'], 
-          'backgroundColor':'', 
-          'is3D': true,
-          'chartArea':{width:'350', height:'80%'},
-          'legend':legendLocation,
-          'slices': { 0: {offset:0.0},
-                    1: {offset: 0.2},
-                    2: {offset: 0.0}}
-        };
-
-
-        // Display the chart inside the <div> element with id="pieChart"
-        var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-        chart.draw(data, options);
+  var passes = <%= overall.pass %>;
+  var fails = <%= overall.fail %>;
+  var others = <%= overall.skip %>;
 
 
 
-          /////////////////////////////////// Bar Chart /////////////////////
+  // Draw the chart and set the chart values
+  function drawCharts() {
 
-        var data2 = google.visualization.arrayToDataTable([
-          ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation'} ],
 
-          <% if(resultsTotal){ %>
-          <% for(var i=0; i < resultsTotal.length; i++) { %>
-          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''], 
-          <% }} %>
+    /////////////////////////////////// Pie Chart /////////////////////
 
-        ]);
+    var data = google.visualization.arrayToDataTable([
+      ['Test', 'Passed or Failed'],
+      ['Passed', passes],
+      ['Failed', fails],
+      ['Other', others],
+    ]);
+    // Optional; add a title and set the width and height of the chart
+    // Options can be variables such as title: $Title
 
-        var options2 = {
+    if (<%= language =='ALL' %>) {
+      var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+      var myTitle = 'Locale: <%= language %>,By <%= feature %> Feature Page';
+    } else {
+      var legendLocation = 'none';
+      var myTitle = '';
+    };
 
-          'title': '<%= language %> language, by Feature Pages',
+    var options = {
 
-          'isStacked':'percent',
-          'titleTextStyle':{fontSize:20, bold:true, color:'grey'},
-          'colors': ['green', '#E2453C', 'grey'], 
-          'backgroundColor':'', 
-          'is3D': true,
-          'chartArea':{width:'350', height:'80%'},
-          'legend':{textStyle:{fontSize:20}, alignment: 'center', position: 'left'},
-          'hAxis': {
-            'minValue':0,
-            'ticks':[0, .3, .6, .9, 1]
-           }
-        };
-
-        // Display the chart inside the <div> element with id="pieChart"
-        var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
-        chart2.draw(data2, options2);
+      'title': myTitle,
+      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+      'colors': ['#109618', '#DC3912', '#2569ff'],
+      'backgroundColor': '',
+      'is3D': true,
+      'chartArea': { width: '350', height: '80%' },
+      'legend': legendLocation,
+      'slices': {
+        0: { offset: 0.0 },
+        1: { offset: 0.2 },
+        2: { offset: 0.0 }
       }
-
-  </script> 
-
-      <h1><%= language %></h1>
-
-    </div><!-- end .col-sm-12 -->
-  </div><!-- end .row -->
-	<br><br>
+    };
 
 
-  <div class="col-lg-6 row myChart">
-
-<br>
-  <% if(language != "ALL"){ %>
-
-  <div style="width:200px;float:left;">Drill-Down Links:</div>
-  <a href="/allresults/<%= language %>/PASS"><div class="legend Pass"></div><div class="LinksToResults">Pass</div></a>
-  <a href="/allresults/<%= language %>/FAIL"><div class="legend Fail"></div><div class="LinksToResults">Fail</div></a>
-  <a href="/allresults/<%= language %>/SKIP"><div class="legend Skip"></div><div class="LinksToResults">Skip</div></a>
-  
-  <%}%>
+    // Display the chart inside the <div> element with id="pieChart"
+    var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+    chart.draw(data, options);
 
 
-   	<div id="pieChart">Chart</div>
 
+    /////////////////////////////////// Bar Chart /////////////////////
+
+    var data2 = google.visualization.arrayToDataTable([
+      ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
 
       <% if(resultsTotal){ %>
+      <% for(var i=0; i < resultsTotal.length; i++) { %> ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
+      <% }} %>
 
-        <p> See individual test results by Feature Page.</p>
-        
-          <% for(var i=1; i < 25; i++) { %>
+    ]);
 
-        <a href='/results/f<%= [i] %>/<%= language %>'>
-          <button type="button" class="btn btn-primary AtTenPerc">
-            <b>F<%= [i] %></b>
-            <br>
-          </button>
+    var options2 = {
+
+      'title': 'Locale: <%= language %>',
+
+      'isStacked': 'percent',
+      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+      'colors': ['#109618', '#DC3912', '#2569ff'],
+      'backgroundColor': '',
+      'is3D': true,
+      'chartArea': { width: '350', height: '80%' },
+      'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
+      'hAxis': {
+        'minValue': 0,
+        'ticks': [0, .3, .6, .9, 1]
+      }
+    };
+
+    // Display the chart inside the <div> element with id="pieChart"
+    var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
+    chart2.draw(data2, options2);
+  }
+
+  </script>
+  <h1 class="text-center">Locale: <%= language %></h1>
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-5 myChart">
+      <% if(language != "ALL"){ %>
+        <!--<h5>Drill-Down Links:</h5>-->
+        <div class="drill-down">
+          <a href="/allresults/<%= language %>/PASS">
+          <span class="legend Pass"></span>
+          <span class="LinksToResults">Pass</span>
         </a>
-
-      <%}}%>
-
-
-  </div>
-
-
-  <% if(resultsTotal){ %>
-
-    <div class="col-lg-6 row">
-        <div id="barGraph" class="pieChart">BarGraph</div>
-    </div>
-
-  <% } else{ %>
-    <div class="col-lg-6 row">
-    <br>
-        <h2> Click on the links below to get detailed information on the performance of each language locale.</h2>
-        <h2> Please note that results may take a minute to load.</h2>
-    </div>
-
-    <div class="col-lg-12 row">
-     <% for(var i=0; i < languagesArray.length; i++) { %>
-    <div class ="col-sm-1">
-      <a href='/result-by-language/<%= languagesArray[i].Language %>'>
-          <button type="button" class="btn btn-primary AtHundPerc">
-            <b><%= languagesArray[i].Language %></b>
+          <a href="/allresults/<%= language %>/FAIL">
+          <span class="legend Fail"></span>
+          <span class="LinksToResults">Fail</span>
+        </a>
+          <a href="/allresults/<%= language %>/SKIP">
+          <span class="legend Skip"></span>
+          <span class="LinksToResults">Skip</span>
+        </a>
+        </div>
+        <%}%>
+          <!-- legend module here -->
+          <div id="pieChart" ></div>
+          <!-- legend module here -->
+          <!-- Additional Buttons Go here -->
+          <% if(resultsTotal){ %>
             <br>
-          </button>
-      </a>
+            <br>
+            <h3> Click on Feature links below for more detailed information:</h3>
+            <small>Please note that results may take a few moments to load.</small>
+            <br>
+            <br>
+            <% for(var i=1; i < 25; i++) { %>
+              <a href='/results/f<%= [i] %>/<%= language %>'>
+                <button type="button" class="btn btn-warning locale-button">
+                  <b>F<%= [i] %></b>
+                  <br>
+                </button>
+              </a>
+              <% } %>
     </div>
-
-  <%}}%>
-
+    <% } %>
+      <!-- Additional buttons go here -->
+      <!-- Secondary Bar Graph Goes here -->
+      <% if(resultsTotal){ %>
+        <div class="col-lg-5">
+          <br>
+          <br>
+          <br>
+          <div id="barGraph" class="pieChart">BarGraph</div>
+        </div>
+        <div class="col-lg-1"></div>
   </div>
+  <%  } %>
+    <!-- Secondary Bar Graph Ends here -->
+    <!-- Main Locale Links Section Goes here -->
 
-<br><br><br><br><br><br>
-</div>
-<%- include('footer') %>
+      <!-- Main Locale Links Section Ends here -->
+        </div>
+            <% if(!resultsTotal){ %>
+      <div class="row">
+        <div class="col-lg-12 main-locale-buttons">
+          <h3 class="text-center"> Click on Locale links for more detailed information:</h3>
+          <small>Please note that results may take a few moments to load.</small></h3>
+          <br>
+          <br>
+          <% for(var i=0; i < languagesArray.length; i++) { %>
+            <a href='/result-by-language/<%= languagesArray[i].Language %>'>
+              <button type="button" class="btn btn-warning locale-button">
+                <b><%= languagesArray[i].Language %></b>
+              </button>
+            </a>
+      <% }%>
+    </div>
+    </div>
+       <% }%>
+        <br>
+        </div>
+        <%- include('footer') %>

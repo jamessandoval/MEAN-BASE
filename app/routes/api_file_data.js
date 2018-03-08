@@ -10,6 +10,15 @@ var rootPath = path.normalize(__dirname + '../../..');
 var rootPath = rootPath + '/behat_projects/master_tests';
 const spawn = require('child_process').spawn;
 
+exports.getStatus = function(req, res, next){
+
+res.send("working process.");
+
+
+
+
+}
+
 // Get the file directory contents with the features you intend on running
 exports.getAvailableTests = function(req, res, next) {
 

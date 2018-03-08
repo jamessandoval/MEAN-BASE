@@ -1,7 +1,7 @@
 <%- include('header') %>
   <!--<h1><%= title %></h1>-->
-  <h4>Choose a Language Locale.</h4>
-  <h4>Next, choose a Feature to Export.</h4>
+  <h4 class="text-center">Choose a Language Locale.</h4>
+  <h4 class="text-center">Next, choose a Feature to Export.</h4>
   </div>
   <!-- end .col-sm-12 -->
   </div>
@@ -157,8 +157,8 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
               <div class="button-group">
-                <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button>&nbsp; 
-                <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;--> 
+                <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button>&nbsp;
+                <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
                 <button type="button" class="btn btn-md btn-success" id="exportAll" onclick="exportAll()"><b>Build Comprehensive Report</b></button>
               </div>
             </div>
@@ -168,23 +168,21 @@
           <div class="row">
             <div class="col-sm-12">
               <h2>Export Data Selection:</h2>
-              <div class="col-sm-6" id="displaySelections">
-                <p>
-                  <h3>Feature:</h3></p>
+              <div class="col-11" id="displaySelections">
+                <h4 class="text-center">&bull; Feature:</h4>
                 <div id="pageChildren"></div>
               </div>
-              <div class="col-sm-6" id="langSelection">
-                <p>
-                  <h3>Language:</h3></p>
+              <div class="col-11" id="langSelection">
+                <h4 class="text-center">&bull; Language:</h4>
                 <div id="langChildren"></div>
               </div>
             </div>
           </div>
-                    <div class="row">
+          <div class="row">
             <div class="col-sm-12">
               <h2>Export Language Selection:</h2>
-              <div class="col-sm-12" id="langSelection2">
-                  <h3 class="text-center">Language:</h3>
+              <div class="col-sm-11" id="langSelection2">
+                <h4 class="text-center">&bull; Language:</h4>
                 <div id="langChildren2"></div>
               </div>
             </div>

@@ -252,8 +252,121 @@ exports.getResults = function(req, res) {
   };
 };
 
+//api_results.getResultByIdLanguageCustom
+exports.getResultByIdLanguageCustom = function(req, res) {
 
-/* QEURY SINGLE TEST CASES */
+
+  let template = req.params.template;
+  let language = req.params.locale;
+  let custom = req.params.custom
+  let total = null
+
+
+  // temporary logic 
+  custom = "H1 in the correct language";
+
+  // Pagination Logic Part I of II Begins here
+
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  } else {
+
+    page = page - 1;
+
+  }
+
+  start = page * rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
+
+  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%'`).then(count => {
+
+      // Obtain Total count from query
+      let Totalcount = count[0];
+
+      Totalcount = JSON.stringify(count[0]);
+
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
+
+      // Parse Results based on previous Query
+
+      // Pagination Logic Part II Begins Here
+
+      total = Totalcount;
+
+      // Get total number of pages
+      let pages = Math.ceil(total / rowsToReturn);
+
+      results = results[0];
+      console.log("Number of pages is " + pages);
+
+      end = start + results.length;
+
+      if (page === 0) {
+        page = 1;
+      } else {
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      console.log("template is " + template)
+
+      res.render('results_custom', {
+        title: 'Results with Query: ' + custom,
+        start: start,
+        end: end,
+        page: page,
+        pages: pages,
+        results: results,
+        template: template,
+        language: language,
+        length: total
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+};
+
+
 exports.getResultByIdAndLanguage = function(req, res) {
 
 
@@ -610,3 +723,114 @@ exports.getResultByLangAndTestResult = function(req, res) {
     })
   };
 };
+
+
+//app.get('/results/:template/:locale/:testresult/:custom', api_results.getResultByIdLanguageCustomTestResult)
+
+exports.getResultByIdLanguageCustomTestResult = function(req, res) {
+
+  let template = req.params.template;
+  let language = req.params.locale;
+  let testResult = req.params.testresult;
+  let custom = req.params.custom;
+
+  let total = null
+  // Pagination Logic Part I of II Begins here
+
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  } else {
+
+    page = page - 1;
+
+  }
+
+  start = page * rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
+
+
+  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResult}' AND Output = '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResult}' AND Output = '%${custom}%'`).then(count => {
+
+      // Obtain Total count from query
+      let Totalcount = count[0];
+
+      Totalcount = JSON.stringify(count[0]);
+
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
+
+      // Pagination Logic Part II Begins Here
+
+      total = Totalcount;
+
+      // Get total number of pages
+      let pages = Math.ceil(total / rowsToReturn);
+
+      results = results[0];
+      console.log("Number of pages is " + pages);
+
+      end = start + results.length;
+
+      if (page === 0) {
+        page = 1;
+      } else {
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      res.render('results_custom', {
+        title: 'Report Page',
+        start: start,
+        end: end,
+        page: page,
+        pages: pages,
+        results: results,
+        template: template,
+        language: language,
+        length: total
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+};
+
+
