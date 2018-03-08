@@ -102,6 +102,10 @@ exports.getResultMetaByCustom = function(req, res) {
 
   let custom = req.params.custom;
 
+  // Modify search query on ec2 to obtain correct result.
+  custom = custom.replace(/ /g, "%");
+
+
   let language = "all";
   let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
   let pass = null;
@@ -178,6 +182,9 @@ exports.getResultMetaByCustom = function(req, res) {
             //console.log(resultsTotal);
             //res.send(resultsTotal);
             //res.send(overall);
+
+              // Remove % marks for output to page
+              custom = custom.replace(/%/g, " ");
 
             res.render('dashboard', {
               language: language,

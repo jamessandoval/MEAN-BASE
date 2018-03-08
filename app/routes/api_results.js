@@ -261,6 +261,9 @@ exports.getResultByIdLanguageCustom = function(req, res) {
   let custom = req.params.custom
   let total = null
 
+    // Modify search query on ec2 to obtain correct result.
+  custom = custom.replace(/ /g, "%");
+
   // Pagination Logic Part I of II Begins here
 
   let page = null;
@@ -336,6 +339,9 @@ exports.getResultByIdLanguageCustom = function(req, res) {
       }
 
       console.log("template is " + template)
+
+      // Modify search query on ec2 to obtain correct result.
+      custom = custom.replace(/%/g, " ");
 
       res.render('results_custom', {
         title: 'Results with Query: ' + custom,
@@ -730,6 +736,9 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
   let testResult = req.params.testresult;
   let custom = req.params.custom;
 
+// Modify search query on ec2 to obtain correct result.
+  custom = custom.replace(/ /g, "%");
+
   let total = null
   // Pagination Logic Part I of II Begins here
 
@@ -803,6 +812,9 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
       for (let i = results.length - 1; i >= 0; i--) {
         results[i].Output = String(results[i].Output);
       }
+
+      // Modify search query on ec2 to obtain correct result.
+      custom = custom.replace(/ /g, "%");
 
       res.render('results_custom', {
         title: 'Report Page',
