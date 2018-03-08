@@ -261,10 +261,6 @@ exports.getResultByIdLanguageCustom = function(req, res) {
   let custom = req.params.custom
   let total = null
 
-
-  // temporary logic 
-  custom = "H1 in the correct language";
-
   // Pagination Logic Part I of II Begins here
 
   let page = null;
