@@ -33,6 +33,10 @@ module.exports = function() {
   var app = express();
 
   // Configure the socket stream for the web socket.
+  // 
+  //
+  // 
+
   // Use the 'body-parser' and 'method-override' middleware functions
   app.use(bodyParser.urlencoded({
     extended: false
@@ -67,51 +71,32 @@ module.exports = function() {
 
   //app.get('/results/fundamentals/page') 
 
-  // Dashboards
+  // Dashboard Pages
   app.get('/dashboard', api_dashboard.getOverview);
+
   app.get('/dashboardTWO', api_dashboardTWO.render);
 
-  app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
+  app.get('/dashboard/locale/:locale', api_dashboard.getResultMetaByLocale);
 
-  // Should be named :: -->
-  app.get('/dashboard/:locale', api_dashboard.getResultMetaByLocale);
+  app.get('/dashboard/query/:custom', api_dashboard.getResultMetaByCustom);
 
-  app.get('/dashboard/custom/:custom', api_dashboard.getResultMetaByCustom);
+  // Results Pages 
+  app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
+  app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
 
-  app.get('/results/:template/:locale/custom/:custom', api_results.getResultByIdLanguageCustom);
-  app.get('/results/:template/:locale/custom/:custom/:page', api_results.getResultByIdLanguageCustom);
+  app.get('/results/locale/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale/testresult/:testResult/:page', api_results.getResultByLangAndTestResult);
 
-  app.get('/results/:template/:locale/:testresult/custom/:custom', api_results.getResultByIdLanguageCustomTestResult);
-  app.get('/results/:template/:locale/:testresult/custom/:custom/:page', api_results.getResultByIdLanguageCustomTestResult);
+  app.get('/results/feature/:template/locale/:locale/query/:custom', api_results.getResultByIdLanguageCustom);
+  app.get('/results/feature/:template/locale/:locale/query/:custom/:page', api_results.getResultByIdLanguageCustom);
 
-  // TODO : Build pagination
+  app.get('/results/feature/:template/locale/:locale/testresult/:testResult/', api_results.getResultByLangFeatureAndTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
 
-  // ###### DEPRECATION CHOPPING BLOCK ######
-  //
-  // Test Results //
-  app.get('/results', api_results.getResults);
-
-  // Get results by locale and test Result
-  //app.get('/results/:locale/:testResult', api_results.getResultByLangAndTestResult);
-
-  // TODO Get results by locale and test result
-  // TODO ADD PAGINATION -->
-  // 
-  // ###### DEPRECATION CHOPPING BLOCK ######
-
-  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
-
-  app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
-
-
-  app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
-
-  app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
-
-  // Should be 
-  app.get('/results/:locale/:testResult', api_results.getResultByLangAndTestResult);
-  //app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/query/:custom', api_results.getResultByIdLanguageCustomTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/query/:custom/:page', api_results.getResultByIdLanguageCustomTestResult);
   
+
   // Export Tool
   app.get('/export', api_export.getExport);
   app.post('/export', api_results.postResults, api_results.export_to_excel);
@@ -133,31 +118,6 @@ module.exports = function() {
   // Configure static file serving
   app.use(express.static('public'));
   app.use(express.static('node_modules'));
-
-  // Congfigure Angular Routing 
-  //app.use(express.static(path.join(__dirname, '../dist')));
-
-  //
-  // Old Routing Method
-  //
-  //app.use('/dashboard', api_dashboard);
-  /*
-  // test output page
-  app.use('/output', output);
-
- app.use('/main', main);  
-
-  // Express Routing Routes
-  app.use('/result', api_results);
-
-BGX  app.use('/language', lang_detect)
-
-  app.use('/result/:template/:language/:result', api_results);
-
-  app.use('/files', api_file_data);
-
-
-  */
 
   app.use(methodOverride());
 

@@ -117,6 +117,11 @@ a button {
 	width:100%;
 }
 
+.btn {
+
+	min-width: 5em;
+}
+
 .double {
   zoom:1.25;
   transform:scale(1.25);

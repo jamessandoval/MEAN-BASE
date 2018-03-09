@@ -12,7 +12,6 @@
   // Draw the chart and set the chart values
   function drawCharts() {
 
-
     /////////////////////////////////// Pie Chart /////////////////////
 
     var data = google.visualization.arrayToDataTable([
@@ -53,8 +52,6 @@
     var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
     chart.draw(data, options);
 
-
-
     /////////////////////////////////// Bar Chart /////////////////////
 
     var data2 = google.visualization.arrayToDataTable([
@@ -93,18 +90,20 @@
   <div class="row">
     <div class="col-lg-1"></div>
     <div class="col-lg-5 myChart">
+
+      <!-- Module for Specific Language -->
       <% if(language != "ALL"){ %>
         <!--<h5>Drill-Down Links:</h5>-->
         <div class="drill-down">
-          <a href="/allresults/<%= language %>/PASS">
+          <a href="/results/locale/<%= language %>/testresult/PASS">
           <span class="legend Pass"></span>
           <span class="LinksToResults">Pass</span>
         </a>
-          <a href="/allresults/<%= language %>/FAIL">
+          <a href="/results/locale/<%= language %>/testresult/FAIL">
           <span class="legend Fail"></span>
           <span class="LinksToResults">Fail</span>
         </a>
-          <a href="/allresults/<%= language %>/SKIP">
+          <a href="/results/locale/<%= language %>/testresult/SKIP">
           <span class="legend Skip"></span>
           <span class="LinksToResults">Skip</span>
         </a>
@@ -122,13 +121,14 @@
             <br>
             <br>
             <% for(var i=1; i < 25; i++) { %>
-              <a href='/results/f<%= [i] %>/<%= language %>'>
+              <a href='/results/feature/f<%= [i] %>/locale/<%= language %>'>
                 <button type="button" class="btn btn-warning locale-button">
                   <b>F<%= [i] %></b>
                   <br>
                 </button>
               </a>
               <% } %>
+      <!-- Module for Specific Language -->
     </div>
     <% } %>
       <!-- Additional buttons go here -->
@@ -156,7 +156,7 @@
           <br>
           <br>
           <% for(var i=0; i < languagesArray.length; i++) { %>
-            <a href='/result-by-language/<%= languagesArray[i].Language %>'>
+            <a href='/dashboard/locale/<%= languagesArray[i].Language %>'>
               <button type="button" class="btn btn-warning locale-button">
                 <b><%= languagesArray[i].Language %></b>
               </button>

@@ -3,7 +3,8 @@
 exports.getHome = function(req, res) {
 
   res.render('home', {
-    title: 'Home Page'
+    title: 'Home Page',
+    currentUrl: req.url
   });
 
 };
