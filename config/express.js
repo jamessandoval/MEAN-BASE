@@ -84,6 +84,9 @@ module.exports = function() {
   app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
   app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
 
+  app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
+  app.get('/results/feature/:template/query/:custom/:page', api_results.getResultByTemplateCustom);
+
   app.get('/results/locale/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
   app.get('/results/locale/:locale/testresult/:testResult/:page', api_results.getResultByLangAndTestResult);
 
