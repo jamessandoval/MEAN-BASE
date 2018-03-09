@@ -101,7 +101,7 @@ module.exports = function() {
   // feature/query/testresult
 
   app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
-  app.get('/results/feature/:template/query/:custom/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
+  app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
 
 
   app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
