@@ -1,5 +1,7 @@
 <%- include('header') %>
   <h1 class="text-center">Locale: <%= template %> - <%= language %></h1>
+
+
   <!-- pagination Begins here -->
   <div class="row">
     <div class="col-3" style="padding-left:5em;">
@@ -34,6 +36,7 @@
     <div class="col-9"></div>
   </div>
   <!-- pagination Ends here -->
+
   <table class="table">
     <tr style="border: none !important">
       <td colspan="9" style="border: none !important">
@@ -42,15 +45,15 @@
       <tr>
         <th colspan="6" style="border-top: none !important; padding-bottom: .5em">
           <% if(results){ %>
-            <a href="<%= basePath %>PASS">
+            <a href="<%= pfsUrl %>PASS">
               <div class="legend Pass"></div>
               <div class="LinksToResults">Pass</div>
             </a>
-            <a href="<%= basePath %>FAIL">
+            <a href="<%= pfsUrl %>FAIL">
               <div class="legend Fail"></div>
               <div class="LinksToResults">Fail</div>
             </a>
-            <a href="<%= basePath %>SKIP">
+            <a href="<%= pfsUrl %>SKIP">
               <div class="legend Skip"></div>
               <div class="LinksToResults">Skip</div>
             </a>
@@ -94,7 +97,7 @@
                       <% }else if(results[i].Result === "FAIL"){ %>
                         <button type="button" class="btn btn-danger">FAIL</button>
                         <% }else{%>
-                          <button type="button" class="btn btn-warning">SKIP</button>
+                          <button type="button" class="btn btn-primary">SKIP</button>
                           <% } %>
                   </td>
                   <td>
@@ -121,11 +124,11 @@
             </li>
             <% } else { %>
               <li class="page-item">
-                <a class="page-link" href="/results/feature/<%= template %>/locale/<%= language %><%= page-1 %>" tabindex="-1">Previous</a>
+                <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
               </li>
               <% }%>
                 <li class="page-item active">
-                  <a class="page-link" href="/results/feature/<%= template %>/locale/<%= language %><%= i %>">
+                  <a class="page-link" href="<%= currentUrl %><%= i %>">
               <%= page %> of <%= pages %>
                </a>
                 </li>
@@ -135,7 +138,7 @@
                   </li>
                   <% }else{ %>
                     <li class="page-item">
-                      <a class="page-link" href="/results/feature/<%= template %>/locale/<%= language %><%= page+1 %>">Next</a>
+                      <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
                     </li>
                     <% } %>
         </ul>

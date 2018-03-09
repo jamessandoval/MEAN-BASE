@@ -187,6 +187,7 @@ exports.export_to_excel = function(req, res, next) {
 };
 
 /* GET ALL Results */
+// deprecated - exists only for example //
 exports.getResults = function(req, res) {
 
   var features = [];
@@ -294,7 +295,7 @@ exports.getResults = function(req, res) {
   };
 };
 
-//api_results.getResultByIdLanguageCustom
+///results/feature/:template/locale/:locale/query/:custom
 exports.getResultByIdLanguageCustom = function(req, res) {
 
   let template = req.params.template;
@@ -309,6 +310,11 @@ exports.getResultByIdLanguageCustom = function(req, res) {
 
   // Remove Pagination from current url variable
   // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
+  pfsUrl = pfsUrl.replace(/%/g, " ");
+
   let urlArray = req.url.split("/");
 
   let regexNum = /^[0-9]*$/;
@@ -435,7 +441,8 @@ exports.getResultByIdLanguageCustom = function(req, res) {
         language: language,
         length: total,
         currentUrl: req.url,
-        basePath: basePath
+        basePath: basePath,
+        pfsUrl: pfsUrl
       });
 
     }).catch(function(err) {
@@ -451,12 +458,157 @@ exports.getResultByIdLanguageCustom = function(req, res) {
   })
 };
 
-// results/:feature/:language
+// getResultByLanguage
+
+exports.getResultByLanguage = function(req, res){
+
+  let template = "All";
+  let language = req.params.locale;
+  let total = null
+  let urlString = null;
+  let basePath = null;
+  
+  // Pagination Logic Part I of II Begins here
+
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+
+  // Remove Pagination from current url variable
+  // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/locale/${language}/testresult/`;
+
+  let urlArray = req.url.split("/");
+  basePath = urlArray.slice(0);
+
+  let regexNum = /^[0-9]*$/;
+
+  if (urlArray[urlArray.length - 1].match(regexNum)) {
+
+    urlArray.pop();
+    basePath.pop();
+
+    urlString = urlArray.toString();
+    
+    req.url = urlString.replace(/,/g, "/");
+
+  } else {
+
+    urlString = urlArray.toString();
+    req.url = urlString.replace(/,/g, "/");
+
+  }
+
+  basePath = basePath.toString();
+  basePath = basePath.replace(/,/g, "/");
+  basePath = basePath + "/";
+
+  req.url = req.url + "/";
+  
+  // <!-- end of remove pagination
+
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  } else {
+
+    page = page - 1;
+
+  }
+
+  start = page * rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
+
+  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
+  db.sequelize.query(`SELECT * FROM results WHERE Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
+
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Language = '${language}'`).then(count => {
+
+      // Obtain Total count from query
+      let Totalcount = count[0];
+
+      Totalcount = JSON.stringify(count[0]);
+
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
+
+      // Parse Results based on previous Query
+
+      // Pagination Logic Part II Begins Here
+
+      total = Totalcount;
+
+      // Get total number of pages
+      let pages = Math.ceil(total / rowsToReturn);
+
+      results = results[0];
+
+      end = start + results.length;
+
+      if (page === 0) {
+        page = 1;
+      } else {
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+
+      res.render('results_custom', {
+        title: 'Report:',
+        start: start,
+        end: end,
+        page: page,
+        pages: pages,
+        results: results,
+        template: template,
+        language: language,
+        length: total,
+        currentUrl: req.url,
+        basePath: basePath,
+        pfsUrl: pfsUrl
+
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+
+};
+
+// results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
-
-  console.log("I am the real walrus.");
-  console.log("koo koo ca Choo.");
-
 
   let template = req.params.template;
   let language = req.params.locale;
@@ -471,40 +623,43 @@ exports.getResultByIdAndLanguage = function(req, res) {
   let end = 0;
   let rowsToReturn = 25;
 
+
   // Remove Pagination from current url variable
   // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/feature/${template}/locale/${language}/testresult/`;
+
+
   let urlArray = req.url.split("/");
+  basePath = urlArray.slice(0);
+
+  // END IN WORK
 
   let regexNum = /^[0-9]*$/;
 
   if (urlArray[urlArray.length - 1].match(regexNum)) {
 
     urlArray.pop();
-
-    basePath = urlArray.slice(0);
     basePath.pop();
 
-
     urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
+    
     req.url = urlString.replace(/,/g, "/");
 
   } else {
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-
     urlString = urlArray.toString();
     req.url = urlString.replace(/,/g, "/");
+
   }
 
-  req.url = req.url + "/";
+  basePath = basePath.toString();
+  basePath = basePath.replace(/,/g, "/");
   basePath = basePath + "/";
 
+  req.url = req.url + "/";
+  
   // <!-- end of remove pagination
 
   if (typeof req.params.page === 'undefined') {
@@ -585,7 +740,8 @@ exports.getResultByIdAndLanguage = function(req, res) {
         language: language,
         length: total,
         currentUrl: req.url,
-        basePath: basePath
+        basePath: basePath,
+        pfsUrl: pfsUrl
 
       });
 
@@ -679,7 +835,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
   let template = req.params.template;
   let language = req.params.locale;
-  let testResults = req.params.testResult;
+  let testResults = req.params.testresult;
   let urlString = null;
   let basePath = null;
 
@@ -688,6 +844,10 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
   // Remove Pagination from current url variable
   // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/feature/${template}/locale/${language}/testresult/`;
+
   let urlArray = req.url.split("/");
 
   let regexNum = /^[0-9]*$/;
@@ -806,7 +966,8 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         language: language,
         length: total,
         currentUrl: req.url,
-        basePath: basePath
+        basePath: basePath,
+        pfsUrl, pfsUrl
       });
 
     }).catch(function(err) {
@@ -838,6 +999,14 @@ exports.getResultByTemplateCustom = function(req, res) {
 
   // Remove Pagination from current url variable
   // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/feature/${template}/query/${custom}/testresult/`;
+  pfsUrl = pfsUrl.replace(/%/g, " ");
+
+  console.log("This is custom:" + custom);
+
+
   let urlArray = req.url.split("/");
 
   let regexNum = /^[0-9]*$/;
@@ -962,7 +1131,8 @@ exports.getResultByTemplateCustom = function(req, res) {
         language: language,
         length: total,
         currentUrl: req.url,
-        basePath: basePath
+        basePath: basePath,
+        pfsUrl: pfsUrl
       });
 
     }).catch(function(err) {
@@ -979,23 +1149,31 @@ exports.getResultByTemplateCustom = function(req, res) {
 
 };
 
+//app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
 
+exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 
-
-
-// from express.js:
-// app.get('/results/:locale/test-result/:testResult', api_results.getResultByLangAndTestResult);
-exports.getResultByLangAndTestResult = function(req, res) {
-
-  var features = [];
-  var languages = [];
-  let lang = req.params.locale;
-  let testResult = req.params.testResult;
-  let urlString = null;
+  let template = req.params.template;
+  let testResult = req.params.testresult;
+  let language = "All";
+  let custom = req.params.custom;
+  let total = null;
   let basePath = null;
+  let urlString = null;
+
+  // Modify search query on ec2 to obtain correct result.
+  custom = custom.replace(/ /g, "%");
 
   // Remove Pagination from current url variable
   // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/feature/${template}/query/${custom}/testresult/`;
+  pfsUrl = pfsUrl.replace(/%/g, " ");
+
+  console.log("This is custom:" + custom);
+
+
   let urlArray = req.url.split("/");
 
   let regexNum = /^[0-9]*$/;
@@ -1060,24 +1238,172 @@ exports.getResultByLangAndTestResult = function(req, res) {
 
   start = page * rowsToReturn;
 
+  console.log("start is " + start);
+
   // Pagination Logic Part I of II Ends Here
 
-  db.results.findAndCountAll({ where: { Language: lang, Result: testResult }, skip: start, limit: rowsToReturn }).then(results => {
+  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Result = '${testResult}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+
+    // Obtain Total Count from results
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Result = '${testResult}' AND Output like '%${custom}%'`).then(count => {
+
+      // Obtain Total count from query
+      let Totalcount = count[0];
+
+      Totalcount = JSON.stringify(count[0]);
+
+      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+      Totalcount = Totalcount.replace("}]", "");
+      Totalcount = parseInt(Totalcount);
+
+      // Parse Results based on previous Query
+
+      // Pagination Logic Part II Begins Here
+
+      total = Totalcount;
+
+      // Get total number of pages
+      let pages = Math.ceil(total / rowsToReturn);
+
+      results = results[0];
+      console.log("Number of pages is " + pages);
+
+      end = start + results.length;
+
+      if (page === 0) {
+        page = 1;
+      } else {
+        ++page;
+
+      }
+
+      // Pagination Logic Part II Ends Here
+
+      for (let i = results.length - 1; i >= 0; i--) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      // Modify search query on ec2 to obtain correct result.
+      custom = custom.replace(/%/g, " ");
+
+      res.render('results_custom', {
+        title: 'Results with Query: ' + custom,
+        start: start,
+        end: end,
+        page: page,
+        pages: pages,
+        results: results,
+        template: template,
+        language: language,
+        length: total,
+        currentUrl: req.url,
+        basePath: basePath,
+        pfsUrl: pfsUrl
+      });
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+
+    })
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  })
+
+};
+
+// from express.js:
+// app.get('/results/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
+exports.getResultByLangAndTestResult = function(req, res) {
+
+  var features = [];
+  let language = req.params.locale;
+  let testResult = req.params.testresult;
+  let urlString = null;
+  let basePath = null;
+
+  // Remove Pagination from current url variable
+  // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/locale/${language}/testresult/`;
+
+  let urlArray = req.url.split("/");
+
+  let regexNum = /^[0-9]*$/;
+
+  if (urlArray[urlArray.length - 1].match(regexNum)) {
+
+    urlArray.pop();
+
+    basePath = urlArray.slice(0);
+    basePath.pop();
+
+    urlString = urlArray.toString();
+    basePath = basePath.toString();
+    basePath = basePath.replace(/,/g, "/");
+    req.url = urlString.replace(/,/g, "/");
+
+  } else {
+
+    basePath = urlArray.slice(0);
+    basePath.pop();
+
+    basePath = basePath.toString();
+    basePath = basePath.replace(/,/g, "/");
+
+    urlString = urlArray.toString();
+    req.url = urlString.replace(/,/g, "/");
+  }
+
+  req.url = req.url + "/";
+  basePath = basePath + "/";
+
+  // <!-- end of remove pagination
+
+  // Pagination Logic Part I of II Begins here
+
+  let page = null;
+  let start = 0;
+  let end = 0;
+  let rowsToReturn = 25;
+
+  if (typeof req.params.page === 'undefined') {
+    // the variable is define
+    req.params.page;
+    page = 1;
+
+  } else {
+
+    page = req.params.page;
+
+  }
+
+  if (page === '1') {
+
+    page = 0;
+
+  } else {
+
+    page = page - 1;
+
+  }
+
+  start = page * rowsToReturn;
+
+  // Pagination Logic Part I of II Ends Here
+
+  db.results.findAndCountAll({ where: { Language: language, Result: testResult }, skip: start, limit: rowsToReturn }).then(results => {
 
     // Needed To convert the blob object into a string 
     // Otherwise it returns a buffer array object.
     for (var i = 0; i < results.length; i++) {
       results[i].Output = String(results[i].Output);
 
-      // Save each unique template
-      if (!features.includes(results[i].Template)) {
-        features.push(results[i].Template);
-      }
-
-      // Save Each unique Language
-      if (!languages.includes(results[i].Language)) {
-        languages.push(results[i].Language);
-      }
     }
 
     let total = results.count
@@ -1105,13 +1431,13 @@ exports.getResultByLangAndTestResult = function(req, res) {
       pages: pages,
       template: 'All',
       features: features,
-      language: lang,
-      languages: languages,
+      language: language,
       results: results,
       length: total,
-      myVar: "hello word",
       currentUrl: req.url,
-      basePath: basePath
+      basePath: basePath,
+      pfsUrl, pfsUrl
+
     });
 
 
@@ -1123,11 +1449,9 @@ exports.getResultByLangAndTestResult = function(req, res) {
 };
 
 
-//app.get('/results/:template/:locale/:testresult/:custom', api_results.getResultByIdLanguageCustomTestResult)
+//app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult)
 
 exports.getResultByIdLanguageCustomTestResult = function(req, res) {
-
-  console.log("its me.");
 
   let template = req.params.template;
   let language = req.params.locale;
@@ -1138,6 +1462,15 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
   // Remove Pagination from current url variable
   // Additionally, obtain base path from current url.
+
+  let pfsUrl = null;
+  pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
+  pfsUrl = pfsUrl.replace(/%/g, " ");
+
+  // remove special characters from pfsUrl
+
+  console.log("I am now the new walrus.");
+
   let urlArray = req.url.split("/");
 
   let regexNum = /^[0-9]*$/;
@@ -1263,7 +1596,8 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         language: language,
         length: total,
         currentUrl: req.url,
-        basePath: basePath
+        basePath: basePath,
+        pfsUrl: pfsUrl
       });
 
     }).catch(function(err) {

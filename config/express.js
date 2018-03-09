@@ -72,6 +72,7 @@ module.exports = function() {
   //app.get('/results/fundamentals/page') 
 
   // Dashboard Pages
+
   app.get('/dashboard', api_dashboard.getOverview);
 
   app.get('/dashboardTWO', api_dashboardTWO.render);
@@ -81,25 +82,41 @@ module.exports = function() {
   app.get('/dashboard/query/:custom', api_dashboard.getResultMetaByCustom);
 
   // Results Pages 
-  app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
-  app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
+
+  // locale 
+  // locale/testresult
+
+  app.get('/results/locale/:locale', api_results.getResultByLanguage);
+  app.get('/results/locale/:locale/:page', api_results.getResultByLanguage);
+
+  app.get('/results/locale/:locale/testresult/:testresult', api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
+
+
+  // feature/query
 
   app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
   app.get('/results/feature/:template/query/:custom/:page', api_results.getResultByTemplateCustom);
 
-  app.get('/results/locale/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
-  app.get('/results/locale/:locale/testresult/:testResult/:page', api_results.getResultByLangAndTestResult);
+  // feature/query/testresult
 
+  app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
+  app.get('/results/feature/:template/query/:custom/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
+
+
+  app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
+  app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
+  
+  // Feature/locale/query
   app.get('/results/feature/:template/locale/:locale/query/:custom', api_results.getResultByIdLanguageCustom);
   app.get('/results/feature/:template/locale/:locale/query/:custom/:page', api_results.getResultByIdLanguageCustom);
 
   app.get('/results/feature/:template/locale/:locale/testresult/:testResult/', api_results.getResultByLangFeatureAndTestResult);
   app.get('/results/feature/:template/locale/:locale/testresult/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
 
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/query/:custom', api_results.getResultByIdLanguageCustomTestResult);
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/query/:custom/:page', api_results.getResultByIdLanguageCustomTestResult);
+  app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult);
+  app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/:page', api_results.getResultByIdLanguageCustomTestResult);
   
-
   // Export Tool
   app.get('/export', api_export.getExport);
   app.post('/export', api_results.postResults, api_results.export_to_excel);
