@@ -1,49 +1,11 @@
 <%- include('header') %>
-  <h1 class="text-center">Locale: <%= template %> - <%= language %></h1>
-
-
-  <!-- pagination Begins here -->
+  <h3 class="text-center"><%= template %> - <%= language %></h3>
+  <div class="text-center"><button class='btn btn-secondary btn-sm'>Export</button></div>
   <div class="row">
-    <div class="col-3" style="padding-left:5em;">
-      <nav aria-label="...">
-        <ul class="pagination">
-          <% if(page <= 1 ) { %>
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <% } else { %>
-              <li class="page-item">
-                <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
-              </li>
-              <% }%>
-                <li class="page-item active">
-                  <a class="page-link" href="<%= currentUrl %><%= i %>">
-              <%= page %> of <%= pages %>
-               </a>
-                </li>
-                <% if(page >= pages){ %>
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-                  <% }else{ %>
-                    <li class="page-item">
-                      <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
-                    </li>
-                    <% } %>
-        </ul>
-      </nav>
-    </div>
-    <div class="col-9"></div>
-  </div>
-  <!-- pagination Ends here -->
 
-  <table class="table">
-    <tr style="border: none !important">
-      <td colspan="9" style="border: none !important">
-      </td>
-      <!-- Pass/Fail/Skip Links here -->
-      <tr>
-        <th colspan="6" style="border-top: none !important; padding-bottom: .5em">
+<!-- pass/fail links here -->
+
+        <div class="col-4" style="border-top: none !important; padding-bottom: .5em">
           <% if(results){ %>
             <a href="<%= pfsUrl %>PASS">
               <div class="legend Pass"></div>
@@ -58,35 +20,76 @@
               <div class="LinksToResults">Skip</div>
             </a>
             <%}%>
-        </th>
-        <th colsan="3" style="border: none !important">
-          <h2><%= start+1 %> -  <%= end %> of <%= length %> Total Results</h2>
-        </th>
-        <tr>
-          <th>TR ID:</th>
-          <th>Run Date:</th>
-          <th>Template: </th>
-          <th>Language: </th>
-          <th>Result: </th>
-          <th class="text-center">URL:</th>
-          <th class="text-center">Output:</th>
-        </tr>
+        </div>
+        
+<!-- end pass/fail/skip -->
+  
+    <div class="col-5"></div>
+    <div class="col-2">
+      <!-- pagination Begins here -->
+      <nav aria-label="...">
+        <ul class="pagination">
+          <% if(page <= 1 ) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
+            </li>
+          <% }%>
+            <li class="page-item active page-number">
+              <a class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></a>
+            </li>
+          <% if(page >= pages){ %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          <% }else{ %>
+            <li class="page-item page-number">
+              <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+
+<!-- pagination Ends here -->
+
+    </div>
+    <div class="col-1"></div>
+  </div>
+
+  <div class="row">
+  <div class="col-12" style="padding-left:5em;"></div>
+
+  </div>
+
+  <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th>Id:</th>
+            <th>Template: </th>
+            <th>Run Date:</th>
+            <th>Language: </th>
+            <th>Result: </th>
+            <th class="text-center">URL:</th>
+            <th class="text-left">Output:</th>
+          </tr>
+        </thead>
         <!-- ###                                                               -->
         <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
         <!-- ###                                                               -->
         <% if(results){ %>
           <% for(var i=0; i < results.length; i++) { %>
-            <div class="tab-content clearfix">
-              <div class="tab-pane active" id="all">
                 <tr>
                   <td>
-                    <%= results[i].TestRunId %>
-                  </td>
-                  <td>
-                    <%= results[i].RunDate %>
+                    <%= results[i].ID %>
                   </td>
                   <td>
                     <%= results[i].Template %>
+                  </td>
+                  <td>
+                    <%= results[i].RunDate %>
                   </td>
                   <td>
                     <%= results[i].Language %>
@@ -109,44 +112,49 @@
                     <%= results[i].Output %>
                   </td>
                 </tr>
-              </div>
-            </div>
             <% }} %>
   </table>
-  <!-- pagination Begins here -->
+
   <div class="row">
-    <div class="col-3" style="padding-left:5em;">
+      <div class="col-3"></div>
+      <div class="col-6"></div>
+    <div class="col-2">
+
+<!-- pagination Begins here -->
       <nav aria-label="...">
         <ul class="pagination">
+
           <% if(page <= 1 ) { %>
             <li class="page-item disabled">
               <a class="page-link" href="#" tabindex="-1">Previous</a>
             </li>
-            <% } else { %>
-              <li class="page-item">
-                <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
+          <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
+            </li>
+          <% }%>
+              <li class="page-item active page-number">
+                <a class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></a>
               </li>
-              <% }%>
-                <li class="page-item active">
-                  <a class="page-link" href="<%= currentUrl %><%= i %>">
-              <%= page %> of <%= pages %>
-               </a>
-                </li>
-                <% if(page >= pages){ %>
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#">Next</a>
-                  </li>
-                  <% }else{ %>
-                    <li class="page-item">
-                      <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
-                    </li>
-                    <% } %>
+          <% if(page >= pages){ %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          <% }else{ %>
+            <li class="page-item page-number">
+              <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
+            </li>
+          <% } %>
         </ul>
       </nav>
+
+<!-- pagination Ends here -->
+
     </div>
-    <div class="col-9"></div>
+    </div>
+    <div class="col-1"></div>
   </div>
-  <!-- pagination Ends here -->
+
   <br>
   <br>
   <br>

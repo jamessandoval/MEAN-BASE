@@ -12,6 +12,12 @@ body {
 	text-align:center;
 }
 
+.container-main{
+
+	margin: 0 auto !important;
+    width: 90% !important;
+}
+
 .navbar {
     min-height: 80px;
 }
@@ -35,6 +41,10 @@ body {
 .locale-button{
 	margin:.2em;
 	text-decoration: none !important;
+}
+
+.page-number{
+	min-width: 5em;
 }
 
 

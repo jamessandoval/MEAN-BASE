@@ -53,11 +53,12 @@ module.exports = function() {
   // 
   // #################################################################################
   // #
-  // # --- app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
+  //app.use('/', express.static(path.join(__dirname, '../dist')));
+  //app.use('/angular', express.static(path.join(__dirname, '../dist')));
   // #
   // # <-- Angular Rest Routes Begin Here -->
   // #
-  // # ---  app.get('/angular-results', angular_results.all)
+  //app.get('/angular-results', angular_results.all)
   // #
   // # <-- Angular Rest Routes End Here --> 
   // #
@@ -83,39 +84,50 @@ module.exports = function() {
 
   // Results Pages 
 
-  // locale 
-  // locale/testresult
-
+  // locale - ok
+  // locale - testresult - ok
+  
   app.get('/results/locale/:locale', api_results.getResultByLanguage);
   app.get('/results/locale/:locale/:page', api_results.getResultByLanguage);
 
   app.get('/results/locale/:locale/testresult/:testresult', api_results.getResultByLangAndTestResult);
   app.get('/results/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
 
+  // TODO:: 
+  //app.get('/results/feature/:template', api_results.getResultByLanguage);
+  //app.get('/results/feature/:template/:page', api_results.getResultByLanguage);
 
-  // feature/query
+  //app.get('/results/feature/:template/testresult/:testresult', api_results.getResultByLangAndTestResult);
+  //app.get('/results/feature/:template/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
+
+  // feature - query - ok
+  // feature - query - testresult - ok
 
   app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
   app.get('/results/feature/:template/query/:custom/:page', api_results.getResultByTemplateCustom);
-
-  // feature/query/testresult
 
   app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
   app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
 
 
+  // locale - feature - ok
+  // locale - feature - testresult
+
   app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
   app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
-  
-  // Feature/locale/query
+
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/', api_results.getResultByLangFeatureAndTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangFeatureAndTestResult);
+
+  // Feature - locale - query
+  // Feature - template - query - test result
+
   app.get('/results/feature/:template/locale/:locale/query/:custom', api_results.getResultByIdLanguageCustom);
   app.get('/results/feature/:template/locale/:locale/query/:custom/:page', api_results.getResultByIdLanguageCustom);
 
-  app.get('/results/feature/:template/locale/:locale/testresult/:testResult/', api_results.getResultByLangFeatureAndTestResult);
-  app.get('/results/feature/:template/locale/:locale/testresult/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
-
   app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult);
   app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/:page', api_results.getResultByIdLanguageCustomTestResult);
+  
   
   // Export Tool
   app.get('/export', api_export.getExport);

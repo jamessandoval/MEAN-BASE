@@ -261,6 +261,8 @@ exports.getResults = function(req, res) {
         basePath: basePath
       });
 
+    return null;
+
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
@@ -444,12 +446,14 @@ exports.getResultByIdLanguageCustom = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl
       });
+    return null;
 
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -592,12 +596,14 @@ exports.getResultByLanguage = function(req, res){
         pfsUrl: pfsUrl
 
       });
+    return null;
 
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -689,7 +695,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
   db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
-
+    
     // Obtain Total Count from results
     db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}'`).then(count => {
 
@@ -730,7 +736,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
 
       res.render('results_custom', {
-        title: 'Report Page',
+        title: 'Test Results:',
         start: start,
         end: end,
         page: page,
@@ -745,11 +751,15 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
       });
 
+      return null;
+
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+
+    return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -835,7 +845,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
   let template = req.params.template;
   let language = req.params.locale;
-  let testResults = req.params.testresult;
+  let testresult = req.params.testresult;
   let urlString = null;
   let basePath = null;
 
@@ -914,12 +924,11 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
   // Pagination Logic Part I of II Ends Here
 
-
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testresult}' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResults}'`).then(count => {
+    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testresult}'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -929,6 +938,8 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
       Totalcount = Totalcount.replace("[{\"count(*)\":", "");
       Totalcount = Totalcount.replace("}]", "");
       Totalcount = parseInt(Totalcount);
+
+      console.log("Something should be here: " + testresult);
 
       // Pagination Logic Part II Begins Here
 
@@ -956,7 +967,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
       }
 
       res.render('results_custom', {
-        title: 'Report Page',
+        title: 'Test Results:',
         start: start,
         end: end,
         page: page,
@@ -970,11 +981,15 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         pfsUrl, pfsUrl
       });
 
+    return null;
+
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -1135,11 +1150,15 @@ exports.getResultByTemplateCustom = function(req, res) {
         pfsUrl: pfsUrl
       });
 
+    return null;
+
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -1302,11 +1321,14 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
         pfsUrl: pfsUrl
       });
 
+    return null;
+
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -1440,6 +1462,7 @@ exports.getResultByLangAndTestResult = function(req, res) {
 
     });
 
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
@@ -1586,7 +1609,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
       custom = custom.replace(/ /g, "%");
 
       res.render('results_custom', {
-        title: 'Report Page',
+        title: 'Test Results:',
         start: start,
         end: end,
         page: page,
@@ -1599,12 +1622,14 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl
       });
+    return null;
 
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
 
     })
+  return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);

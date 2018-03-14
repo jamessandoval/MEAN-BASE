@@ -6,10 +6,6 @@
   <div class="row">
     <div class="col-sm-12">
       <h3>Run Tests:</h3>
-      <p>Select Tests to Run.  Results will be pushed to QA folder.  Refresh to see current test statuses.</p>
-        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div> <b>- Running Test </b>
-
-        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div> <b> - Test No Longer Running</b>
     </div>
   </div>
   <div class="row">
@@ -24,9 +20,14 @@
             </tr>
             <% for(var i=0; i < scripts.length; i++) { %>
               <tr>
-              <td><a href="/test-runner/<%= scripts[i] %>"><b><%= scripts[i] %></b> </a></td>
-              <td>Halted.</td>
-              <td><button>Start</button></td>
+              <td><a href="/test-runner/<%= scripts[i] %>"><h4><%= scripts[i] %></h4> </a></td>
+              <td><%= status[i] %></td>
+              <% if(status[i] === "stopped"){ %>
+              <td><button class="btn btn-success">Start</button></td>
+              <% }else{ %>
+
+              <td><button class="btn btn-danger">Stop</button></td>
+              <% } %>  
               </tr>
             <% } %>
           </table>
