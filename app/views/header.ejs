@@ -3,55 +3,42 @@
 
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="opco" content="IG">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Quality Testing</title>
   <!--Stylesheet flukestrap include-->
-  <link rel="stylesheet" href="http://download.fluke.com/agile-marketing/css/flukestrap-light.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <!-- include bootstrap -->
   <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
-  <!--Roboto Slab link-->
-  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
   <!--Favicon/ shortcut icon-->
-  <link rel="SHORTCUT ICON" href="http://www.fluke.com/Fluke_www/images/fluke/web2_0/favicon/favicon.ico">
-  <link rel="icon" type="image/png" href="http://www.fluke.com/Fluke_www/images/fluke/web2_0/favicon/favicon.ico">
   <link rel="stylesheet" href="/css/gui.css">
-  <!-- Adding jQuery Library for submitting standard web forms with Ajax and JSON -->
-  <script type="text/javascript" src="http://localhost:3000/js/jquery-3.3.1.min.js"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  
-<!-- Adding ajax for google chart dashboard -->
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-
-  <script type="stylesheet">
-  </script>
-  
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- Adding ajax for google chart dashboard -->
 </head>
 
 <body onload="uncheckAll()">
-  <nav id="navbar" class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="http://www.fluke.com/fluke/uken/home/default.htm" target="_blank">
-        <img class="img-responsive" src="http://download.fluke.com/demo-PQ/6006635-pq-selector-2015/images/fluke-logo.svg">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand">
+
+        <span class="navbar-brand mb-0 h1">Q.A. Automated Testing Suite</span>
       </a>
-      <div class="slogan hidden-xs slogan-fca">
-        Keeping your world up and running. <sup>®</sup>
-      </div>
-      <!-- end .slogan -->
-      <div class="navigation">
-          <a href="/">Home Page</a>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/export">Excel Reports</a>
-      </div>
-    </div><!-- end .container (nav content) -->
+    <!-- end .slogan -->
+    <div class="navigation">
+      <a href="/">Home Page</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/export">Excel Reports</a>
+      <a href="/test-status">Test Status</a>
+    </div>
   </nav>
   <!-- end .nav -->
-  <div class="container">
+  <div class="container-fluid container-main">
     <div class="row">
       <div class="col-12">
-        <br><br><br>
+        <br>
+        <br>
         <h1><%= title %></h1>
+      </div>
+      <!-- end .col-sm-12 -->
+    </div>
+    <!-- end .row -->

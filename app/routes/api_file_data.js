@@ -10,6 +10,15 @@ var rootPath = path.normalize(__dirname + '../../..');
 var rootPath = rootPath + '/behat_projects/master_tests';
 const spawn = require('child_process').spawn;
 
+exports.getStatus = function(req, res, next){
+
+res.send("working process.");
+
+
+
+
+}
+
 // Get the file directory contents with the features you intend on running
 exports.getAvailableTests = function(req, res, next) {
 
@@ -97,7 +106,7 @@ exports.getProcesses = function(req, res, next) {
     }
 
     for (var i = 0; i < scriptData.scripts.length; i++) {
-      if (!processes.includes("sh " + scriptData.scripts[i])) {
+      if (processes.includes("sh " + scriptData.scripts[i])) {
 
         console.log("scripts: " + scriptData.scripts[i]);
 
@@ -130,8 +139,7 @@ exports.getProcesses = function(req, res, next) {
 
     }
 
-    
-
+  
     res.render('test_runner', {
       title: 'Test Runner',
       scripts: scriptData.scripts,
@@ -145,7 +153,7 @@ exports.getProcesses = function(req, res, next) {
 
 exports.runTest = function(req, res) {
 
-  //console.log(req.params.script)
+  console.log(req.params.script)
   // Process JSON Arguments
   var shell_script = req.params.script;
   shell_script = "behat_run_" + shell_script + ".sh";
@@ -158,15 +166,15 @@ exports.runTest = function(req, res) {
     script = spawn('sh', [shell_script], options);
 
   script.stdout.on('data', function(data) {
-    //console.log('stdout: ' + data.toString());
+    console.log('stdout: ' + data.toString());
   });
 
   script.stderr.on('data', function(data) {
-    //console.log('stderr: ' + data.toString());
+    console.log('stderr: ' + data.toString());
   });
 
   script.on('exit', function(code) {
-    //console.log('child process exited with code ' + code.toString());
+    console.log('child process exited with code ' + code.toString());
   });
 
   res.redirect('/test-runner/');

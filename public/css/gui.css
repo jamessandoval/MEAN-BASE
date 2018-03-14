@@ -1,59 +1,91 @@
 body {
     margin-bottom: 0;
+    min-height: 100vh;
+    position: relative;
 }
+
 .row {
 	text-align:center;
 }
+
+.center {
+	text-align:center;
+}
+
+.container-main{
+
+	margin: 0 auto !important;
+    width: 90% !important;
+}
+
 .navbar {
     min-height: 80px;
 }
 .navigation{
-	float:right;
-	margin-top:20px;
+	float:right !important;
+	margin-top:20px !important;
 	margin-bottom:10px;
 }
 .navigation a{
 	color:white;
 	margin-left: 15px;
 }
-h3{
-	text-decoration:underline;
-}
+
 .footer {
-    height: auto;
-    bottom:0;
+	position: absolute;
+	bottom: 0;
     width:100% !important;
     left: 0px !important;
 }
-.slogan-fca {
-    margin-top: 30px;
-    margin-left: 100px;
-    color: #fff;
-    font-style: italic;
-    font-family:'Roboto slab';
+
+.locale-button{
+	margin:.2em;
+	text-decoration: none !important;
 }
-button.btn-lg{
-	width:100%;
-	border: 1px solid #E0E0E0;
+
+.page-number{
+	min-width: 5em;
 }
+
+
+.feature-button{
+	margin:.2em;
+	text-decoration: none !important;
+}
+
 .sixty{
 	width:60%;
 }
 .legend{
-	width:20px;
-	height:20px;
+	display: inline-block;
 	float:left;
-	margin-left:10px;
+	width:1.5em;
+	height:1.5em;
+	margin-left:2.0em;
 }
 .Pass{
-	background-color:green;
+	background-color:#109618;
 }
 .Fail{
-	background-color:#E2453C;
+	background-color:#DC3912;
 }
 .Skip{
-	background-color:grey;
+	background-color:#2569ff;
 }
+
+.drill-down{
+	position: relative;
+	margin:auto;
+	width:20em;
+	z-index: 1000 !important;
+}
+
+.main-locale-buttons{
+	padding-left:15em;
+	padding-right:15em;
+
+}
+
 .LinksToResults{
 	float:left;
 	margin-left:5px;
@@ -86,20 +118,18 @@ button.btn-lg{
 }
 a button {
 	color:black;
-
 }
-.btn {
 
-	height:35px; 
-	margin:1px; 
-	font-size:20px;
-	margin-bottom:5px;
-}
 .AtTenPerc{
 	width: 10%; 
 }
 .AtHundPerc{
 	width:100%;
+}
+
+.btn {
+
+	min-width: 5em;
 }
 
 .double {

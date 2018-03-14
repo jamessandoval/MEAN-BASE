@@ -6,38 +6,37 @@
   <div class="row">
     <div class="col-sm-12">
       <h3>Run Tests:</h3>
-      <p>Select Tests to Run.  Results will be pushed to QA folder.  Refresh to see current test statuses.</p>
-      <p>
-        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div> <b>- Running Test </b></p>
-      <p>
-        <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div> <b> - Test No Longer Running</b></p>
     </div>
+  </div>
+  <div class="row">
     <div class="col-4">
     </div>
     <div class="col-4">
-      <% if(scripts){ %>
-        <% for(var i=0; i < scripts.length; i++) { %>
-        <a href="/test-runner/<%= scripts[i] %>">
-          <button type="button" class="btn btn-primary" style="width: 15%; margin:1px;">
-
-            <b>Run Test: <%= scripts[i] %></b>
-            <br>
-            <% if(status[i] === "running"){%>
-              <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#ff0000; display: inline-block;"></div>
+          <table class="table">
+            <tr>
+              <th>Scripts</th>
+              <th>Status/Progress</th>
+              <th>Start/Stop</th>
+            </tr>
+            <% for(var i=0; i < scripts.length; i++) { %>
+              <tr>
+              <td><a href="/test-runner/<%= scripts[i] %>"><h4><%= scripts[i] %></h4> </a></td>
+              <td><%= status[i] %></td>
+              <% if(status[i] === "stopped"){ %>
+              <td><button class="btn btn-success">Start</button></td>
               <% }else{ %>
-                <div style="-webkit-border-radius:8px; -moz-border-radius:8px; border-radius:8px; border:1px solid #ccc; width:8px; height:8px; background-color:#00ff00; display: inline-block;"></div>
-                <% }%>
-                
-          </button>
-        </a>
-          <% if(i%3 === 2){%>
-            <br>
-            <% }%>
-              <%}}%>
+
+              <td><button class="btn btn-danger">Stop</button></td>
+              <% } %>  
+              </tr>
+            <% } %>
+          </table>
     </div>
     <div class="col-4"></div>
   </div>
   <br>
   <br>
-  </div>
+  <br>
+  <br>
+
   <%- include('footer') %>

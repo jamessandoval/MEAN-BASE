@@ -33,6 +33,10 @@ module.exports = function() {
   var app = express();
 
   // Configure the socket stream for the web socket.
+  // 
+  //
+  // 
+
   // Use the 'body-parser' and 'method-override' middleware functions
   app.use(bodyParser.urlencoded({
     extended: false
@@ -43,32 +47,87 @@ module.exports = function() {
   // Morgan plugin
   app.use(logger('dev'));
 
-  // --app.use('/results_angular', express.static(path.join(__dirname, '../dist')));
-
-  // <-- Angular Rest Routes Begin Here -->
-
+  
+  // ## -- Angular Routing for future implementation 
+  // ## -- Need to reconfigure package.json as well.
+  // 
+  // #################################################################################
+  // #
+  //app.use('/', express.static(path.join(__dirname, '../dist')));
+  //app.use('/angular', express.static(path.join(__dirname, '../dist')));
+  // #
+  // # <-- Angular Rest Routes Begin Here -->
+  // #
   //app.get('/angular-results', angular_results.all)
-
-  // <-- Angular Rest Routes End Here --> 
+  // #
+  // # <-- Angular Rest Routes End Here --> 
+  // #
+  // #################################################################################
 
   // Landing Page
   app.get('/', main.getHome);
 
-  // Dashboards
+  // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
+  // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
+
+  //app.get('/results/fundamentals/page') 
+
+  // Dashboard Pages
+
   app.get('/dashboard', api_dashboard.getOverview);
+
   app.get('/dashboardTWO', api_dashboardTWO.render);
 
-  app.get('/result-by-language/:locale', api_dashboard.getResultMetaByLocale);
+  app.get('/dashboard/locale/:locale', api_dashboard.getResultMetaByLocale);
 
-  // Test Results
-  app.get('/results', api_results.getResults);
-  app.get('/results/:template/:locale', api_results.getResultByIdAndLanguage);
-  app.get('/results/:template/:locale/:page', api_results.getResultByIdAndLanguage);
-  app.get('/results/:template/:locale/:testResult/:page', api_results.getResultByLangFeatureAndTestResult);
+  app.get('/dashboard/query/:custom', api_dashboard.getResultMetaByCustom);
 
-  app.get('/allresults/:locale/:testResult', api_results.getResultByLangAndTestResult);
-  //app.get('/allresults/:locale/:testResult/:page', api_results.getResultByLangAndTestResult);
+  // Results Pages 
 
+  // locale - ok
+  // locale - testresult - ok
+  
+  app.get('/results/locale/:locale', api_results.getResultByLanguage);
+  app.get('/results/locale/:locale/:page', api_results.getResultByLanguage);
+
+  app.get('/results/locale/:locale/testresult/:testresult', api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
+
+  // TODO:: 
+  //app.get('/results/feature/:template', api_results.getResultByLanguage);
+  //app.get('/results/feature/:template/:page', api_results.getResultByLanguage);
+
+  //app.get('/results/feature/:template/testresult/:testresult', api_results.getResultByLangAndTestResult);
+  //app.get('/results/feature/:template/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
+
+  // feature - query - ok
+  // feature - query - testresult - ok
+
+  app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
+  app.get('/results/feature/:template/query/:custom/:page', api_results.getResultByTemplateCustom);
+
+  app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
+  app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
+
+
+  // locale - feature - ok
+  // locale - feature - testresult
+
+  app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
+  app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
+
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/', api_results.getResultByLangFeatureAndTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangFeatureAndTestResult);
+
+  // Feature - locale - query
+  // Feature - template - query - test result
+
+  app.get('/results/feature/:template/locale/:locale/query/:custom', api_results.getResultByIdLanguageCustom);
+  app.get('/results/feature/:template/locale/:locale/query/:custom/:page', api_results.getResultByIdLanguageCustom);
+
+  app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult);
+  app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/:page', api_results.getResultByIdLanguageCustomTestResult);
+  
   
   // Export Tool
   app.get('/export', api_export.getExport);
@@ -83,37 +142,14 @@ module.exports = function() {
   app.get('/test-runner/:script', api_file_data.runTest);
   app.get('/test-runner/:script/:locale', api_file_data.runTest); 
 
+  app.get('/test-status', api_file_data.getAvailableTests, api_file_data.getProcesses); 
+
   // Language Detection Route
   app.post('/detect', language.postLanguage);
 
   // Configure static file serving
   app.use(express.static('public'));
   app.use(express.static('node_modules'));
-
-  // Congfigure Angular Routing 
-  //app.use(express.static(path.join(__dirname, '../dist')));
-
-  //
-  // Old Routing Method
-  //
-  //app.use('/dashboard', api_dashboard);
-  /*
-  // test output page
-  app.use('/output', output);
-
- app.use('/main', main);  
-
-  // Express Routing Routes
-  app.use('/result', api_results);
-
-BGX  app.use('/language', lang_detect)
-
-  app.use('/result/:template/:language/:result', api_results);
-
-  app.use('/files', api_file_data);
-
-
-  */
 
   app.use(methodOverride());
 

@@ -1,18 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
   var Result = sequelize.define('results', {
-    id: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true
-    },
-    TestRunId: {
-      type: DataTypes.CHAR(50),
-      allowNull: true
-    },
-    RunDate: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
     Template: {
       type: DataTypes.CHAR(4),
       allowNull: false
@@ -20,6 +7,10 @@ module.exports = function(sequelize, DataTypes) {
     Language: {
       type: DataTypes.CHAR(5),
       allowNull: true
+    },
+    ID: {
+      type: DataTypes.INTEGER(10),
+      allowNull: false
     },
     Result: {
       type: DataTypes.CHAR(5),
@@ -32,6 +23,14 @@ module.exports = function(sequelize, DataTypes) {
     Output: {
       type: "BLOB",
       allowNull: false
+    },
+    RunDate: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    testCaseId: {
+      type: DataTypes.STRING(50),
+      allowNull: true
     }
   }, {
     tableName: 'results'

@@ -1,15 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('testCases', {
-    ID: {
-      type: DataTypes.INTEGER(10),
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    Type: {
-      type: DataTypes.CHAR(5),
-      allowNull: false
-    },
     Template: {
       type: DataTypes.CHAR(4),
       allowNull: false
@@ -22,8 +12,21 @@ module.exports = function(sequelize, DataTypes) {
       type: "BINARY(1)",
       allowNull: true
     },
-    RefersTo: {
+    ID: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      primaryKey: true
+    },
+    TestId: {
       type: DataTypes.INTEGER(10),
+      allowNull: true
+    },
+    Gherkin: {
+      type: DataTypes.STRING(2000),
+      allowNull: true
+    },
+    RunDate: {
+      type: DataTypes.DATE,
       allowNull: true
     }
   }, {
