@@ -1,22 +1,29 @@
+/* jshint indent: 2 */
+
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('status', {
-    Type: {
-      type: DataTypes.CHAR(4),
-      allowNull: true
+  return sequelize.define('Status', {
+    TestRunId: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      primaryKey: true
     },
-    DateLastRun: {
+    Template: {
+      type: DataTypes.CHAR(5),
+      allowNull: false
+    },
+    RunDate: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false
     },
     StartTime: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false
     },
     EndTime: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: false
     }
   }, {
-    tableName: 'status'
+    tableName: 'Status'
   });
 };

@@ -109,7 +109,6 @@ module.exports = function() {
   app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
   app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
 
-
   // locale - feature - ok
   // locale - feature - testresult
 

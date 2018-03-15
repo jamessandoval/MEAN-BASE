@@ -33,7 +33,7 @@ exports.postResults = function(req, res, next) {
     function getResultsTotalLanguages(features) {
       var j = 0;
       var promises = features.map(function(item) { // return array of promises
-        return db.sequelize.query(`SELECT * FROM results WHERE Language = '${features[j++].locale}';`)
+        return db.sequelize.query(`SELECT * FROM Result WHERE Language = '${features[j++].locale}';`)
           .then(data => {
 
             resultCompilation = resultCompilation.concat(data[0]);
@@ -65,7 +65,7 @@ exports.postResults = function(req, res, next) {
     function getResultsTotal(features) {
       var j = 0;
       var promises = features.map(function(item) { // return array of promises
-        return db.sequelize.query(`SELECT * FROM results;`)
+        return db.sequelize.query(`SELECT * FROM Result;`)
           .then(data => {
 
             resultCompilation = resultCompilation.concat(data[0]);
@@ -100,7 +100,7 @@ exports.postResults = function(req, res, next) {
       var promises = features.map(function(item) { // return array of promises
         //console.log("the value of name is " + features[j].name);
         //console.log("the value of locale is " + features[j].locale);
-        return db.sequelize.query(`SELECT * FROM results WHERE Template = '${features[j].name}' AND Language LIKE '${features[j++].locale}';`)
+        return db.sequelize.query(`SELECT * FROM Result WHERE Template = '${features[j].name}' AND Language LIKE '${features[j++].locale}';`)
           .then(data => {
 
             resultCompilation = resultCompilation.concat(data[0]);
@@ -149,7 +149,7 @@ exports.export_to_excel = function(req, res, next) {
   var worksheet = workbook.addWorksheet('Test report');
 
   worksheet.columns = [
-    { header: 'ID:', key: 'id', width: 10 },
+    { header: 'Scenario Id:', key: 'ScenarioNumber', width: 20 },
     { header: 'Test Run Id:', key: 'TestRunId', width: 32 },
     { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
     { header: 'Template:', key: 'Template', width: 10 },
@@ -167,7 +167,7 @@ exports.export_to_excel = function(req, res, next) {
     if (j < results.length) {
 
       worksheet.addRow({
-        id: results[j].ID,
+        id: results[j].ScenarioNumber,
         TestRunId: results[j].TestRunId,
         RunDate: results[j].RunDate,
         Template: results[j].Template,
@@ -232,7 +232,7 @@ exports.getResults = function(req, res) {
   // <!-- end of remove pagination
 
   if (!req.results) {
-    db.results.findAll().then(results => {
+    db.result.findAll().then(results => {
 
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
@@ -386,10 +386,10 @@ exports.getResultByIdLanguageCustom = function(req, res) {
   // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -540,10 +540,10 @@ exports.getResultByLanguage = function(req, res){
   // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Language = '${language}'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Language = '${language}'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -694,10 +694,10 @@ exports.getResultByIdAndLanguage = function(req, res) {
   // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' limit ${start}, ${rowsToReturn};`).then(results => {
     
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language = '${language}'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -777,7 +777,7 @@ exports.getTotalResultCount = function(req, res) {
   let skip = 0;
 
   // select count(*) from results where result = 'PASS';
-  db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
+  db.sequelize.query(`select count(*) from Result where result = 'PASS';`).then(results => {
 
     results = results[0];
 
@@ -789,7 +789,7 @@ exports.getTotalResultCount = function(req, res) {
     // Call next query:
 
     // select count(*) from results where result = 'FAIL';
-    db.sequelize.query(`select count(*) from results where result = 'FAIL';`).then(results => {
+    db.sequelize.query(`select count(*) from Result where result = 'FAIL';`).then(results => {
 
       results = results[0];
 
@@ -799,7 +799,7 @@ exports.getTotalResultCount = function(req, res) {
       fail = parseInt(fail);
 
       // select count(*) from results where result = 'SKIP';
-      db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
+      db.sequelize.query(`select count(*) from Result where result = 'SKIP';`).then(results => {
 
         results = results[0];
 
@@ -925,10 +925,10 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
   // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testresult}' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testresult}' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testresult}'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testresult}'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -1091,10 +1091,10 @@ exports.getResultByTemplateCustom = function(req, res) {
   // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Output like '%${custom}%'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Output like '%${custom}%'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -1262,10 +1262,10 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
   // Pagination Logic Part I of II Ends Here
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Result = '${testResult}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Result = '${testResult}' AND Output like '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Result = '${testResult}' AND Output like '%${custom}%'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Result = '${testResult}' AND Output like '%${custom}%'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -1566,10 +1566,10 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
 
   // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResult}' AND Output = '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
+  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResult}' AND Output = '%${custom}%' limit ${start}, ${rowsToReturn};`).then(results => {
 
     // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from results WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResult}' AND Output = '%${custom}%'`).then(count => {
+    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language = '${language}' AND Result = '${testResult}' AND Output = '%${custom}%'`).then(count => {
 
       // Obtain Total count from query
       let Totalcount = count[0];

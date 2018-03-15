@@ -67,7 +67,8 @@
   <table class="table table-hover table-bordered">
         <thead class="thead-light">
           <tr>
-            <th>Id:</th>
+            <th>Scenario ID:</th>
+            <th>Test Run ID:</th>
             <th>Template: </th>
             <th>Run Date:</th>
             <th>Language: </th>
@@ -83,7 +84,10 @@
           <% for(var i=0; i < results.length; i++) { %>
                 <tr>
                   <td>
-                    <%= results[i].ID %>
+                    <%= results[i].ScenarioNumber %>
+                  </td>
+                  <td>
+                    <%= results[i].TestRunId %>
                   </td>
                   <td>
                     <%= results[i].Template %>
