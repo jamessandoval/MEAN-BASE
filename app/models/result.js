@@ -1,19 +1,29 @@
+/* jshint indent: 2 */
+
 module.exports = function(sequelize, DataTypes) {
-  var Result = sequelize.define('results', {
+  return sequelize.define('Result', {
+    ScenarioNumber: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      references: {
+        model: 'TestCase',
+        key: 'ScenarioNumber'
+      }
+    },
+    TestRunId: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    },
     Template: {
-      type: DataTypes.CHAR(4),
+      type: DataTypes.CHAR(5),
       allowNull: false
     },
     Language: {
       type: DataTypes.CHAR(5),
-      allowNull: true
-    },
-    ID: {
-      type: DataTypes.INTEGER(10),
       allowNull: false
     },
     Result: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.CHAR(4),
       allowNull: false
     },
     URLs: {
@@ -26,15 +36,9 @@ module.exports = function(sequelize, DataTypes) {
     },
     RunDate: {
       type: DataTypes.DATE,
-      allowNull: true
-    },
-    testCaseId: {
-      type: DataTypes.STRING(50),
-      allowNull: true
+      allowNull: false
     }
   }, {
-    tableName: 'results'
+    tableName: 'Result'
   });
-
-  return Result;
 };

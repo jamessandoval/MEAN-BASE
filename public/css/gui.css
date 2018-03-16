@@ -1,3 +1,18 @@
+
+@media (min-width: 768px) { 
+	.button-group{
+		width:500px;
+	}
+	div#displaySelections{
+		text-align:right;
+		padding-right:30px;
+	}
+	div#langSelection{
+		text-align:left;
+		padding-left:30px;
+	}
+}
+
 body {
     margin-bottom: 0;
     min-height: 100vh;
@@ -15,7 +30,7 @@ body {
 .container-main{
 
 	margin: 0 auto !important;
-    width: 90% !important;
+    width: 90% !important; 
 }
 
 .navbar {
@@ -154,6 +169,7 @@ a button {
 	background-color:#FFC20E;
 	border: 1px solid #E5AB01;
 }
+
 @media (min-width: 768px) { 
 	.button-group{
 		width:500px;
@@ -227,3 +243,53 @@ opacity:0.2;
 	to {background-position: 0 -64px;}
 }
 /*end progress bar*/
+
+.loginDiv {
+      max-width: 450px;
+      min-width: 290px;
+      margin: auto;
+      padding-bottom: 25px;
+      /*border: 2px solid red;*/
+}
+.loginBtn {
+  max-width: 250px;
+  margin: auto;
+}
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: #f1f1f1;
+}
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+input[type=checkbox] {
+  margin-bottom: 15px;
+}
+button[type=submit] {
+  background-color: #ffc20e;
+  border: 1px solid #E4AA00;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  padding: 11px 30px;
+  text-decoration: none;
+  user-select: none;
+  vertical-align: middle;
+  white-space: normal; /* For multi-line buttons */
+  text-align: center;
+
+
+}
+button[type=submit]:hover {
+  background-color: #D4AC37;
+  color: black;
+  text-decoration: none;
+}
+

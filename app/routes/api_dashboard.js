@@ -22,7 +22,7 @@ exports.getOverview = function(req, res) {
 
 
 // select count(*) from results where result = 'PASS';
-  db.sequelize.query(`select distinct Language from results;`).then(results => {
+  db.sequelize.query(`select distinct Language from Result;`).then(results => {
 
     results = results[0];
 
@@ -31,7 +31,7 @@ exports.getOverview = function(req, res) {
     lang=results;
 
     // select count(*) from results where result = 'PASS';
-    db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
+    db.sequelize.query(`select count(*) from Result where Result = 'PASS';`).then(results => {
 
       results = results[0];
 
@@ -43,7 +43,7 @@ exports.getOverview = function(req, res) {
       // Call next query:
 
       // select count(*) from results where result = 'FAIL';
-      db.sequelize.query(`select count(*) from results where result = 'FAIL';`).then(results => {
+      db.sequelize.query(`select count(*) from Result where Result = 'FAIL';`).then(results => {
 
         results = results[0];
 
@@ -53,7 +53,7 @@ exports.getOverview = function(req, res) {
         overall.fail = parseInt(overall.fail);
 
         // select count(*) from results where result = 'SKIP';
-        db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
+        db.sequelize.query(`select count(*) from Result where Result = 'SKIP';`).then(results => {
 
           results = results[0];
 
@@ -127,7 +127,7 @@ exports.getResultMetaByCustom = function(req, res) {
   function getResultsTotal(i) {
 
     // select count(*) from results where result = 'PASS';
-    db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'PASS' AND Output LIKE '%${custom}%'`).then(results => {
+    db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'PASS' AND Output LIKE '%${custom}%'`).then(results => {
 
       results = results[0];
 
@@ -141,7 +141,7 @@ exports.getResultMetaByCustom = function(req, res) {
       // New value = pass
 
       // select count(*) from results where result = 'FAIL';
-      db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'FAIL' AND Output LIKE '%${custom}%'`).then(results => {
+      db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'FAIL' AND Output LIKE '%${custom}%'`).then(results => {
 
         results = results[0];
 
@@ -155,7 +155,7 @@ exports.getResultMetaByCustom = function(req, res) {
         // New value = fail
 
         // select count(*) from results where result = 'SKIP';
-        db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'SKIP' AND Output LIKE '%${custom}%'`).then(results => {
+        db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'SKIP' AND Output LIKE '%${custom}%'`).then(results => {
 
           results = results[0];
 
@@ -246,7 +246,7 @@ exports.getResultMetaByLocale = function(req, res) {
   function getResultsTotal(i) {
 
     // select count(*) from results where result = 'PASS';
-    db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'PASS' and Language = '${locale}'`).then(results => {
+    db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'PASS' and Language = '${locale}'`).then(results => {
 
       results = results[0];
 
@@ -260,7 +260,7 @@ exports.getResultMetaByLocale = function(req, res) {
       // New value = pass
 
       // select count(*) from results where result = 'FAIL';
-      db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'FAIL' and Language = '${locale}'`).then(results => {
+      db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'FAIL' and Language = '${locale}'`).then(results => {
 
         results = results[0];
 
@@ -274,7 +274,7 @@ exports.getResultMetaByLocale = function(req, res) {
         // New value = fail
 
         // select count(*) from results where result = 'SKIP';
-        db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'SKIP' and Language = '${locale}'`).then(results => {
+        db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'SKIP' and Language = '${locale}'`).then(results => {
 
           results = results[0];
 
