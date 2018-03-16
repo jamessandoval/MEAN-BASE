@@ -22,8 +22,12 @@ const main = require('../app/routes/main');
 const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
+const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
+
+const authController = require('../app/routes/authController.js');
 
 const api_login = require('../app/routes/api_login');
+
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -69,15 +73,19 @@ module.exports = function() {
   // Landing Page
   app.get('/', main.getHome);
 
-  // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
-  // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
+  // Authentication
+  
 
-  //app.get('/results/fundamentals/page') 
-
+  // May need to integrate authorization into app
+  app.get('/signup', authController.signup)
 
   // Temporary page settup for login
   app.get('/login', api_login.getLogin);
 
+  // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
+  // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
+
+  //app.get('/results/fundamentals/page') 
 
   // Dashboard Pages
 
@@ -147,6 +155,7 @@ module.exports = function() {
   app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', api_file_data.runTest);
   app.get('/test-runner/:script/:locale', api_file_data.runTest); 
+   app.get('/dropdown-test-runner', dropdown_Test_Runner.getOverview); 
 
   app.get('/test-status', api_file_data.getAvailableTests, api_file_data.getProcesses); 
 
@@ -163,8 +172,14 @@ module.exports = function() {
   app.use(session({
     saveUninitialized: true,
     resave: true,
-    secret: config.sessionSecret
+    secret: "Sasquetooga"//config.sessionSecret
   }));
+
+  // Configure the Passport middleware
+  app.use(passport.initialize());
+
+  // Persistent login session.
+  app.use(passport.session());
 
   // Set the application view engine and 'views' folder
   app.set('views', './app/views');
@@ -173,9 +188,8 @@ module.exports = function() {
   // Configure the flash messages middleware
   app.use(flash());
 
-  // Configure the Passport middleware
-  //app.use(passport.initialize());
-  //app.use(passport.session());
+  
+
 
   //
   // Error Handling -> 404, 500, & All Errors

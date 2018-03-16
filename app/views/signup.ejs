@@ -1,0 +1,26 @@
+<%- include('header') %>
+  <div class="row">
+    <div class="col-lg-12 class="form-group">
+      <br><br>
+        <form id="signup" name="signup" method="post" action="/signup" >
+        <label for="email">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <input class="text" name="email" type="email" />
+        </label><br>
+        <label for="firstname">Firstname:
+        <input name="firstname" type="text" />
+        </label><br>
+        <label for="lastname">Lastname:
+        <input name="lastname" type="text" />
+        </label><br>
+        <label for="password">Password:
+        <input name="password" type="password" />
+      </label><br><br>
+        <input class="btn btn-primary" type="submit" value="Sign Up" />
+    </form>
+    </div>
+  </div>
+  </div>
+  </div>
+  <br><br>
+  <%- include('footer') %>
