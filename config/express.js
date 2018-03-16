@@ -23,6 +23,8 @@ const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 
+const authController = require('../app/routes/authController.js');
+
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
 
@@ -66,6 +68,14 @@ module.exports = function() {
 
   // Landing Page
   app.get('/', main.getHome);
+
+
+
+  // Authentication
+  
+  app.get('/signup', authController.signup)
+
+
 
   // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
   // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
@@ -156,8 +166,14 @@ module.exports = function() {
   app.use(session({
     saveUninitialized: true,
     resave: true,
-    secret: config.sessionSecret
+    secret: "Sasquetooga"//config.sessionSecret
   }));
+
+  // Configure the Passport middleware
+  app.use(passport.initialize());
+
+  // Persistent login session.
+  app.use(passport.session());
 
   // Set the application view engine and 'views' folder
   app.set('views', './app/views');
@@ -166,9 +182,8 @@ module.exports = function() {
   // Configure the flash messages middleware
   app.use(flash());
 
-  // Configure the Passport middleware
-  //app.use(passport.initialize());
-  //app.use(passport.session());
+  
+
 
   //
   // Error Handling -> 404, 500, & All Errors
