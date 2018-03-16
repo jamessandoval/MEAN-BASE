@@ -22,6 +22,7 @@ const main = require('../app/routes/main');
 const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
+const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -141,6 +142,7 @@ module.exports = function() {
   app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', api_file_data.runTest);
   app.get('/test-runner/:script/:locale', api_file_data.runTest); 
+   app.get('/dropdown-test-runner', dropdown_Test_Runner.getOverview); 
 
   app.get('/test-status', api_file_data.getAvailableTests, api_file_data.getProcesses); 
 
