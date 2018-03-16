@@ -15,30 +15,66 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Adding ajax for google chart dashboard -->
+
+  <style>
+
+    .table {
+      max-width: 700px;
+      margin: auto;
+    }
+    
+  </style>
+
 </head>
 
-<body onload="uncheckAll()">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand">
+<body style="padding-top: 60px;" onload="uncheckAll()">
 
-        <span class="navbar-brand mb-0 h1">Q.A. Automated Testing Suite</span>
-      </a>
-    <!-- end .slogan -->
-    <div class="navigation">
-      <a href="/">Home Page</a>
-      <a href="/dashboard">Dashboard</a>
-      <a href="/export">Excel Reports</a>
-      <a href="/test-status">Test Status</a>
+<!-- begin .nav -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+
+  <a class="navbar-brand">
+    <span class="navbar-brand">Q.A. Automated Testing Suite</span>
+  </a>
+
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/export">Excel Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/test-status">Test Status</a>
+      </li>
+
+
+      <!-- Delete this after dev is complete-->
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Log-in Testing</a>
+      </li>
+
+
+    </ul>
+  </div>
+</nav>
+<!-- end .nav -->
+
+<!-- begin .container -->
+<div class="container-fluid container-main">
+  <div class="row">
+    <div class="col-12">
+      <br>
+      <br>
+      <h1><%= title %></h1>
     </div>
-  </nav>
-  <!-- end .nav -->
-  <div class="container-fluid container-main">
-    <div class="row">
-      <div class="col-12">
-        <br>
-        <br>
-        <h1><%= title %></h1>
-      </div>
-      <!-- end .col-sm-12 -->
-    </div>
-    <!-- end .row -->
+    <!-- end .col-sm-12 -->
+  </div>
+  <!-- end .row -->

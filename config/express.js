@@ -23,6 +23,8 @@ const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 
+const api_login = require('../app/routes/api_login');
+
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
 
@@ -71,6 +73,11 @@ module.exports = function() {
   // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
 
   //app.get('/results/fundamentals/page') 
+
+
+  // Temporary page settup for login
+  app.get('/login', api_login.getLogin);
+
 
   // Dashboard Pages
 
