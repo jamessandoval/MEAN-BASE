@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 /* GET ALL Results */
 exports.all = function(req, res) {
 
-  db.results.findAll().then(results => {
+  db.result.findAll().then(results => {
 
     // Needed To convert the blob object into a string 
     // Otherwise it returns a buffer array object.

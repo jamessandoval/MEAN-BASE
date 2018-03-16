@@ -4,7 +4,7 @@ var db = require('../../config/sequelize');
 
 exports.getExport = function(req, res) {
 
-  db.results.findAll().then(results => {
+  db.result.findAll().then(results => {
 
     var features = [];
     var languages = [];

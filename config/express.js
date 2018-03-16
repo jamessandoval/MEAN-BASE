@@ -116,7 +116,6 @@ module.exports = function() {
   app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
   app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
 
-
   // locale - feature - ok
   // locale - feature - testresult
 
@@ -127,7 +126,7 @@ module.exports = function() {
   app.get('/results/feature/:template/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangFeatureAndTestResult);
 
   // Feature - locale - query
-  // Feature - template - query - test result
+  // Feature - template - query - test result 
 
   app.get('/results/feature/:template/locale/:locale/query/:custom', api_results.getResultByIdLanguageCustom);
   app.get('/results/feature/:template/locale/:locale/query/:custom/:page', api_results.getResultByIdLanguageCustom);
