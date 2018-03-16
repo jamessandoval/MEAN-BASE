@@ -4,39 +4,75 @@
   </div>
   </div>
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-lg-12">
       <h3>Run Tests:</h3>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-4">
-    </div>
-    <div class="col-4">
-          <table class="table">
-            <tr>
-              <th>Scripts</th>
-              <th>Status/Progress</th>
-              <th>Start/Stop</th>
-            </tr>
-            <% for(var i=0; i < scripts.length; i++) { %>
-              <tr>
-              <td><a href="/test-runner/<%= scripts[i] %>"><h4><%= scripts[i] %></h4> </a></td>
-              <td><%= status[i] %></td>
-              <% if(status[i] === "stopped"){ %>
-              <td><button class="btn btn-success">Start</button></td>
-              <% }else{ %>
+  <div class="col-sm-12">
 
-              <td><button class="btn btn-danger">Stop</button></td>
-              <% } %>  
-              </tr>
-            <% } %>
-          </table>
-    </div>
-    <div class="col-4"></div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="d-inline-block col-4">Scripts</th>
+          <th class="d-inline-block col-4">Status/Progress</th>
+          <th class="d-inline-block col-4">Start/Stop</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <% for(var i=0; i < scripts.length; i++) { %>
+      
+        <tr>
+        <td class="d-inline-block col-4"><a href="/test-runner/<%= scripts[i] %>"><h4><%= scripts[i] %></h4> </a></td>
+
+        <td class="d-inline-block col-4"><%= status[i] %></td>
+
+        <% if(status[i] === "stopped"){ %>
+        <td class="d-inline-block col-4"><button class="btn btn-success">Start</button></td>
+        <% }else{ %>
+
+        <td class="d-inline-block col-4"><button class="btn btn-danger">Stop</button></td>
+        <% } %>  
+        </tr>
+      <% } %>
+      </tbody>
+    </table>
+
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
+  <!-- end .col-sm-12 -->
+  </div>
+  <!-- end .row -->
 
+  <br><br><br>
   <%- include('footer') %>
+
+
+
+
+
+
+<!-- DELETE THIS AFTER DEV -->
+  <!--div class="col-sm-4">
+        <table class="table">
+          <tr>
+            <th>Scripts</th>
+            <th>Status/Progress</th>
+            <th>Start/Stop</th>
+          </tr>
+          <% for(var i=0; i < scripts.length; i++) { %>
+            <tr>
+            <td><a href="/test-runner/<%= scripts[i] %>"><h4><%= scripts[i] %></h4> </a></td>
+            <td><%= status[i] %></td>
+            <% if(status[i] === "stopped"){ %>
+            <td><button class="btn btn-success">Start</button></td>
+            <% }else{ %>
+
+            <td><button class="btn btn-danger">Stop</button></td>
+            <% } %>  
+            </tr>
+          <% } %>
+        </table>
+  </div-->
+<!-- DELETE THIS AFTER DEV -->

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Quality Testing - Log-in</title>
+  <!--Stylesheet flukestrap include-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <!-- include bootstrap -->
+  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+  <!--Favicon/ shortcut icon-->
+  <link rel="stylesheet" href="/css/gui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- Adding ajax for google chart dashboard -->
+
+  <style>
+    /* custom css */
+  </style>
+
+</head>
+
+<body style="padding-top: 60px;" onload="uncheckAll()">
+
+<!-- begin .nav -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+
+  <a class="navbar-brand">
+    <span class="navbar-brand mb-0 h1">Q.A. Automated Testing Suite</span>
+  </a>
+
+</nav>
+<!-- end .nav -->
+
+  <!-- begin .container -->
+  <div class="container-fluid container-main">
+    <div class="row">
+      <div class="col-12">
+        <br>
+        <br>
+        <h1>Welcome to the Q.A. Automated Testing Suite</h1>
+      </div>
+      <!-- end .col-sm-12 -->
+    </div>
+    <!-- end .row -->
+    <br />
+    <div class="row">
+      <div class="col-md-6 offset-md-3" style="background-color: none;">
+
+      <form action="#" style="border:2px solid #ccc">
+        <div class="loginDiv">
+          <h2>Please log-in</h2>
+
+          <input type="text" name="username" placeholder="Enter Username" required />
+          <br /><br />
+
+          <input type="password" name="psw" placeholder="Enter Password" required />
+          <br />
+
+          <a href="/reset-password" class="small" style="text-align: left;">Forgot your password?</a>
+          <br /><br />
+
+          <!--input type="checkbox" checked="checked" name="remember">Remember me
+          <br /><br /-->
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+        </div>
+      </form>
+
+      </div>
+      <!-- end .col-sm-4 .offset-sm-4 -->
+    </div>
+    <!-- end .row -->
+  </div>
+  <!-- end .container -->
+
+
+<br><br>
+<%- include('footer') %>

@@ -25,6 +25,9 @@ const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 
 const authController = require('../app/routes/authController.js');
 
+const api_login = require('../app/routes/api_login');
+
+
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
 
@@ -69,13 +72,14 @@ module.exports = function() {
   // Landing Page
   app.get('/', main.getHome);
 
-
-
   // Authentication
   
+
+  // May need to integrate authorization into app
   app.get('/signup', authController.signup)
 
-
+  // Temporary page settup for login
+  app.get('/login', api_login.getLogin);
 
   // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
   // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
