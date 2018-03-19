@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: 'TestCase',
         key: 'ScenarioNumber'
-      }
+      },
+      primaryKey: true
     },
     TestRunId: {
       type: DataTypes.STRING(50),
@@ -28,7 +29,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     URLs: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     Output: {
       type: "BLOB",
