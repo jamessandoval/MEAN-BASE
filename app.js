@@ -4,7 +4,7 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-//const configureMongoose = require('./config/mongoose');
+const configureSequelize = require('./config/sequelize');
 const configureExpress = require('./config/express');
 //const configurePassport = require('./config/passport');
 

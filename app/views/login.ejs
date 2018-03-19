@@ -15,11 +15,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Adding ajax for google chart dashboard -->
-
-  <style>
-    /* custom css */
-  </style>
-
 </head>
 
 <body style="padding-top: 60px;" onload="uncheckAll()">
@@ -49,14 +44,14 @@
     <div class="row">
       <div class="col-md-6 offset-md-3" style="background-color: none;">
 
-      <form action="#" style="border:2px solid #ccc">
+        <form id="login" name="login" method="post" action="login" style="border:2px solid #ccc">
         <div class="loginDiv">
           <h2>Please log-in</h2>
 
-          <input type="text" name="username" placeholder="Enter Username" required />
+          <input type="text" name="email" placeholder="Enter Username/Email" required />
           <br /><br />
 
-          <input type="password" name="psw" placeholder="Enter Password" required />
+          <input type="password" name="password" placeholder="Enter Password" required />
           <br />
 
           <a href="/reset-password" class="small" style="text-align: left;">Forgot your password?</a>
@@ -65,7 +60,7 @@
           <!--input type="checkbox" checked="checked" name="remember">Remember me
           <br /><br /-->
 
-          <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" value="login">Login</button>
         </div>
       </form>
 

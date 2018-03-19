@@ -234,6 +234,8 @@ exports.getResults = function(req, res) {
   if (!req.results) {
     db.result.findAll().then(results => {
 
+      console.log("Hllo");
+
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {

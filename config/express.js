@@ -11,7 +11,11 @@ const config = require('./config'),
   flash = require('connect-flash'),
   passport = require('passport'),
   logger = require('morgan'),
-  path = require('path');
+  path = require('path'),
+  cookieParser = require('cookie-parser'),
+  db = require('./sequelize'),
+  Sequelize = require('sequelize'),
+  SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
@@ -22,12 +26,10 @@ const main = require('../app/routes/main');
 const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
+const authenticate = require('../app/routes/authentication');
 const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 
-const authController = require('../app/routes/authController.js');
-
 const api_login = require('../app/routes/api_login');
-
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -38,10 +40,14 @@ module.exports = function() {
   // Create a new Express application instance
   var app = express();
 
-  // Configure the socket stream for the web socket.
-  // 
-  //
-  // 
+  // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
+  if (process.env.NODE_ENV === 'development') {
+    app.use(logger('dev'));
+  } else if (process.env.NODE_ENV === 'production') {
+    app.use(compress());
+  }
+
+
 
   // Use the 'body-parser' and 'method-override' middleware functions
   app.use(bodyParser.urlencoded({
@@ -50,10 +56,6 @@ module.exports = function() {
 
   app.use(bodyParser.json());
 
-  // Morgan plugin
-  app.use(logger('dev'));
-
-  
   // ## -- Angular Routing for future implementation 
   // ## -- Need to reconfigure package.json as well.
   // 
@@ -70,17 +72,73 @@ module.exports = function() {
   // #
   // #################################################################################
 
+  // #####################################
+  //#
+  //#
+  //# Authentication
+  //#
+  //#
+
+  //######################################
+
+  // Configure the 'session' middleware
+  // **** Persistent Sessions ******
+  // ***  This will be important when using socket.io *** 
+
+  app.use(cookieParser());
+
+  var sessionConnect = new Sequelize(
+    "test",
+    "flukeqa",
+    "H0lidayApples", {
+      "dialect": "mysql",
+      "storage": "./session.mysql"
+    });
+
+  let dbSessionStore = new SequelizeStore({
+    db: sessionConnect
+  })
+
+  app.use(session({
+    saveUninitialized: true,
+    resave: true,
+    secret: "Sasquetooga",
+    store: new SequelizeStore({
+      db: sessionConnect
+    }),
+  }));
+
+  dbSessionStore.sync();
+
+  // Configure the Passport middleware
+  app.use(passport.initialize());
+
+  // Persistent login session.
+  app.use(passport.session());
+
+  //###########################################
+
   // Landing Page
   app.get('/', main.getHome);
 
-  // Authentication
-  
+  app.get('/signup', authenticate.signup);
 
-  // May need to integrate authorization into app
-  app.get('/signup', authController.signup)
+  app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/signup'
+  }));
+
+  app.get('/login', authenticate.login);
+
+  app.post('/login', passport.authenticate('local-signin', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login'
+  }));
+
+  app.get('/logout', authenticate.logout);
 
   // Temporary page settup for login
-  app.get('/login', api_login.getLogin);
+  //app.get('/login', api_login.getLogin);
 
   // TODO:: Fundamentals (THIS IS HYPOTHETICAL, BUT IT MAY CONSIST OF A COUPLE OF GENERAL QUERIES TO SHOW FUNDAMENTAL TESTS.)
   // THOSE TESTS ARE THINGS LIKE url 404, vs 200, and whether or not there is content on the page.
@@ -89,24 +147,24 @@ module.exports = function() {
 
   // Dashboard Pages
 
-  app.get('/dashboard', api_dashboard.getOverview);
+  app.get('/dashboard', isLoggedIn, api_dashboard.getOverview);
 
   app.get('/dashboardTWO', api_dashboardTWO.render);
 
-  app.get('/dashboard/locale/:locale', api_dashboard.getResultMetaByLocale);
+  app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
 
-  app.get('/dashboard/query/:custom', api_dashboard.getResultMetaByCustom);
+  app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
 
   // Results Pages 
 
   // locale - ok
   // locale - testresult - ok
-  
-  app.get('/results/locale/:locale', api_results.getResultByLanguage);
-  app.get('/results/locale/:locale/:page', api_results.getResultByLanguage);
 
-  app.get('/results/locale/:locale/testresult/:testresult', api_results.getResultByLangAndTestResult);
-  app.get('/results/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
+  app.get('/results/locale/:locale/:page', isLoggedIn, api_results.getResultByLanguage);
+
+  app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale/testresult/:testresult/:page', isLoggedIn, api_results.getResultByLangAndTestResult);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
@@ -118,49 +176,60 @@ module.exports = function() {
   // feature - query - ok
   // feature - query - testresult - ok
 
-  app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
-  app.get('/results/feature/:template/query/:custom/:page', api_results.getResultByTemplateCustom);
+  app.get('/results/feature/:template/query/:custom', isLoggedIn, api_results.getResultByTemplateCustom);
+  app.get('/results/feature/:template/query/:custom/:page', isLoggedIn, api_results.getResultByTemplateCustom);
 
-  app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
-  app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', api_results.getResultByTemplateCustomAndTestResult);
+  app.get('/results/feature/:template/query/:custom/testresult/:testresult', isLoggedIn, api_results.getResultByTemplateCustomAndTestResult);
+  app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', isLoggedIn, api_results.getResultByTemplateCustomAndTestResult);
 
   // locale - feature - ok
   // locale - feature - testresult
 
-  app.get('/results/feature/:template/locale/:locale', api_results.getResultByIdAndLanguage);
-  app.get('/results/feature/:template/locale/:locale/:page', api_results.getResultByIdAndLanguage);
+  app.get('/results/feature/:template/locale/:locale', isLoggedIn, api_results.getResultByIdAndLanguage);
+  app.get('/results/feature/:template/locale/:locale/:page', isLoggedIn, api_results.getResultByIdAndLanguage);
 
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/', api_results.getResultByLangFeatureAndTestResult);
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/:page', api_results.getResultByLangFeatureAndTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/',isLoggedIn,  api_results.getResultByLangFeatureAndTestResult);
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/:page', isLoggedIn,  api_results.getResultByLangFeatureAndTestResult);
 
   // Feature - locale - query
   // Feature - template - query - test result 
 
-  app.get('/results/feature/:template/locale/:locale/query/:custom', api_results.getResultByIdLanguageCustom);
-  app.get('/results/feature/:template/locale/:locale/query/:custom/:page', api_results.getResultByIdLanguageCustom);
+  app.get('/results/feature/:template/locale/:locale/query/:custom', isLoggedIn, api_results.getResultByIdLanguageCustom);
+  app.get('/results/feature/:template/locale/:locale/query/:custom/:page', isLoggedIn, api_results.getResultByIdLanguageCustom);
 
   app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult);
   app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/:page', api_results.getResultByIdLanguageCustomTestResult);
-  
-  
+
+
   // Export Tool
-  app.get('/export', api_export.getExport);
-  app.post('/export', api_results.postResults, api_results.export_to_excel);
+  app.get('/export', isLoggedIn,  api_export.getExport);
+  app.post('/export', isLoggedIn, api_results.postResults, api_results.export_to_excel);
 
   // Test Information Routes
-  app.get('/files', api_file_data.getAvailableTests);
-  app.post('/run-test', api_file_data.runTest);
+  app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
+  app.post('/run-test', isLoggedIn, api_file_data.runTest);
 
   // Test Runner Routes
-  app.get('/test-runner', api_file_data.getAvailableTests, api_file_data.getProcesses);
-  app.get('/test-runner/:script', api_file_data.runTest);
-  app.get('/test-runner/:script/:locale', api_file_data.runTest); 
-   app.get('/dropdown-test-runner', dropdown_Test_Runner.getOverview); 
 
-  app.get('/test-status', api_file_data.getAvailableTests, api_file_data.getProcesses); 
+  app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
+  app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
+  app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
+  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview); 
+
+  app.get('/test-status', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
 
   // Language Detection Route
   app.post('/detect', language.postLanguage);
+
+  //load passport strategies
+  require('./passport.js')(passport, db.user);
+
+  function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+      return next();
+
+    res.redirect('/login');
+  }
 
   // Configure static file serving
   app.use(express.static('public'));
@@ -168,28 +237,12 @@ module.exports = function() {
 
   app.use(methodOverride());
 
-  // Configure the 'session' middleware
-  app.use(session({
-    saveUninitialized: true,
-    resave: true,
-    secret: "Sasquetooga"//config.sessionSecret
-  }));
-
-  // Configure the Passport middleware
-  app.use(passport.initialize());
-
-  // Persistent login session.
-  app.use(passport.session());
-
   // Set the application view engine and 'views' folder
   app.set('views', './app/views');
   app.set('view engine', 'ejs');
 
   // Configure the flash messages middleware
   app.use(flash());
-
-  
-
 
   //
   // Error Handling -> 404, 500, & All Errors
@@ -208,7 +261,7 @@ module.exports = function() {
     // render the error page
     res.status(err.status || 500);
 
-    console.log('\x1b[31m',err);
+    console.log('\x1b[31m', err);
 
     res.render('error', {
       title: 'YOU\'VE REACHED THE ERROR PAGE',

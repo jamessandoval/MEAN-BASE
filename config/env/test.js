@@ -3,7 +3,6 @@
 
 // Set the 'test' environment configuration object
 module.exports = {
-	db: 'mongodb://127.0.0.1/mean-node-lab',
 	sessionSecret: 'testSessionSecret',
 	facebook: {
 		clientID: 'Facebook Application ID',
