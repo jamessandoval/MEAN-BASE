@@ -11,10 +11,6 @@ var rootPath = path.normalize(__dirname + '/..');
 var modelsDir = rootPath + '/app/models';
 // create your instance of sequelize
 
-<<<<<<< HEAD
-//var sequelize = new Sequelize('test', 'flukeqa', 'H0lidayApples', {
-=======
->>>>>>> 3c711368c5f2c7994ef824ebd3977ac05a4ac492
 var sequelize = new Sequelize('test', 'flukeqa', 'H0lidayApples', {
         host: 'localhost',
         port: '3306',
