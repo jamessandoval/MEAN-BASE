@@ -51,7 +51,7 @@
         <a class="nav-link" href="/dashboard">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/export">Excel Reports</a>
+        <a class="nav-link" href="/export-tool">Excel Reports</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/test-status">Test Status</a>
@@ -59,10 +59,21 @@
 
 
       <!-- Delete this after dev is complete-->
+      
+      <% if(typeof user == 'string' && user){ %>
+        <li class="nav-item">
+        <a class="nav-link" href="/signup">Create User</a>
+      </li>
+               <li class="nav-item">
+        <a class="nav-link" href="/logout">Log Out</a>
+        <li>
+
+      <% }else{ %>
+
       <li class="nav-item">
         <a class="nav-link" href="/login">Log In</a>
       </li>
-
+        <% } %>
 
     </ul>
   </div>
@@ -76,6 +87,12 @@
       <br>
       <br>
       <h1><%= title %></h1>
+
+      <% if(typeof user == 'string' && user){ %>
+
+      <h3>User is: <%= user %></h3>
+
+      <% } %>
 
     </div>
     <!-- end .col-sm-12 -->

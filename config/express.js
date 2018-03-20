@@ -121,7 +121,7 @@ module.exports = function() {
   // Landing Page
   app.get('/', main.getHome);
 
-  app.get('/signup', authenticate.signup);
+  app.get('/signup', isLoggedIn, authenticate.signup);
 
   app.post('/signup', passport.authenticate('local-signup', {
     successRedirect: '/dashboard',
@@ -202,8 +202,12 @@ module.exports = function() {
 
 
   // Export Tool
-  app.get('/export', isLoggedIn,  api_export.getExport);
-  app.post('/export', isLoggedIn, api_results.postResults, api_results.export_to_excel);
+  app.get('/export-tool', isLoggedIn, api_export.getExport);
+
+  app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
+
+  // old .. deprececated
+  //app.post('/export', isLoggedIn, api_results.postResults, api_results.export_to_excel);
 
   // Test Information Routes
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
