@@ -121,7 +121,9 @@ module.exports = function() {
   // Landing Page
   app.get('/', main.getHome);
 
-  app.get('/signup', isLoggedIn, authenticate.signup);
+  app.get('/signup', authenticate.signup);
+
+  //app.get('/signup', isLoggedIn, authenticate.signup);
 
   app.post('/signup', passport.authenticate('local-signup', {
     successRedirect: '/dashboard',
