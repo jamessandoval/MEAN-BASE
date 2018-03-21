@@ -69,7 +69,8 @@ exports.getOverview = function(req, res) {
             overall: overall,
             resultsTotal: null,
             languagesArray: lang,
-            currentUrl: req.url
+            currentUrl: req.url,
+            user: req.user.firstname
           });
 
         }).catch(function(err) {
@@ -175,7 +176,8 @@ exports.getResultMetaByCustom = function(req, res) {
             feature: features[i],
             pass: pass,
             fail: fail,
-            skip: skip
+            skip: skip,
+            user: JSON.stringify(req.user)
           })
 
           if (i === features.length - 1) {
@@ -193,7 +195,7 @@ exports.getResultMetaByCustom = function(req, res) {
               title: 'Results with query: ' + custom ,
               resultsTotal : resultsTotal,
               overall: overall,
-              currentUrl: req.url
+              user: req.user.firstname
             });
 
           } else {
@@ -309,7 +311,8 @@ exports.getResultMetaByLocale = function(req, res) {
               title: 'Results by Language',
               resultsTotal : resultsTotal,
               overall: overall,
-              currentUrl: req.url
+              currentUrl: req.url,
+              user: req.user.firstname
             });
 
           } else {

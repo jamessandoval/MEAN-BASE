@@ -55,6 +55,7 @@
     "sequelize": "^4.37.3",
     "socket.io": "^2.0.4",
     "winston": "^2.4.1",
+    "stream-array": "^1.1.2",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
