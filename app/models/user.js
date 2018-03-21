@@ -38,7 +38,7 @@ module.exports = function(sequelize, Sequelize) {
       type: Sequelize.DATE
     }
   }, {
-    tableName: 'user'
+    tableName: 'User'
   });
 
   return User;
