@@ -69,7 +69,8 @@ exports.getOverview = function(req, res) {
             overall: overall,
             resultsTotal: null,
             languagesArray: lang,
-            currentUrl: req.url
+            currentUrl: req.url,
+            user: req.user.firstname
           });
 
         }).catch(function(err) {
@@ -108,7 +109,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
 
   let language = "all";
-  let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
+  let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
   let pass = null;
   let fail = null;
   let skip = null;
@@ -175,7 +176,8 @@ exports.getResultMetaByCustom = function(req, res) {
             feature: features[i],
             pass: pass,
             fail: fail,
-            skip: skip
+            skip: skip,
+            user: JSON.stringify(req.user)
           })
 
           if (i === features.length - 1) {
@@ -193,7 +195,7 @@ exports.getResultMetaByCustom = function(req, res) {
               title: 'Results with query: ' + custom ,
               resultsTotal : resultsTotal,
               overall: overall,
-              currentUrl: req.url
+              user: req.user.firstname
             });
 
           } else {
@@ -225,7 +227,7 @@ exports.getResultMetaByLocale = function(req, res) {
 
   let locale = req.params.locale;
   let language = locale;
-  let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
+  let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
   let pass = null;
   let fail = null;
   let skip = null;
@@ -309,7 +311,8 @@ exports.getResultMetaByLocale = function(req, res) {
               title: 'Results by Language',
               resultsTotal : resultsTotal,
               overall: overall,
-              currentUrl: req.url
+              currentUrl: req.url,
+              user: req.user.firstname
             });
 
           } else {
