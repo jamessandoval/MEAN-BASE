@@ -140,7 +140,7 @@ exports.export_to_excel = function(req, res, next) {
     });
   */
 
- 
+
 
   let results = req.results;
   const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
@@ -597,8 +597,8 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
   start = page * rowsToReturn;
 
-  if(language === "all"){
-    language = "%";   
+  if (language === "all") {
+    language = "%";
   }
 
   // Pagination Logic Part I of II Ends Here
@@ -611,7 +611,10 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
 
       // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
-      language = "All";
+      if (language === "%") {
+        language = "All";
+      }
+
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -840,7 +843,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
   // Pagination Logic Part I of II Ends Here
 
-  if(language = "all"){
+  if (language === "all") {
 
     language = "%";
   }
@@ -852,7 +855,9 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
     db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}'`).then(count => {
 
       // Return language to human readable string 
-      language = "All";
+      if (language === "%") {
+        language = "All";
+      }
 
       // Obtain Total count from query
       let Totalcount = count[0];
@@ -1546,7 +1551,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
       total = Totalcount;
 
-      console.log("This total count is " +  Totalcount + "\n\n\n");
+      console.log("This total count is " + Totalcount + "\n\n\n");
 
       // Get total number of pages
       let pages = Math.ceil(total / rowsToReturn);
