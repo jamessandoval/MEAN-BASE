@@ -30,6 +30,7 @@
     "cld": "^2.4.8",
     "compression": "^1.7.2",
     "connect-flash": "^0.1.1",
+    "connect-session-sequelize": "^5.2.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "debug": "^3.1.0",
@@ -42,12 +43,8 @@
     "franc-min": "^3.1.1",
     "fs": "0.0.1-security",
     "http": "0.0.0",
-<<<<<<< HEAD
     "is-bluebird": "^1.0.2",
     "lodash": "^4.17.4",
-=======
-    "lodash": "^4.17.5",
->>>>>>> 1aa733932fe5c00850e8ac6834662769f0f549a0
     "method-override": "^2.3.10",
     "mongoose": "^5.0.11",
     "morgan": "^1.9.0",
@@ -59,8 +56,8 @@
     "rxjs": "^5.5.7",
     "sequelize": "^4.37.3",
     "socket.io": "^2.0.4",
-    "winston": "^2.4.1",
     "stream-array": "^1.1.2",
+    "winston": "^2.4.1",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
