@@ -94,6 +94,14 @@
 
   </script>
 
+
+<div id="loading" style="display: none;">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+    </div><!--end of loader-wrapper-->
+</div><!--end of loading-->
+
+
 <div class="container-fluid" id="page">
   <div class="row">
     <div class="col-lg-4 offset-lg-4 text-center">
@@ -107,9 +115,7 @@
       <% } %>
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
-
-
-
+  
   <div class="row">
     <div class="col-lg-4 offset-lg-4">
       <h1 class="text-center">Locale: <%= language %></h1>
@@ -155,7 +161,7 @@
         <br />
         <% for(var i=0; i < languagesArray.length; i++) { %>
           <a href='/dashboard/locale/<%= languagesArray[i].Language %>'>
-            <button type="button" class="btn btn-warning locale-button">
+            <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
               <b><%= languagesArray[i].Language %></b>
             </button>
           </a>
@@ -172,7 +178,7 @@
         <br>
         <% for(var i=1; i < 25; i++) { %>
           <a href='/results/feature/f<%= [i] %>/locale/<%= language %>'>
-            <button type="button" class="btn btn-warning locale-button">
+            <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
             <b>F<%= [i] %></b>
             <br>
             </button>
