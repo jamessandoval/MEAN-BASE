@@ -12,6 +12,7 @@ exports.getOverview = function(req, res) {
   let feature = "ALL";
   let language = "ALL";
   let lang =[];
+  let allDate = []; 
 
 
   let overall = {
@@ -29,6 +30,18 @@ exports.getOverview = function(req, res) {
     //console.log(results[0].Language);
 
     lang=results;
+
+    ///////////////////////-Jen
+    db.sequelize.query('select distinct RunDate from Result limit 1').then(results =>{
+      results = results[0];
+
+     // console.log("This is the type of variable " + results[0]);
+     allDate = JSON.stringify(results[0]);
+     allDate = allDate.replace("{\"RunDate\":", "");
+     allDate = allDate.replace("\"", "");
+     allDate = allDate.replace("\"}", "");
+     allDate = "Most recent complete test date: " + allDate.substring(0,10);
+     
 
     // select count(*) from results where result = 'PASS';
     db.sequelize.query(`select count(*) from Result where Result = 'PASS';`).then(results => {
@@ -70,7 +83,7 @@ exports.getOverview = function(req, res) {
             resultsTotal: null,
             languagesArray: lang,
             currentUrl: req.url,
-            user: req.user.firstname
+            allDate: allDate          
           });
 
         }).catch(function(err) {
@@ -96,6 +109,13 @@ exports.getOverview = function(req, res) {
 
   })
 
+ 
+}).catch(function(err) {
+   console.log('error: ' + err);
+   return err;
+
+ })
+
 };
 
 //app.get('/dashboard/custom/:custom', api_dashbboard.getResultMetaByCustom)
@@ -109,7 +129,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
 
   let language = "all";
-  let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
+  let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
   let pass = null;
   let fail = null;
   let skip = null;
@@ -176,8 +196,7 @@ exports.getResultMetaByCustom = function(req, res) {
             feature: features[i],
             pass: pass,
             fail: fail,
-            skip: skip,
-            user: JSON.stringify(req.user)
+            skip: skip
           })
 
           if (i === features.length - 1) {
@@ -195,7 +214,7 @@ exports.getResultMetaByCustom = function(req, res) {
               title: 'Results with query: ' + custom ,
               resultsTotal : resultsTotal,
               overall: overall,
-              user: req.user.firstname
+              currentUrl: req.url
             });
 
           } else {
@@ -231,7 +250,7 @@ exports.getResultMetaByLocale = function(req, res) {
   let pass = null;
   let fail = null;
   let skip = null;
-
+  let allDate = null;
 
 
   let resultsTotal = [];
@@ -312,7 +331,7 @@ exports.getResultMetaByLocale = function(req, res) {
               resultsTotal : resultsTotal,
               overall: overall,
               currentUrl: req.url,
-              user: req.user.firstname
+              allDate: allDate
             });
 
           } else {
