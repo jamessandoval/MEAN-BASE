@@ -85,21 +85,18 @@
       // Display the chart inside the <div> element with id="pieChart"
       var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
       chart2.draw(data2, options2);
-    } //end of Draw Charts function
-
-    function loadingAnimation(){
-      document.getElementById("loading").style.display = "block";
-      document.getElementById("page").style.display = "none";
-    }
+    } //end of Draw Charts function 
 
   </script>
+
+
   <div id="loading" style="display: none;">
       <div id="loader-wrapper">
         <div id="loader"></div>
       </div><!--end of loader-wrapper-->
   </div><!--end of loading-->
 
-  <div id="page">
+  <div id="page" >
   
     <h1 class="text-center">Locale: <%= language %></h1>
     <% if(allDate){ %><h5 class="text-center"><%= allDate %></h5><% } %>

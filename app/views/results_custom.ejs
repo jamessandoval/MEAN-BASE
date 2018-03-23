@@ -77,7 +77,8 @@
             <th>Language: </th>
             <th>Result: </th>
             <th class="text-center">URL:</th>
-            <th class="text-left">Output:</th>
+            <th class="text-left">Test Scenario:</th>
+            <th class="text-left">Result:</th>
           </tr>
         </thead>
         <!-- ###                                                               -->
@@ -116,7 +117,25 @@
                     </a>
                   </td>
                   <td>
-                    <%= results[i].Output %>
+                      <% if(results[i].Output.includes("Result:")){
+                        var q = results[i].Output;
+                        var r = q.split("Result:")[0];
+                         r = r.replace("Scenario:",'');
+                      }else{
+                        var r = results[i].Output;
+                         r = r.replace("Scenario:",'');
+                      } %> 
+                      <%=r%>
+                  </td>
+                  <td>
+                      <% if(results[i].Output.includes("Result:")){
+                        var y = results[i].Output;
+                        var x = y.substring(y.indexOf("Result:"));
+                        x = x.replace("Result:",'');
+                      }else{
+                        var x = '';
+                      } %> 
+                      <%=x%>
                   </td>
                 </tr>
             <% }} %>
