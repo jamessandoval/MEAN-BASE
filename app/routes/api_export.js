@@ -57,19 +57,24 @@ exports.getExport = function(req, res) {
 // New export tool
 exports.getExportFromResults = function(req, res, next) {
 
-  console.log(req.query.feature);
-  console.log(req.query.language);
-  console.log(req.query.testresult);
+  //console.log(req.query.feature);
+  //console.log(req.query.language);
+  //console.log(req.query.testresult);
+  //console.log(typeof(req.query.testresult));
 
-  let language = "en-us";//req.query.language;
-  let feature = req.query.feauture;
-  let testresult = "FAIL" //req.query.testresult;
+  // TODO: Export all tool
 
-  //if (feature === "All" && testresult !== null) {
+  let language = req.query.language;
+  let feature = req.query.feature;
+  let testresult = req.query.testresult;
+  let query = req.query.query;
 
-    console.log("executing.");
-    // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-    db.sequelize.query(`SELECT * from Result where Language = '${language}' and Result = '${testresult}';`).then(results => {
+  query = query.replace(/ /g, "%");
+
+  ///results/locale/:locale'
+  if (feature === "All" && testresult === "") {
+
+    db.sequelize.query(`SELECT * from Result where Language = '${language}';`).then(results => {
 
       results = results[0];
 
@@ -91,33 +96,190 @@ exports.getExportFromResults = function(req, res, next) {
       console.log('error: ' + err);
       return err;
     })
-  //}else{
 
-    //res.send("TODO: Build out additional queries...for demo use language and testresult only.");
-  //}
+    ///results/locale/:locale/testresult/:testresult'
+  } else if (feature === "All" && testresult !== "") {
 
-  /*
+    db.sequelize.query(`SELECT * from Result where Language = '${language}' and Result = '${testresult}';`).then(results => {
 
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND Result = '${testresult}';`).then(results => {
+      results = results[0];
 
-    results = results[0];
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
 
-    // Needed To convert the blob object into a string 
-    // Otherwise it returns a buffer array object.
-    for (var i = 0; i < results.length; i++) {
-      results[i].Output = String(results[i].Output);
+      }
 
-    }
+      req.results = results;
+      req.language = language;
+      req.testresult = testresult;
 
-    req.results = results;
-    return next();
+      return next();
 
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-  })
-  */
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+    //results/feature/:template/query/:custom
+  } else if (feature !== "All" && language === "All" && testresult === "" && query !== "") {
+
+    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Output like '%${query}%';`).then(results => {
+
+      results = results[0];
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+      }
+
+      req.results = results;
+
+      req.language = language;
+      req.testresult = testresult;
+
+      return next();
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+    //results/feature/:template/query/:custom/testresult/:testresult
+  } else if (feature !== "All" && language === "All" && testresult !== "" && query !== "") {
+
+    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Result = '${testresult}'and Output like '%${query}%';`).then(results => {
+
+      results = results[0];
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+      }
+
+      req.results = results;
+
+      req.language = language;
+      req.testresult = testresult;
+
+      return next();
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {
+
+
+    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and language = '${language}';`).then(results => {
+
+      results = results[0];
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+      }
+
+      req.results = results;
+
+      req.language = language;
+      req.testresult = testresult;
+
+      return next();
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  }else if (feature !== "All" && language !== "All" && testresult !== "" && query === "") {
+
+    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Result = '${testresult}' and language = '${language}';`).then(results => {
+
+      results = results[0];
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+      }
+
+      req.results = results;
+
+      req.language = language;
+      req.testresult = testresult;
+
+      return next();
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  }else if (feature !== "All" && language !== "All" && query !== "" && testresult === "" ) {
+
+    console.log("I am executing.\n\n\n");
+
+    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Language = '${language}' and Output like '%${query}%';`).then(results => {
+
+      results = results[0];
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+      }
+
+      req.results = results;
+
+      req.language = language;
+      req.testresult = testresult;
+
+      return next();
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  }else if (feature !== "All" && language !== "All" && query !== "" && testresult !== "" ) {
+
+    console.log("I am executing.\n\n\n");
+
+    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Language = '${language}' and Output like '%${query}%' and Result = '${testresult}';`).then(results => {
+
+      results = results[0];
+
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+
+      }
+
+      req.results = results;
+
+      req.language = language;
+      req.testresult = testresult;
+
+      return next();
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  }
 
 };
 

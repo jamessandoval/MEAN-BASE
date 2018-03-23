@@ -1,95 +1,100 @@
 <%- include('header') %>
 
   <script>
-  google.charts.load('current', { 'packages': ['corechart'] });
-  google.charts.setOnLoadCallback(drawCharts);
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawCharts);
 
-  var passes = <%= overall.pass %>;
-  var fails = <%= overall.fail %>;
-  var others = <%= overall.skip %>;
-
-
-
-  // Draw the chart and set the chart values
-  function drawCharts() {
-
-    /////////////////////////////////// Pie Chart /////////////////////
-
-    var data = google.visualization.arrayToDataTable([
-      ['Test', 'Passed or Failed'],
-      ['Passed', passes],
-      ['Failed', fails],
-      ['Other', others],
-    ]);
-    // Optional; add a title and set the width and height of the chart
-    // Options can be variables such as title: $Title
-
-    if (<%= language =='ALL' %>) {
-      var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
-      var myTitle = 'Locale: <%= language %>,By <%= feature %> Feature Page';
-    } else {
-      var legendLocation = 'none';
-      var myTitle = '';
-    };
-
-    var options = {
-
-      'title': myTitle,
-      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
-      'colors': ['#109618', '#DC3912', '#2569ff'],
-      'backgroundColor': '',
-      'is3D': true,
-      'chartArea': { width: '350', height: '80%' },
-      'legend': legendLocation,
-      'slices': {
-        0: { offset: 0.0 },
-        1: { offset: 0.2 },
-        2: { offset: 0.0 }
-      }
-    };
+    var passes = <%= overall.pass %>;
+    var fails = <%= overall.fail %>;
+    var others = <%= overall.skip %>;
+    
 
 
-    // Display the chart inside the <div> element with id="pieChart"
-    var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-    chart.draw(data, options);
+    // Draw the chart and set the chart values
+    function drawCharts() {
 
-    /////////////////////////////////// Bar Chart /////////////////////
+      /////////////////////////////////// Pie Chart /////////////////////
 
-    var data2 = google.visualization.arrayToDataTable([
-      ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
+      var data = google.visualization.arrayToDataTable([
+        ['Test', 'Passed or Failed'],
+        ['Passed', passes],
+        ['Failed', fails],
+        ['Other', others],
+      ]);
+      // Optional; add a title and set the width and height of the chart
+      // Options can be variables such as title: $Title
 
-      <% if(resultsTotal){ %>
-      <% for(var i=0; i < resultsTotal.length; i++) { %> ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
-      <% }} %>
+      if (<%= language =='ALL' %>) {
+        var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+        var myTitle = 'Locale: <%= language %>,By <%= feature %> Feature Page';
+      } else {
+        var legendLocation = 'none';
+        var myTitle = '';
+      };
 
-    ]);
+      var options = {
+
+        'title': myTitle,
+        'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+        'colors': ['#109618', '#DC3912', '#2569ff'],
+        'backgroundColor': '',
+        'is3D': true,
+        'chartArea': { width: '350', height: '80%' },
+        'legend': legendLocation,
+        'slices': {
+          0: { offset: 0.0 },
+          1: { offset: 0.2 },
+          2: { offset: 0.0 }
+        }
+      };
 
 
-    var options2 = {
+      // Display the chart inside the <div> element with id="pieChart"
+      var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+      chart.draw(data, options);
 
-      'title': 'Locale: <%= language %>',
+      /////////////////////////////////// Bar Chart /////////////////////
 
-      'isStacked': 'percent',
-      'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
-      'colors': ['#109618', '#DC3912', '#2569ff'],
-      'backgroundColor': '',
-      'is3D': true,
-      'chartArea': { width: '350', height: '80%' },
-      'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
-      'hAxis': {
-        'minValue': 0,
-        'ticks': [0, .3, .6, .9, 1]
-      }
-    };
+      var data2 = google.visualization.arrayToDataTable([
+        ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
 
-    // Display the chart inside the <div> element with id="pieChart"
-    var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
-    chart2.draw(data2, options2);
-  }
+        <% if(resultsTotal){ %>
+        <% for(var i=0; i < resultsTotal.length; i++) { %> ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
+        <% }} %>
+
+      ]);
+
+
+      var options2 = {
+
+        'title': 'Locale: <%= language %>',
+
+        'isStacked': 'percent',
+        'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+        'colors': ['#109618', '#DC3912', '#2569ff'],
+        'backgroundColor': '',
+        'is3D': true,
+        'chartArea': { width: '350', height: '80%' },
+        'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
+        'hAxis': {
+          'minValue': 0,
+          'ticks': [0, .3, .6, .9, 1]
+        }
+      };
+
+      // Display the chart inside the <div> element with id="pieChart"
+      var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
+      chart2.draw(data2, options2);
+    } //end of Draw Charts function
+
+    function loadingAnimation(){
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("page").style.display = "none";
+    }
 
   </script>
 
-<div class="container-fluid">
+<div class="container-fluid" id="page">
   <div class="row">
     <div class="col-lg-4 offset-lg-4 text-center">
       <br /><br>
