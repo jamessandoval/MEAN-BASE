@@ -89,85 +89,94 @@
 
   </script>
 
-  <h1 class="text-center">Locale: <%= language %></h1>
+<div class="container-fluid">
   <div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-5 myChart">
+    <div class="col-lg-4 offset-lg-4 text-center">
+      <br /><br>
+      <h1><%= title %></h1>
 
+      <% if(typeof user == 'string' && user){ %>
+
+      <h3>User is: <%= user %></h3>
+
+      <% } %>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+
+
+
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <h1 class="text-center">Locale: <%= language %></h1>
       <!-- Module for Specific Language -->
       <% if(language != "ALL"){ %>
-        <!--<h5>Drill-Down Links:</h5>-->
-        <div class="drill-down">
-          <a href="/results/locale/<%= language %>/testresult/PASS">
+      <!--<h5>Drill-Down Links:</h5>-->
+      <div class="drill-down">
+        <a href="/results/locale/<%= language %>/testresult/PASS">
           <span class="legend Pass"></span>
           <span class="LinksToResults">Pass</span>
         </a>
-          <a href="/results/locale/<%= language %>/testresult/FAIL">
+        <a href="/results/locale/<%= language %>/testresult/FAIL">
           <span class="legend Fail"></span>
           <span class="LinksToResults">Fail</span>
         </a>
-          <a href="/results/locale/<%= language %>/testresult/SKIP">
+        <a href="/results/locale/<%= language %>/testresult/SKIP">
           <span class="legend Skip"></span>
           <span class="LinksToResults">Skip</span>
         </a>
-        </div>
-        <%}%>
-          <!-- legend module here -->
-          <div id="pieChart" ></div>
-          <!-- legend module here -->
-          <!-- Additional Buttons Go here -->
-          <% if(resultsTotal){ %>
-            <br>
-            <br>
-            <h3> Click on Feature links below for more detailed information:</h3>
-            <small>Please note that results may take a few moments to load.</small>
-            <br>
-            <br>
-            <% for(var i=1; i < 25; i++) { %>
-              <a href='/results/feature/f<%= [i] %>/locale/<%= language %>'>
-                <button type="button" class="btn btn-warning locale-button">
-                  <b>F<%= [i] %></b>
-                  <br>
-                </button>
-              </a>
-              <% } %>
-      <!-- Module for Specific Language -->
-    </div>
-    <% } %>
-      <!-- Additional buttons go here -->
+      </div><!-- end .drill-down -->
+      <%}%>
+        <!-- legend module here -->
+        <div id="pieChart"></div>
+        <!-- legend module here -->
+    </div><!-- end .col-lg-4 -->
+
+    <div class="col-lg-3">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
-        <div class="col-lg-5">
-          <br>
-          <br>
-          <br>
-          <div id="barGraph" class="pieChart">BarGraph</div>
-        </div>
-        <div class="col-lg-1"></div>
-  </div>
-  <%  } %>
-    <!-- Secondary Bar Graph Ends here -->
-    <!-- Main Locale Links Section Goes here -->
+        <div id="barGraph" class="pieChart">BarGraph</div>
+        <%  } %>
+      <!-- Secondary Bar Graph Ends here -->
+    </div><!-- end .col-lg-4 -->
+  </div><!-- end .row -->
 
-      <!-- Main Locale Links Section Ends here -->
-        </div>
-            <% if(!resultsTotal){ %>
-      <div class="row">
-        <div class="col-lg-12 main-locale-buttons">
-          <h3 class="text-center"> Click on Locale links for more detailed information:</h3>
-          <small>Please note that results may take a few moments to load.</small></h3>
-          <br>
-          <br>
-          <% for(var i=0; i < languagesArray.length; i++) { %>
-            <a href='/dashboard/locale/<%= languagesArray[i].Language %>'>
-              <button type="button" class="btn btn-warning locale-button">
-                <b><%= languagesArray[i].Language %></b>
-              </button>
-            </a>
-      <% }%>
-    </div>
-    </div>
-       <% }%>
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <!-- Dashboard button links : BEGIN-->
+      <% if(!resultsTotal){ %>
+        <h3> Click on Locale links for more detailed information:</h3>
+        <h6>Please note that results may take a few moments to load.</h6>
+        <br />
+        <br />
+        <% for(var i=0; i < languagesArray.length; i++) { %>
+          <a href='/dashboard/locale/<%= languagesArray[i].Language %>'>
+            <button type="button" class="btn btn-warning locale-button">
+              <b><%= languagesArray[i].Language %></b>
+            </button>
+          </a>
+        <% }%><!-- end for(var i=0; i < languagesArray.length; i++) -->
+      <% }%><!-- end if(!resultsTotal) -->
+      <!-- Dashboard button links : END -->
+
+
+      <!-- Results by Language button links : BEGIN-->
+      <% if(resultsTotal){ %>
+        <h3> Click on Feature links below for more detailed information:</h3>
+        <h6>Please note that results may take a few moments to load.</h6>
         <br>
-        </div>
-        <%- include('footer') %>
+        <br>
+        <% for(var i=1; i < 25; i++) { %>
+          <a href='/results/feature/f<%= [i] %>/locale/<%= language %>'>
+            <button type="button" class="btn btn-warning locale-button">
+            <b>F<%= [i] %></b>
+            <br>
+            </button>
+          </a>
+        <% } %><!-- end for(var i=1; i < 25; i++) -->
+      <% } %><!-- end if(resultsTotal) -->
+      <!-- Results by Language button links : END -->
+    </div><!-- end .col-lg-4 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+<br /><br /><br />
+<%- include('footer') %>
