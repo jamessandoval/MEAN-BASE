@@ -79,91 +79,7 @@
     <!-- pagination Ends here -->
   </div><!-- end .row -->
 
-  <div class="row">
-  <div class="col-12" style="padding-left:5em;"></div>
 
-  </div>
-
-  <table class="table table-hover table-bordered">
-        <thead class="thead-light">
-          <tr>
-            <th>Scenario ID:</th>
-            <th>Test Run ID:</th>
-            <th>Template: </th>
-            <th>Run Date:</th>
-            <th>Language: </th>
-            <th>Result: </th>
-            <th class="text-center">URL:</th>
-            <th class="text-left">Test Scenario:</th>
-            <th class="text-left">Result:</th>
-          </tr>
-        </thead>
-        <!-- ###                                                               -->
-        <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
-        <!-- ###                                                               -->
-        <% if(results){ %>
-          <% for(var i=0; i < results.length; i++) { %>
-                <tr>
-                  <td>
-                    <%= results[i].ScenarioNumber %>
-                  </td>
-                  <td>
-                    <%= results[i].TestRunId %>
-                  </td>
-                  <td>
-                    <%= results[i].Template %>
-                  </td>
-                  <td>
-                    <%= results[i].RunDate %>
-                  </td>
-                  <td>
-                    <%= results[i].Language %>
-                  </td>
-                  <td>
-                    <%if (results[i].Result === "PASS") { %>
-                      <button type="button" class="btn btn-success">PASS</button>
-                      <% }else if(results[i].Result === "FAIL"){ %>
-                        <button type="button" class="btn btn-danger">FAIL</button>
-                        <% }else{%>
-                          <button type="button" class="btn btn-primary">SKIP</button>
-                          <% } %>
-                  </td>
-                  <td>
-                    <a href="<%= results[i].URLs %>" target="_blank">
-                      <%= results[i].URLs %>
-                    </a>
-                  </td>
-                  <td>
-                      <% if(results[i].Output.includes("Result:")){
-                        var q = results[i].Output;
-                        var r = q.split("Result:")[0];
-                         r = r.replace("Scenario:",'');
-                      }else{
-                        var r = results[i].Output;
-                         r = r.replace("Scenario:",'');
-                      } %> 
-                      <%=r%>
-                  </td>
-                  <td>
-                      <% if(results[i].Output.includes("Result:")){
-                        var y = results[i].Output;
-                        var x = y.substring(y.indexOf("Result:"));
-                        x = x.replace("Result:",'');
-                      }else{
-                        var x = '';
-                      } %> 
-                      <%=x%>
-                  </td>
-                </tr>
-            <% }} %>
-  </table>
-
-  <div class="row">
-      <div class="col-3"></div>
-      <div class="col-6"></div>
-    <div class="col-2">
-
-<!-- pagination Begins here -->
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
           <thead class="thead-light">
@@ -175,7 +91,8 @@
               <th>Language: </th>
               <th>Result: </th>
               <th class="text-center">URL:</th>
-              <th class="text-left">Output:</th>
+              <th class="text-left">Test Scenario:</th>
+              <th class="text-left">Result:</th>
             </tr>
           </thead>
           <!-- ###                                                               -->
@@ -214,7 +131,25 @@
                       </a>
                     </td>
                     <td>
-                      <%= results[i].Output %>
+                        <% if(results[i].Output.includes("Result:")){
+                          var q = results[i].Output;
+                          var r = q.split("Result:")[0];
+                           r = r.replace("Scenario:",'');
+                        }else{
+                          var r = results[i].Output;
+                           r = r.replace("Scenario:",'');
+                        } %> 
+                        <%=r%>
+                    </td>
+                    <td>
+                        <% if(results[i].Output.includes("Result:")){
+                          var y = results[i].Output;
+                          var x = y.substring(y.indexOf("Result:"));
+                          x = x.replace("Result:",'');
+                        }else{
+                          var x = '';
+                        } %> 
+                        <%=x%>
                     </td>
                   </tr>
               <% }} %>
