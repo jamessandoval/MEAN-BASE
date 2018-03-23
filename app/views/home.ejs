@@ -11,41 +11,43 @@
       <h3>User is: <%= user %></h3>
 
       <% } %>
+    </div><!-- end .col-lg-4 offset-lg-4 -->
+  </div><!-- end .row -->
+
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <div class="homePgBodyText">
+          <h4>View the dashboard to see overall site health.</h4>
+        <a href="/dashboard" class="btn btn-warning" id="mybutton"><strong>DASHBOARD</strong></a>
+      </div>
+
+      <div class="homePgBodyText">
+        <h4>Example of Overview by Language Page</h4>
+        <a href="/dashboard/locale/en-us">Result by Language in en-us</a>
+      </div>
+
+      <div class="homePgBodyText">
+        <h4>Example of Results by Feature and Language</h4>
+        <a href="/results/feature/f2/locale/en-us">Currently set at feature <strong>F2</strong> and language <strong>EN-US</strong></a>
+      </div>
+
+      <div class="homePgBodyText">
+        <h4>Example of Overview by query on test description field</h4>
+        <a href="/dashboard/query/h1%20in%20the%20correct%20language">Overview on custom query: H1 Language Correct - All locales &amp; Features <br></a>
+      </div>
+
+      <div class="homePgBodyText">
+        <h4>Example of Test Results by feature, language, and query on test description Field</h4>
+        <a href="/results/feature/f3/query/h1%20in%20the%20correct%20language"> Currently set at feature <strong>F3</strong>and query: <strong>H1 in the correct language.</strong></a>
+      </div>
+
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
-  
-  <div class="row">
-    <div class="col-lg-12">
 
-      <h4 class="text-center">View the dashboard to see overall site health.</h4>
-      <div class="text-center">
-      <a href="/dashboard">
-        <button type="button" id="mybutton" class="btn btn-warning"><b>DASHBOARD</b></button>
-      </a>
-      </div>
-    	<br>
-      <h4>Example of Overview by Language Page</h4>
-      <a href="/dashboard/locale/en-us">Result by Language in en-us</a>
-      <br>
-      <br>
-      
-      <h4>Example of Results by Feature and Language</h4>
-      <a href="/results/feature/f2/locale/en-us">Currently set at feature <b>F2</b> and language <b>EN-US</b> </a>
-      <br><br>
 
-      <h4>Example of Overview by query on test description field</h4>
-      <a href="/dashboard/query/h1%20in%20the%20correct%20language">Overview on custom query: H1 Language Correct - All locales &amp; Features <br></a>
-      <br>
-   
-      <h4>Example of Test Results by feature, language, and query on test description Field</h4>
-      <a href="/results/feature/f3/query/h1%20in%20the%20correct%20language"> Currently set at feature <b>F3</b>and query: <b>H1 in the correct language.</b></a>
-      <br><br>
+<!--<h4>Example of Results by Feature, Language, Test Result <br> and search query on test description field</h4>
+      <a href="/results/feature/f2/locale/en-us/custom/h1%20in%20the%20correct%20language/testresult/pass">Currently set at feature <strong>F3</strong>, language <strong>En-US</strong>, test result PASS and query: <strong>H1 in the correct language.</strong></a>-->
 
-      <!--<h4>Example of Results by Feature, Language, Test Result <br> and search query on test description field</h4>
-      <a href="/results/feature/f2/locale/en-us/custom/h1%20in%20the%20correct%20language/testresult/pass">Currently set at feature <b>F3</b>, language <b>En-US</b>, test result PASS and query: <b>H1 in the correct language.</b></a>-->
-    </div>
-  </div>
-  </div>
-  </div>
-  <br><br>
-  <%- include('footer') %>
+</div><!-- end .container-fluid -->
+<br /><br /><br />
+<%- include('footer') %>
