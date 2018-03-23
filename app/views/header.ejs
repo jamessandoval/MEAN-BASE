@@ -56,9 +56,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/test-status">Test Status</a>
       </li>
-
-
-      <!-- Delete this after dev is complete-->
       
       <% if(typeof user == 'string' && user){ %>
         <li class="nav-item">
@@ -79,22 +76,3 @@
   </div>
 </nav>
 <!-- end .nav -->
-
-<!-- begin .container -->
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <br>
-      <br>
-      <h1><%= title %></h1>
-
-      <% if(typeof user == 'string' && user){ %>
-
-      <h3>User is: <%= user %></h3>
-
-      <% } %>
-
-    </div>
-    <!-- end .col-sm-12 -->
-  </div>
-  <!-- end .row -->

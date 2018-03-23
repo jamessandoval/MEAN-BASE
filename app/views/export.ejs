@@ -1,47 +1,63 @@
 <%- include('header') %>
-  <!--<h1><%= title %></h1>-->
-  <h4 class="text-center">Choose a Language Locale.</h4>
-  <h4 class="text-center">Next, choose a Feature to Export.</h4>
-  </div>
-  <!-- end .col-sm-12 -->
-  </div>
-  <% if(languages){ %>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="button-group">
-          <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
-          <ul class="dropdown-menu btn-block">
-            <% for(var i=0; i < languages.length; i++) { %>
-              <li>
-                <a href="#" data-value="optionA" tabIndex="-1">
+
+<div class="container-fluid" id="page">
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4 text-center">
+      <br /><br>
+      <h1><%= title %></h1>
+
+      <% if(typeof user == 'string' && user){ %>
+
+      <h3>User is: <%= user %></h3>
+
+      <% } %>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+
+  <div class="row exportTool">
+    <div class="col-lg-12">
+        <h4>Choose a Language Locale.<br />Next, choose a Feature to Export.</h4>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  <br />
+
+  <div class="row exportTool">
+    <div class="col-lg-12">
+    <% if(languages){ %>
+      <div class="button-group">
+        <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block">
+          <% for(var i=0; i < languages.length; i++) { %>
+            <li>
+              <a href="#" data-value="optionA" tabIndex="-1">
               <input id="<%= languages[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></a>
-              </li>
-              <% }%>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <% }%>
-      <br>
-      <!-- end .row -->
-      <% if(features){ %>
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="button-group">
-              <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
-              <ul class="dropdown-menu btn-block">
-                <li class="dropdown-item">
-                  <a href="#">
-                    <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
-                </li>
-                <% for(var i=0; i < features.length; i++) { %>
-                  <li class="dropdown-item">
-                    <a href="#">
-                  <input id="<%= features[i] %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; <%= features[i] %></a>
-                  </li>
-                  <% }%>
-                    <!--
+            </li>
+            <% }%>
+        </ul>
+      </div><!-- end .button-group -->
+      <% }%>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  <br />
+
+  <div class="row exportTool">
+    <div class="col-lg-12">
+        <% if(features){ %>
+      <div class="button-group">
+        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block">
           <li class="dropdown-item">
+            <a href="#">
+              <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+          </li>
+          <% for(var i=0; i < features.length; i++) { %>
+            <li class="dropdown-item">
+              <a href="#">
+            <input id="<%= features[i] %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; <%= features[i] %></a>
+            </li>
+            <% }%>
+
+            <!--li class="dropdown-item">
             <a href="#">
               <input id="F2" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;(F2) Product Table of Contents</a>
           </li>
@@ -136,65 +152,66 @@
           <li class="dropdown-item">
             <a href="#">
               <input id="F25" class="FX" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;(F25) Promotions and Contests Page</a>
-          </li>
-        -->
-              </ul>
-            </div>
-          </div>
-        </div>
+          </li-->
+          
+          </ul>
+        </div><!-- end .button-group -->
         <% } %>
-          <!--
-  <div class="row hidden">
-    <div class="col-lg-12">
-      <div class="button-group">
-        <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">Latest Test Date: <span class="latestDate">_____</span></button>
+      </div><!-- end .col-sm-12 -->
+    </div><!-- end .row -->
+    <br />
+
+    <!--div class="row hidden">
+      <div class="col-lg-12">
+        <div class="button-group">
+          <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown">Latest Test Date: <span class="latestDate">_____</span></button>
+        </div>
       </div>
-    </div>
-  </div>
--->
-          <br>
-          <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-              <div class="button-group">
-                <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button>&nbsp;
-                <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
-                <button type="button" class="btn btn-md btn-success" id="exportAll" onclick="exportAll()"><b>Build Comprehensive Report</b></button>
-              </div>
-            </div>
-            <div class="col-md-2"></div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-sm-12">
-              <h2>Export Data Selection:</h2>
-              <div class="col-11" id="displaySelections">
-                <!--<h4 class="text-center">&bull; Feature:</h4>-->
-                <div id="pageChildren"></div>
-              </div>
-              <div class="col-11" id="langSelection">
-                <!--<h4 class="text-center">&bull; Language:</h4>-->
-                <div id="langChildren"></div>
-              </div>
-            </div>
-          </div>
-          <!--<div class="row">
-            <div class="col-sm-12">
-              <h2>Export Language Selection:</h2>
-              <div class="col-sm-11" id="langSelection2">
-                <h4 class="text-center">&bull; Language:</h4>
-                <div id="langChildren2"></div>
-              </div>
-            </div>
-          </div>
-          -->
-          <div class="row">
-            <div class="col-4"></div>
-            <!-- end .col-sm-6 -->
-          </div>
-          <!-- end .row -->
+    </div-->
+
+    <div class="row exportTool">
+      <div class="col-lg-12">
+        <div class="button-group">
+          <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button>
+          <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
+          <button type="button" class="btn btn-md btn-success exportToolBtn" id="exportAll" onclick="exportAll()"><b>Build Comprehensive Report</b></button>
+        </div>
+      </div><!-- end .col-lg-12 -->
+    </div><!-- end .row -->
+    <br />
+
+    <div class="row exportTool">
+      <div class="col-lg-12">
+        <h2>Export Data Selection:</h2>
+        <div class="col-lg-12 exportTool" id="displaySelections">
+          <!--<h4 class="text-center">&bull; Feature:</h4>-->
+          <div id="pageChildren"></div>
+        </div><!-- end .col-lg-12 -->
+
+        <div class="col-lg-12 exportTool" id="langSelection">
+          <!--<h4 class="text-center">&bull; Language:</h4>-->
+          <div id="langChildren"></div>
+        </div><!-- end .col-lg-12 -->
+
+      </div><!-- end .col-lg-12 -->
+    </div><!-- end .row -->
+
+    <!--div class="row">
+      <div class="col-sm-12">
+        <h2>Export Language Selection:</h2>
+        <div class="col-sm-11" id="langSelection2">
+          <h4 class="text-center">&bull; Language:</h4>
+          <div id="langChildren2"></div>
+        </div>
+      </div>
+    </div-->
+
+    <!--div class="row">
+      <div class="col-4">
           <p id="jsonStuff"></p>
-          <br>
-          <br>
-          </div>
-          <%- include('footer') %>
+      </div>
+    </div--><!-- end .row -->
+
+</div><!-- end .container-fluid -->
+ <br /><br /><br />
+<%- include('footer') %>
