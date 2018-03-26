@@ -132,7 +132,7 @@ body {
 	overflow:auto;
 }
 a button {
-	color:black;
+	/* color:black; */
 }
 
 .AtTenPerc{
@@ -196,7 +196,7 @@ input[type=checkbox] {
 button[type=submit] {
   background-color: #ffc20e;
   border: 1px solid #E4AA00;
-  color: black;
+  /* color: black; */
   cursor: pointer;
   display: inline-block;
   font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
@@ -214,6 +214,6 @@ button[type=submit] {
 }
 button[type=submit]:hover {
   background-color: #D4AC37;
-  color: black;
+  /* color: black; */
   text-decoration: none;
 }
