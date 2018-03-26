@@ -30,47 +30,35 @@
 <!-- end .nav -->
 
   <!-- begin .container -->
-  <div class="container-fluid container-main">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-12">
-        <br>
-        <br>
+      <div class="col-12 loginAndSignupTxtAlign">
+        <br /><br />
         <h1>Welcome to the Q.A. Automated Testing Suite</h1>
-      </div>
-      <!-- end .col-sm-12 -->
-    </div>
-    <!-- end .row -->
+      </div><!-- end .col-sm-12 -->
+    </div><!-- end .row -->
     <br />
     <div class="row">
       <div class="col-md-6 offset-md-3" style="background-color: none;">
+          <div class="loginAndSignupForm">
+            <!--form id="login" name="login" method="post" action="login" style="border:2px solid #ccc"-->
+            <form id="login" name="login" method="post" action="login">
+              <h3>Please log-in</h3><br />
 
-        <form id="login" name="login" method="post" action="login" style="border:2px solid #ccc">
-        <div class="loginDiv">
-          <h2>Please log-in</h2>
+              <input type="text" name="email" placeholder="Enter Username/Email" required /><br /><br />
 
-          <input type="text" name="email" placeholder="Enter Username/Email" required />
-          <br /><br />
+              <input type="password" name="password" placeholder="Enter Password" required /><br />
 
-          <input type="password" name="password" placeholder="Enter Password" required />
-          <br />
+              <a href="/reset-password" class="small" style="text-align: left;">Forgot your password?</a>
 
-          <a href="/reset-password" class="small" style="text-align: left;">Forgot your password?</a>
-          <br /><br />
+              <!--input type="checkbox" checked="checked" name="remember">Remember me<br /><br /-->
 
-          <!--input type="checkbox" checked="checked" name="remember">Remember me
-          <br /><br /-->
-
-          <button type="submit" class="btn btn-primary btn-lg btn-block" value="login">Login</button>
-        </div>
-      </form>
-
-      </div>
-      <!-- end .col-sm-4 .offset-sm-4 -->
-    </div>
-    <!-- end .row -->
-  </div>
-  <!-- end .container -->
-
-
+              <button type="submit" class="btn btn-primary btn-lg btn-block" value="login">Login</button>
+            </form>
+          </div><!-- end loginAndSignupForm -->
+      </div><!-- end .col-sm-4 .offset-sm-4 -->
+    </div><!-- end .row -->
+  </div><!-- end .container-fluid -->
 <br><br>
+
 <%- include('footer') %>

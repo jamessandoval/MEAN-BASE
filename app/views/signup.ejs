@@ -1,27 +1,39 @@
 <%- include('header') %>
+
+<div class="container-fluid">
   <div class="row">
-    <div class="col-lg-12 class="form-group">
-      <br><br>
-        <form id="signup" name="signup" method="post" action="/signup" >
-        <label for="email">Email:
+    <div class="col-12 loginAndSignupTxtAlign">
+      <br /><br />
+      <h1>Welcome to the Q.A. Automated Testing Suite</h1>
+      
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  <br />
+  <div class="row">
+    <div class="col-md-6 offset-md-3 form-group">
+        <div class="loginAndSignupForm">
+          <form id="signup" name="signup" method="post" action="/signup" >
+            <h4>Create a user account below</h4>
+            
+            <label for="email">Email:</label>
+            <input class="text" name="email" type="text" size="25"/><br />
+            
+            <label for="firstname">Firstname:</label>
+            <input name="firstname" type="text" size="30" /><br />
+      
+            <label for="lastname">Lastname:</label>
+            <input name="lastname" type="text" size="30" /><br />
+      
+            <label for="password">Password:</label>
+            <input name="password" type="password" size="30" />
+      
+            <!--input type="submit" class="btn btn-primary" value="Sign Up" /-->
+            <button type="submit" class="btn btn-primary" value="Sign Up">Sign Up</button>
+          </form>
+        </div><!-- end loginDiv -->
+    </div><!-- end .col-md-6 offset-md-3 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+<br /><br />
 
-        <input class="text" name="email" type="text" size="25"/>
-
-        </label><br>
-        <label for="firstname"><h6>Firstname:</h6>
-        <input name="firstname" type="text" size="30" />
-        </label><br>
-        <label for="lastname"><h6>Lastname:</h6>
-        <input name="lastname" type="text" size="30" />
-        </label><br>
-        <label for="password"><h6>Password:</h6>
-        <input name="password" type="password" size="30" />
-      </label><br>
-        <input class="btn btn-primary" type="submit" value="Sign Up" />
-    </form>
-    </div>
-  </div>
-  </div>
-  </div>
-  <br><br>
-  <%- include('footer') %>
+<%- include('footer') %>
