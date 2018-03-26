@@ -180,7 +180,8 @@ exports.export_to_excel = function(req, res, next) {
         Language: results[j].Language,
         Result: results[j].Result,
         URLs: results[j].URLs,
-        Output: results[j].Output
+        Output: results[j].Output,
+        user: req.user.firstname
       });
       setTimeout(() => { processItems(j + 1); });
 
@@ -321,7 +322,7 @@ exports.getResultByIdLanguageCustom = function(req, res) {
       // Pagination Logic Part II Ends Here
 
       for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
+        results[i].Output = String(results[i].Output); 
       }
 
       console.log("template is " + template)
@@ -343,7 +344,8 @@ exports.getResultByIdLanguageCustom = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
 
       });
       return null;
@@ -497,7 +499,8 @@ exports.getResultByLanguage = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
 
       });
       return null;
@@ -666,7 +669,8 @@ exports.getResultByIdAndLanguage = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
 
       });
 
@@ -909,7 +913,9 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
+
       });
 
       return null;
@@ -1081,7 +1087,9 @@ exports.getResultByTemplateCustom = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
+
       });
 
       return null;
@@ -1255,7 +1263,8 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
 
       });
 
@@ -1416,7 +1425,8 @@ exports.getResultByLangAndTestResult = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
 
       });
 
@@ -1590,7 +1600,10 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         basePath: basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
-        custom: custom
+        custom: custom,
+        user: req.user.firstname
+
+
       });
       return null;
 

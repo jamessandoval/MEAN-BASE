@@ -79,19 +79,20 @@
     <!-- pagination Ends here -->
   </div><!-- end .row -->
 
-  <div class="row">
+
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
           <thead class="thead-light">
             <tr>
-              <th>Scenario ID:</th>
-              <th>Test Run ID:</th>
+              <th>Run  Date:</th>
+              <th>Test Pass ID:</th>
               <th>Template: </th>
-              <th>Run Date:</th>
-              <th>Language: </th>
-              <th>Result: </th>
-              <th class="text-center">URL:</th>
-              <th class="text-left">Output:</th>
+              <th>Language:</th>
+              <th>Test Scenario: </th>
+              <th class="text-center">Test Case ID:</th>
+              <th class="text-left">Result:</th>
+              <th>Message: </th>
+              <th class="text-left">URL:</th>
             </tr>
           </thead>
           <!-- ###                                                               -->
@@ -101,37 +102,62 @@
             <% for(var i=0; i < results.length; i++) { %>
                   <tr>
                     <td>
-                      <%= results[i].ScenarioNumber %>
+                     <% var a = results[i].RunDate.toString();
+                      var b = a.substring(0, a.indexOf('GMT')); %>
+                      <%=b%>
                     </td>
                     <td>
+                      <!-- Titled Test Pass ID -->
                       <%= results[i].TestRunId %>
                     </td>
                     <td>
                       <%= results[i].Template %>
                     </td>
                     <td>
-                      <%= results[i].RunDate %>
-                    </td>
-                    <td>
                       <%= results[i].Language %>
                     </td>
                     <td>
+                      <% if(results[i].Output.includes("Result:")){
+                        var q = results[i].Output;
+                        var r = q.split("Result:")[0];
+                          r = r.replace("Scenario:",'');
+                      }else{
+                        var r = results[i].Output;
+                          r = r.replace("Scenario:",'');
+                      } %> 
+                      <a href="<%= currentUrl %>query/<%=r%>"><%=r%></a>
+                    </td>
+                    
+                    <td>
+                      <!-- Titled 'Test Case ID' -->
+                      <%= results[i].ScenarioNumber %> 
+                    </td>
+                    <td>
                       <%if (results[i].Result === "PASS") { %>
-                        <button type="button" class="btn btn-success">PASS</button>
+                        <a href="<%= pfsUrl %>PASS" class="btn btn-success">PASS</a>
                         <% }else if(results[i].Result === "FAIL"){ %>
-                          <button type="button" class="btn btn-danger">FAIL</button>
+                          <a href="<%= pfsUrl %>FAIL" class="btn btn-danger">FAIL</a>
                           <% }else{%>
-                            <button type="button" class="btn btn-primary">SKIP</button>
+                            <a href="<%= pfsUrl %>SKIP" class="btn btn-primary">SKIP</a>
                             <% } %>
+                    </td>
+                    <td>
+                      <!-- Titled 'Message' and includes fail errors and skip messages ID -->
+                      <% if(results[i].Output.includes("Result:")){
+                        var y = results[i].Output;
+                        var x = y.substring(y.indexOf("Result:"));
+                        x = x.replace("Result:",'');
+                      }else{
+                        var x = '';
+                      } %> 
+                      <%=x%>
                     </td>
                     <td>
                       <a href="<%= results[i].URLs %>" target="_blank">
                         <%= results[i].URLs %>
                       </a>
                     </td>
-                    <td>
-                      <%= results[i].Output %>
-                    </td>
+                                       
                   </tr>
               <% }} %>
       </table>

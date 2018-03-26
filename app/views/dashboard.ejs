@@ -85,12 +85,7 @@
       // Display the chart inside the <div> element with id="pieChart"
       var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
       chart2.draw(data2, options2);
-    } //end of Draw Charts function
-
-    function loadingAnimation(){
-      document.getElementById("loading").style.display = "block";
-      document.getElementById("page").style.display = "none";
-    }
+    } //end of Draw Charts function 
 
   </script>
 
@@ -106,19 +101,13 @@
   <div class="row">
     <div class="col-lg-4 offset-lg-4 text-center">
       <br /><br>
-      <h1><%= title %></h1>
-
-      <% if(typeof user == 'string' && user){ %>
-
-      <h3>User is: <%= user %></h3>
-
-      <% } %>
+      <h2><%= title %></h2>
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
   
   <div class="row">
     <div class="col-lg-4 offset-lg-4">
-      <h1 class="text-center">Locale: <%= language %></h1>
+      <h3 class="text-center">Locale: <%= language %></h3>
       <!-- Module for Specific Language -->
       <% if(language != "ALL"){ %>
       <!--<h5>Drill-Down Links:</h5>-->

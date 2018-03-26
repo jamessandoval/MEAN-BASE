@@ -83,7 +83,9 @@ exports.getOverview = function(req, res) {
             resultsTotal: null,
             languagesArray: lang,
             currentUrl: req.url,
-            allDate: allDate          
+            allDate: allDate,
+            user: req.user.firstname
+
           });
 
         }).catch(function(err) {
@@ -214,7 +216,9 @@ exports.getResultMetaByCustom = function(req, res) {
               title: 'Results with query: ' + custom ,
               resultsTotal : resultsTotal,
               overall: overall,
-              currentUrl: req.url
+              currentUrl: req.url,
+              user: req.user.firstname
+
             });
 
           } else {
@@ -331,7 +335,8 @@ exports.getResultMetaByLocale = function(req, res) {
               resultsTotal : resultsTotal,
               overall: overall,
               currentUrl: req.url,
-              allDate: allDate
+              allDate: allDate,
+              user: req.user.firstname
             });
 
           } else {

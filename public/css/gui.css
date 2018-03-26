@@ -136,7 +136,7 @@ body {
 	overflow:auto;
 }
 a button {
-	color:black;
+	/* color:black; */
 }
 .AtTenPerc {
 	width: 10%; 
@@ -173,7 +173,7 @@ a button {
 button[type=submit] {
   background-color: #ffc20e;
   border: 1px solid #E4AA00;
-  color: black;
+  /* color: black; */
   cursor: pointer;
   display: inline-block;
   font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
@@ -189,7 +189,7 @@ button[type=submit] {
 }
 button[type=submit]:hover {
   background-color: #D4AC37;
-  color: black;
+  /* color: black; */
   text-decoration: none;
 }
 .homePgBodyText {
@@ -310,8 +310,8 @@ button[type=submit] {
     height: 150px;
     margin: -75px 0 0 -75px;
     border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #3498db;
+    border: 5px solid transparent;
+    border-top-color: green;
     -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
     animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
 }
@@ -324,7 +324,7 @@ button[type=submit] {
     right: 5px;
     bottom: 5px;
     border-radius: 50%;
-    border: 3px solid transparent;
+    border: 5px solid transparent;
     border-top-color: #e74c3c;
     -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
       animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
@@ -338,8 +338,8 @@ button[type=submit] {
     right: 15px;
     bottom: 15px;
     border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #f9c922;
+    border: 5px solid transparent;
+    border-top-color: #3498db;;
     -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
       animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
 }
