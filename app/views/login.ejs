@@ -1,65 +1,35 @@
-<!DOCTYPE html>
-<html>
+<%- include('header') %>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Quality Testing - Log-in</title>
-  <!--Stylesheet flukestrap include-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <!-- include bootstrap -->
-  <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
-  <!--Favicon/ shortcut icon-->
-  <link rel="stylesheet" href="/css/gui.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
-  <!-- Adding ajax for google chart dashboard -->
-</head>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 loginAndSignupTxtAlign">
+      <br /><br />
+      <h1>Welcome to the Q.A. Automated Testing Suite</h1>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  <br />
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3 col-md-7 offset-md-3" style="background-color: none;">
+        <div class="loginAndSignupForm">
+          <form id="login" name="login" method="post" action="login">
+            <h3>Please log-in</h3><br />
 
-<body style="padding-top: 60px;" onload="uncheckAll()">
+            <input type="text" name="email" placeholder="Enter Username/Email" required /><br /><br />
 
-<!-- begin .nav -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+            <input type="password" name="password" placeholder="Enter Password" required /><br />
 
-  <a class="navbar-brand">
-    <span class="navbar-brand mb-0 h1">Q.A. Automated Testing Suite</span>
-  </a>
+            <a href="/reset-password" class="small" style="text-align: left;">Forgot your password?</a>
 
-</nav>
-<!-- end .nav -->
+            <!--input type="checkbox" checked="checked" name="remember">Remember me<br /><br /-->
 
-  <!-- begin .container -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12 loginAndSignupTxtAlign">
-        <br /><br />
-        <h1>Welcome to the Q.A. Automated Testing Suite</h1>
-      </div><!-- end .col-sm-12 -->
-    </div><!-- end .row -->
-    <br />
-    <div class="row">
-      <div class="col-lg-6 offset-lg-3 col-md-7 offset-md-3" style="background-color: none;">
-          <div class="loginAndSignupForm">
-            <form id="login" name="login" method="post" action="login">
-              <h3>Please log-in</h3><br />
-
-              <input type="text" name="email" placeholder="Enter Username/Email" required /><br /><br />
-
-              <input type="password" name="password" placeholder="Enter Password" required /><br />
-
-              <a href="/reset-password" class="small" style="text-align: left;">Forgot your password?</a>
-
-              <!--input type="checkbox" checked="checked" name="remember">Remember me<br /><br /-->
-
-              <button type="submit" class="btn btn-primary btn-lg btn-block" value="login">Login</button>
-            </form>
-            <br />
-            <p> For access to the Testing Suite, please email <a href="mailto:kendall.whitlatch@fluke.com?Subject=QA%20GUI%20access%20request" target="_top">Kendall Whitlatch</a></p>
-          </div><!-- end loginAndSignupForm -->
-      </div><!-- end .col-sm-4 .offset-sm-4 -->
-    </div><!-- end .row -->
-  </div><!-- end .container-fluid -->
+            <button type="submit" class="btn btn-primary btn-lg btn-block" value="login">Login</button>
+          </form>
+          <br />
+          <p> For access to the Testing Suite, please email <a href="mailto:kendall.whitlatch@fluke.com?Subject=QA%20GUI%20access%20request" target="_top">Kendall Whitlatch</a></p>
+        </div><!-- end loginAndSignupForm -->
+    </div><!-- end .col-sm-4 .offset-sm-4 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
 
 <br /><br />
 <%- include('footer') %>
