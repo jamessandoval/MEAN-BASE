@@ -45,6 +45,9 @@ body {
 .center {
 	text-align:center;
 }
+.width-set{
+    width:300px;
+}
 .container-main {
 	margin: 0 auto !important;
     width: 90% !important; 
@@ -142,7 +145,6 @@ a button {
 	width:100%;
 }
 .btn {
-
 	min-width: 5em;
 }
 .double {
@@ -355,5 +357,4 @@ input[type=checkbox] {
         transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
     }
 }
-
 /*end of loading animation section */
