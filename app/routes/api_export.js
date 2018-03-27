@@ -43,7 +43,7 @@ exports.getExport = function(req, res) {
     }
 
     res.render('export', {
-      title: 'Export Tool',
+      title: 'Excel Reports Export Tool',
       features: features,
       languages: languages,
       user: req.user.firstname

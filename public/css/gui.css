@@ -51,6 +51,12 @@ body {
 .width-set{
     width:300px;
 }
+.bottomSpace{
+    margin-bottom:20px;
+}
+.topSpace{
+    margin-top:20px;
+}
 .container-main {
 	margin: 0 auto !important;
     width: 90% !important; 
@@ -371,3 +377,5 @@ button[type=submit] {
     }
 }
 /*end of loading animation section */
+
+
