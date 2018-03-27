@@ -26,6 +26,9 @@
     }
 }
 @media (min-width: 992px) {
+    .loginAndSignupTxtAlign {
+        text-align: center !important;
+    }
     .homePgBodyText {
         text-align: center !important;
     }
@@ -253,8 +256,8 @@ opacity:0.2;
 /*end progress bar*/
 
 
-/* login page */
-.loginDiv {
+/* login and signup pages */
+.loginAndSignupForm {
       max-width: 450px;
       min-width: 290px;
       margin: auto;
@@ -264,6 +267,10 @@ opacity:0.2;
 .loginBtn {
   max-width: 250px;
   margin: auto;
+}
+label {
+    margin-top: 10px;
+    font-weight: 550;
 }
 input[type=text], input[type=password] {
   width: 100%;
@@ -278,7 +285,13 @@ input[type=text]:focus, input[type=password]:focus {
 input[type=checkbox] {
   margin-bottom: 15px;
 }
-/* end login page */
+input[type=submit] {
+    margin-top: 15px;
+}
+button[type=submit] {
+    margin-top: 20px;
+}
+/* end login and signup pages */
 
 
 /*loading animation section */

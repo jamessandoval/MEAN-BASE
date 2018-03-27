@@ -45,7 +45,9 @@ exports.getExport = function(req, res) {
     res.render('export', {
       title: 'Export Tool',
       features: features,
-      languages: languages
+      languages: languages,
+      user: req.user.firstname
+
     });
   }).catch(function(err) {
     console.log('error: ' + err);

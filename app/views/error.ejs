@@ -1,12 +1,16 @@
 <%- include('header') %>
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <br>
-        <h1> <u><%= error %></u></h1>
 
-        <img src="https://imgs.xkcd.com/comics/compiling.png" alt="404" style="margin: 25px" />
-        <br>
-      </div>
-    </div>
-  </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-5 offset-xl-4 col-lg-6 offset-lg-3 col-md-7 offset-md-3 col-sm-9 offset-sm-2">
+      <br /><br />
+      <h1> <u><%= error %></u></h1>
+      <br /><br />
+      <img src="https://imgs.xkcd.com/comics/compiling.png" class="img-fluid" alt="404" />
+      <br />
+    </div><!-- end .col-lg-12 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+
+<br /><br /><br />
+<%- include('footer') %>

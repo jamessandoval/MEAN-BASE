@@ -2,7 +2,6 @@
 
 # Behat Project
 /behat_projects
-master_tests/build/
 
 # compiled output
 /dist
