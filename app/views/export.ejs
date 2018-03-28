@@ -16,11 +16,11 @@
 
   <div class="row exportTool">
     <div class="col-lg-12">
-        <h4>Choose a Language Locale.<br />Next, choose a Feature to Export.</h4>
+        <p>Choose a Language Locale.<br />Next, choose a Feature to Export.</p>
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
-
+<!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
   <div class="row exportTool">
     <div class="col-lg-12">
     <% if(languages){ %>
@@ -39,7 +39,7 @@
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
-
+<!--  ------------------------------------------------------Feature/Scenario Drop Down Options ---------------------------- -->
   <div class="row exportTool">
     <div class="col-lg-12">
         <% if(features){ %>
@@ -144,19 +144,19 @@
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
-
+<!--  ------------------------------------------------------Date Drop Down Options ---------------------------- -->
     <div class="row exportTool">
       <div class="col-lg-12">
           <% 
-          var dates = "";
+          var dates = ["3.16.12", "3.18.12"];
           if(dates){ %>
         <div class="button-group">
-          <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Latest Test Date: <span class="latestDate">_____</span></button>
+          <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Test Date</button>
           <ul class="dropdown-menu btn-block width-set">
             <% for(var i=0; i < dates.length; i++) { %>
             <li class="dropdown-item">
-             <a href="#" id="Fx">
-             <input id="<%= features[i] %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; <%= dates[i] %></a>
+             <a href="#" id="dates">
+             <input id="<%= dates[i] %>" class="date double" onclick="displayChecked(this.id)" type="radio" name="date" />&nbsp; <%= dates[i] %></a>
             </li>
             <% }%>
           </ul>
@@ -165,7 +165,7 @@
       </div>
     </div>
  
-
+<!--  ------------------------------------------------------Run Reports buttons ---------------------------- -->
     <div class="row exportTool">
       <div class="col-lg-12">
         <div class="button-group">
@@ -178,41 +178,33 @@
 
 
    
-<<<<<<< HEAD
-    <div class="row text-center exportTool">
-      <div class="col-12">
-        <h1 class="topSpace">Export Data Selection:</h1>
-  
-        <div class="col-6" id="displaySelections">
-          <h3>Page Type</h3>
+    <!--  ------------------------------------------------------Display Section ---------------------------- -->
+
+   
+    <div class="col-lg-12 topSpace center">
+      <h1>Export Data Selection:</h1>
+    </div><!-- end .col-lg-12 -->
+ 
+    <div class="container topSpace">
+        <div class="row exportTool">
+
+        <div class="col-md-4 col-lg-4">
+          <h3>Pages</h3>
           <div id="pageChildren"></div>
-        </div>
-  
-        <div class="col-6" id="langSelection">
+        </div><!-- end .col-md-5 .col-lg-6 -->
+
+        <div class="col-md-4 col-lg-4">
           <h3>Languages</h3>
           <div id="langChildren"></div>
+        </div><!-- end .col-md-5 .col-lg-6 -->
+
+        <div class="col-md-4 col-lg-4 center" >
+          <h3>Date Selection:</h3>
+          <div id="dateChildren"></div>
         </div>
-  
-      </div><!-- end .col-md-12 -->
-=======
-    <div class="row exportTool">
-      <div class="col-lg-12">
-        <h1>Export Data Selection:</h1>
-      </div><!-- end .col-lg-12 -->
-    </div><!-- end .row -->
 
-    <div class="row exportTool">
-      <div class="col-md-5 col-lg-6" id="displaySelections">
-        <h3>Pages</h3>
-        <div id="pageChildren"></div>
-      </div><!-- end .col-md-5 .col-lg-6 -->
-
-      <div class="col-md-5 col-lg-6" id="langSelection">
-        <h3>Languages</h3>
-        <div id="langChildren"></div>
-      </div><!-- end .col-md-5 .col-lg-6 -->
->>>>>>> e22f38a5415df8c81d21ff83d45e3b9a6fbd67af
-    </div><!-- end .row -->
+      </div><!-- end .row -->
+    </div>
 
 
 

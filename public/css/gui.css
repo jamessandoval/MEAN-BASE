@@ -46,7 +46,7 @@ body {
     position: relative;
 }
 .center {
-	text-align:center;
+    text-align:center;
 }
 .width-set{
     width:300px;
@@ -250,9 +250,9 @@ button[type=submit]:hover {
 	border-radius:16px;
 	top:0;
 	left:0;	
-  background:url("/img/bubble.png") 0 0;
-animation: flame 1500ms linear infinite;
-opacity:0.2;
+    background:url("/img/bubble.png") 0 0;
+    animation: flame 1500ms linear infinite;
+    opacity:0.2;
 }
 
 @keyframes flame {
