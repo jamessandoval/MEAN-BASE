@@ -53,7 +53,7 @@ function runTest() {
 
     });
    //dataType: 'json'
-*/
+  */
 
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("POST", "/export", true);
@@ -141,4 +141,22 @@ function exportAll() {
     }
   }
 
+}
+
+function exportSelections(){
+
+  var template = '';
+  template = document.getElementById("pageChildren").children[0].id; 
+  template=template.slice(0,-1);
+  console.log(template);
+  var language = ''; 
+  language = document.getElementById("langChildren").children[0].id; 
+  language=language.slice(0,-1);
+  console.log(language);
+  var testresult=""; 
+  var query = ""; 
+
+
+  var thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query;
+  document.getElementById("myhref").href=thehref;
 }

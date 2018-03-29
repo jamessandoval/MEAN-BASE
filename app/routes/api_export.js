@@ -70,6 +70,15 @@ exports.getExportFromResults = function(req, res, next) {
   let feature = req.query.feature;
   let testresult = req.query.testresult;
   let query = req.query.query;
+  let langArray = [];
+  let fArray = [];
+
+  if (language.includes(",")){
+    langArray=language.split(",");
+  }
+  if (feature.includes(",")){
+    fArray=feature.split(",");
+  }
 
   query = query.replace(/ /g, "%");
 
@@ -177,6 +186,70 @@ exports.getExportFromResults = function(req, res, next) {
     })
 
   } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {
+
+    // if (langArray.length > 0 && fArray.length > 0){
+    //   for (var x=0; x<langArray.length; x++){
+    //     for (var y=0; y<fArray.length; y++){
+    //       db.sequelize.query(`SELECT * from Result where Template = '${fArray[y]}' and language = '${langArray[x]}';`).then(results => {
+    //         results += results[0];
+    //         for (var i = 0; i < results.length; i++) {
+    //           results[i].Output = String(results[i].Output);
+    //         }
+    //         req.results = results;
+    //         req.language = language;
+    //         req.testresult = testresult;
+    //         return next();
+    //       }).catch(function(err) {
+    //         console.log('error: ' + err);
+    //         return err;
+    //       })
+    //     }
+    //   }
+    // }
+    // else if (langArray.length > 0){
+    //   for (var y=0; y<langArray.length; y++){
+    //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and language = '${langArray[y]}';`).then(results => {
+    //       results += results[0];
+    //       for (var i = 0; i < results.length; i++) {
+    //         results[i].Output = String(results[i].Output);
+    
+    //       }
+    
+    //       req.results = results;
+    
+    //       req.language = language;
+    //       req.testresult = testresult;
+    
+    //       return next();
+    
+    //     }).catch(function(err) {
+    //       console.log('error: ' + err);
+    //       return err;
+    //     })
+    //   }
+    // }
+    // else if (fArray.length > 0){
+    //   for (var y=0; y<fArray.length; y++){
+    //     db.sequelize.query(`SELECT * from Result where Template = '${fArray[y]}' and language = '${language}';`).then(results => {
+    //       results += results[0];
+    //       for (var i = 0; i < results.length; i++) {
+    //         results[i].Output = String(results[i].Output);
+    
+    //       }
+    
+    //       req.results = results;
+    
+    //       req.language = language;
+    //       req.testresult = testresult;
+    
+    //       return next();
+    
+    //     }).catch(function(err) {
+    //       console.log('error: ' + err);
+    //       return err;
+    //     })
+    //   }
+    // }
 
 
     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and language = '${language}';`).then(results => {

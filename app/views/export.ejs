@@ -174,8 +174,8 @@
     <div class="row exportTool">
       <div class="col-lg-12">
         <div class="button-group">
-          <a href="/export?feature=<%= template %>&language=<%= language %>&testresult=<%= testresult %>&query=<%= %>">
-            <button type="button" class="btn btn-md" id="runTest" onclick="runTest()"><b>Export Data</b></button>
+          <a id="myhref">
+            <button type="button" class="btn btn-md" id="runTest" onclick="exportSelections()"><b>Export Data</b></button>
           </a>
           <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
           <button type="button" class="btn btn-md btn-success exportToolBtn" id="exportAll" onclick="exportAll()"><b>Build Comprehensive Report</b></button>
