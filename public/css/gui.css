@@ -371,3 +371,7 @@ button[type=submit] {
     }
 }
 /*end of loading animation section */
+
+.redeye {
+  max-width: 410px;
+}
