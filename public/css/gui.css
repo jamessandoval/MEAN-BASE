@@ -7,6 +7,9 @@
         margin-top: 0px !important;
         margin-left: 10px !important;
     }
+    .homePgBodyText {
+      text-align: center !important;
+  }
 }
 @media (min-width: 768px) { 
 	.button-group {
@@ -29,9 +32,9 @@
     .loginAndSignupTxtAlign {
         text-align: center !important;
     }
-    .homePgBodyText {
+    /*.homePgBodyText {
         text-align: center !important;
-    }
+    }*/
 }
 /*@media (min-width: 1200px) {
     .homePgBodyText {
