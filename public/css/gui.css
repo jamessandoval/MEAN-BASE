@@ -44,6 +44,7 @@ body {
     margin-bottom: 0;
     min-height: 100vh;
     position: relative;
+    background-color:#eaeaea;
 }
 .center {
     text-align:center;
@@ -57,12 +58,21 @@ body {
 .topSpace{
     margin-top:20px;
 }
+.topbar{
+    height:10px;
+    width:100%;
+    margin-top:20px;
+    position:fixed;
+    background-color:#EFB60F;
+    z-index:1001;
+}
 .container-main {
 	margin: 0 auto !important;
     width: 90% !important; 
 }
 .navbar {
     min-height: 80px;
+    background-color:#212121;
 }
 .navigation {
 	float:right !important;
