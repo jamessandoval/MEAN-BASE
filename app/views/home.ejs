@@ -1,4 +1,9 @@
 <%- include('header') %>
+<div id="loading" style="display: none;">
+    <div id="loader-wrapper">
+      <div id="loader"></div>
+    </div><!--end of loader-wrapper-->
+</div><!--end of loading-->
 
 <div class="container-fluid" id="page">
   <div class="row">
@@ -16,10 +21,20 @@
 
   <div class="row">
     <div class="col-lg-12 text-center">
-      <div class="homePgBodyText">
-          <h4>View the dashboard to see overall site health.</h4>
-        <a href="/dashboard" class="btn btn-warning" id="mybutton"><strong>DASHBOARD</strong></a>
+      <div class="homePgBodyText topSpace">
+        <p>View the dashboard to see overall site health.<br>
+          Drill down to specific test results.</p>
+        <a href="/dashboard" class="btn btn-warning width-set" id="mybutton" onclick="loadingAnimation()"><strong>DASHBOARD</strong></a>
+
+        <p class="topSpace">Export requested test results into an Excel File.</p>
+        <a href="/export-tool" class="btn btn-warning width-set" onclick="loadingAnimation()"><strong>EXPORT</strong></a>
+
+        <p class="topSpace">Run tests for the specific page types, languages, and test cases you need.</p>
+        <a href="/dropdown-test-runner" class="btn btn-warning width-set" onclick="loadingAnimation()"><strong>RUN TESTS</strong></a>
+
       </div>
+
+<!--       
 
       <div class="homePgBodyText">
         <h4>Example of Overview by Language Page</h4>
@@ -39,7 +54,7 @@
       <div class="homePgBodyText">
         <h4>Example of Test Results by feature, language, and query on test description Field</h4>
         <a href="/results/feature/f3/query/h1%20in%20the%20correct%20language"> Currently set at feature <strong>F3</strong>and query: <strong>H1 in the correct language.</strong></a>
-      </div>
+      </div> -->
 
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->

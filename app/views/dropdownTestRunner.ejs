@@ -1,112 +1,219 @@
 <%- include('header') %>
+<div id="loading" style="display: none;">
+	<div id="loader-wrapper">
+		<div id="loader"></div>
+	</div><!--end of loader-wrapper-->
+</div><!--end of loading-->
 
-    <!--<h1><%= title %></h1>-->
-     <div class="row text-center">
-     	<div class="col-lg-12">
-			 <br>
-	        <p>Click on the PAGE button to choose from a list of "Feature" pages.</p>
-			<p>Next, choose which language locale you wish to test and click Get Results</p>
+<div class="container-fluid" id="page">
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4 text-center">
+      <br /><br>
+      <h1><%= title %></h1>
+
+      <% if(typeof user == 'string' && user){ %>
+
+      <h3>User is: <%= user %></h3>
+
+      <% } %>
+    </div><!-- end .col-lg-4 -->
+  </div><!-- end .row -->
+
+  <div class="row text-center">
+	<div class="col-lg-12">
+		<p>Click on the PAGE button to choose from a list of "Feature" pages.<br>
+		Next, choose which language locale you wish to test and click Get Results</p>
+	</div>
+  </div>
+  
+<!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
+  <div class="row exportTool">
+    <div class="col-lg-12">
+      <div class="button-group">
+        <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block width-set">
+		  <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
+		  'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
+		  'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];
+		  for(var i=0; i < allLangs.length; i++) { %>
+            <li class="width-set dropdown-item">
+              <a href="#" data-value="optionA" tabIndex="-1" id="lang">
+              <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= allLangs[i] %></a>
+            </li>
+            <% } %>
+        </ul>
+      </div><!-- end .button-group -->
+    </div><!-- end .col-lg-12 -->
+  </div><!-- end .row -->
+
+
+<!--  ------------------------------------------------------Feature Page Drop Down Options ---------------------------- -->
+  <div class="row exportTool">
+    <div class="col-lg-12">
+      <div class="button-group">
+        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block width-set">
+          <li class="dropdown-item">
+            <a href="#">
+			  <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All
+			</a>
+          </li>
+          <% for(var i=1; i < 26; i++) { var featurePage="F" + [i]; %>
+          <li class="dropdown-item">
+            <a href="#" id="Fx">
+              <input id="<%= featurePage %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
+              <% 
+                var thePage="";
+                switch (featurePage){
+                  case "F1":
+                    thePage="(F1) Home Page";
+                    break;
+                  case "F2":
+                    thePage="(F2) Product Tabe of Contents";
+                    break;
+                  case "F3":
+                    thePage="(F3) Product Sub-Category";
+                    break;
+                  case "F4":
+                    thePage="(F4) Product Display";
+                    break;
+                  case "F5":
+                    thePage="(F5) HTML Page";
+                    break;
+                  case "F6":
+                    thePage="(F6)";
+                    break;
+                  case "F7":
+                    thePage="(F7) New Fluke Products";
+                    break;
+                  case "F8":
+                    thePage="(F8) Promotions and Contests TOC";
+                    break;
+                  case "F9":
+                    thePage="(F9) Article Table of Contents";
+                    break;
+                  case "F10":
+                    thePage="(F10) Webcard Table of Contents";
+                    break;
+                  case "F11":
+                    thePage="(F11) Webcard";
+                    break;
+                  case "F12":
+                    thePage="(F12) Fluke News Table of Contents";
+                    break;
+                  case "F13":
+                    thePage="(F13) Fluke News Sub-Category";
+                    break;
+                  case "F14":
+                    thePage="(F14) Article";
+                    break;
+                  case "F15":
+                    thePage="(F15) Tradeshows and Seminars";
+                    break;
+                  case "F16":
+                    thePage="(F16) Training Library";
+                    break;
+                  case "F17":
+                    thePage="(F17) Webinars";
+                    break;
+                  case "F18":
+                    thePage="(F18)";
+                    break;
+                  case "F19":
+                    thePage="(F19) Manuals";
+                    break;
+                  case "F20":
+                    thePage="(F20) Press Releases";
+                    break;
+                  case "F21":
+                    thePage="(F21) Safety Notices";
+                    break;
+                  case "F22":
+                    thePage="(F22) Software Downloads";
+                    break;
+                  case "F23":
+                    thePage="(F23) Where to Buy";
+                    break;
+                  case "F24":
+                    thePage="(F24) Link to Offsite Location";
+                    break;
+                  case "F25":
+                    thePage="(F25) Promotions and Contests Page";
+                    break;
+                  default:
+                    thePage="features[i]";
+                } %> <%=thePage%>
+            </a>
+          </li>
+            <% }%>
+        </ul>
+      </div><!-- end .button-group -->
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+
+
+<!--  ------------------------------------------------------Test Case/ Scenarios Drop Down Options ---------------------------- -->
+	<div class="row exportTool">
+		<div class="col-lg-12">  <!--  ----NOTE: when we bring in the Scenarios we need to filter down to the common scenarios across feature pages and make sure the ID works (no spaces)------ -->
+		<%  var scenarios = [1,3,7,9];
+			if(scenarios){ %>
+			<div class="button-group">
+				<button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" data-toggle="dropdown">Test Cases <span class="caret"></span></button>
+				<ul class="dropdown-menu btn-block width-set">
+					<% for(var i=0; i < scenarios.length; i++) { %>
+					<li class="width-set dropdown-item">
+						<a href="#" data-value="optionA" tabIndex="-1" id="case">
+						<input id="<%= scenarios[i] %>" class="case double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= scenarios[i] %></a>
+					</li>
+					<% }%>
+				</ul>
+			</div><!-- end .button-group -->
+			<% }%>
+		</div><!-- end .col-lg-12 -->
+	</div><!-- end .row -->
+
+<!--  ------------------------------------------------------Run Button ---------------------------- -->
+	<div class="row text-center">
+		<div class="col-lg-12">
+			<div class="button-group">
+			<button type="button" id="runTest" class="btn btn-lg width-set" >Run Test</button>
+			</div>
 		</div>
 	</div>
 
 
-	<!-- </div>end .col-sm-12 -->
-    <!-- </div>end .row -->
-
-	<div class="row text-center">
-     <div class="col-lg-12">
-      <div class="button-group width-set">
-        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle  width-set" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
-			<ul class="dropdown-menu  width-set">
-			  <li class="dropdown-item "><a href="#"><input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp; All</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F1" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F1) Home Page</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F2" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F2) Product Table of Contents</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F3" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F3) Product Sub-Category</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F4" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F4) Product Display</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F5" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F5) HTML Page</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F6" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F6)</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F7" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F7) New Fluke Products</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F8" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F8) Promotions and Contests TOC</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F9" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F9) Article Table of Contents</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F10" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F10) Webcard Table of Contents</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F11" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F11) Webcard</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F12" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F12) Fluke News Table of Contents</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F13" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F13) Fluke News Sub-Category</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F14" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F14) Article</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F15" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F15) Tradeshows and Seminars</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F16" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F16) Training Library</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F17" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F17) Webinars</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F18" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F18)</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F19" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F19) Manuals</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F20" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F20) Press Releases</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F21" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F21) Safety Notices</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F22" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F22) Software Downloads</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F23" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F23) Where to Buy</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F24" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F24) Link to Offsite Location</a></li>
-			  <li class="dropdown-item "><a href="#"><input id="F25" class="FX double" onclick="displayChecked(this.id)" type="checkbox"/>&nbsp;(F25) Promotions and Contests Page</a></li>
-			  
-			</ul>
-	  </div>
-	 </div>
-    </div>
-
+<!--  ------------------------------------------------------Option Display Section ---------------------------- -->
+   
+    <div class="row exportTool topSpace">
+      <div class="col-lg-12 topSpace">
+        <h1>Test Selection:</h1>
+      </div><!-- end .col-lg-12 -->
+	</div><!-- end .row -->
 	
-	<br>
-	<div class="row text-center">
-     <div class="col-lg-12">
-      <div class="button-group">
-        <button type="button" class="btn btn-lg dropdown-toggle  width-set" data-toggle="dropdown">Language Locale<span class="caret"></span></button>
-			<ul class="dropdown-menu  width-set">
-			  <li class="dropdown-item "><a href="#" data-value="optionA" tabIndex="-1"><input id="en" class="lang double " onclick="displayChecked(this.id)" type="checkbox"/>&nbsp; en</a></li>
-			</ul>
-	  </div>
-	 </div>
-	</div>
-	
-	
+<div class="container topSpace">
+	<div class="row ">
 
-	<br>
-	<div class="row text-center">
-     <div class="col-lg-12">
-      <div class="button-group">
-        <button type="button" class="btn btn-lg dropdown-toggle  width-set" data-toggle="dropdown">Test Dates: <span class="latestDate">_____</span></button>
-	  </div>
-	 </div>
-    </div>
-
-	<br>
-	<div class="row text-center">
-     <div class="col-lg-12">
-      <div class="button-group">
-        <button type="button" class="btn btn-lg width-set" id="runTest" onclick="runTest()">Get Results</button>
-	  </div>
-	 </div>
-    </div>
-
-	<br>
-
-	<div class="container">
-	<div class="row text-center">
-      <div class="col-12">
-		<h1>Selection:</h1>
-
-        <div class="col-6" id="displaySelections">
-			<h3>Pages</h3>
+		<div class="col-md-4 col-lg-4 center">
+			<h3>Page Types</h3>
 			<div id="pageChildren"></div>
-		</div>
+		</div><!-- end .col-md-5 .col-lg-6 -->
 
-		<div class="col-6" id="langSelection">
+
+		<div class="col-md-4 col-lg-4 center">
 			<h3>Languages</h3>
 			<div id="langChildren"></div>
+		</div><!-- end .col-md-5 .col-lg-6 -->
+				
+		
+		<div class="col-md-4 col-lg-4 center" >
+			<h3>Test Cases</h3>
+			<div id="caseChildren"></div>
 		</div>
 
-      </div><!-- end .col-md-12 -->
-    </div><!-- end .row -->
-    </div>
-	
-	<div class="progressbar">
-	<div class="bar"><span></span></div>
-	</div>
-
+	</div><!-- end .row -->
 </div>
+	
+</div><!-- end .container-fluid -->
+<br><br>
+
 <%- include('footer') %>

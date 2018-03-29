@@ -1,344 +1,285 @@
-// Invoke 'strict' JavaScript mode
 'use strict';
-
 
 const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+const Excel = require('exceljs');
+const streamify = require('stream-array');
+const os = require('os');
 
+// Read Excel File Data
+const fs = require('fs');
+const path = require('path');
 
-// exports.render = function(req, res) {
+//### NEED to find out correct path
+let rootPath = path.normalize(__dirname + '../../../');
+rootPath = rootPath + 'temp_directory';
 
-//   res.render('dropdownTestRunner', {
-//     title: 'Test Runner 2'
-//   });
+// Excel functionality:
+// https://github.com/guyonroche/exceljs#create-a-workbook
 
-// };
-
-
-
-// Create a new 'render' controller method
+// OLD Export tool
 exports.getOverview = function(req, res) {
 
-  res.render('dropdownTestRunner', {
-    title: 'Test Runner 2'
+  db.Result.findAll().then(results => {
+
+
+    // Needed To convert the blob object into a string 
+    // Otherwise it returns a buffer array object.
+    for (var i = 0; i < results.length; i++) {
+      results[i].Output = String(results[i].Output);
+
+      // // Save each unique template
+      // if (!features.includes(results[i].Template)) {
+      //   features.push(results[i].Template);
+      // }
+
+      // // Save Each unique Language
+      // if (!languages.includes(results[i].Language)) {
+      //   languages.push(results[i].Language);
+      // }
+    }
+
+    res.render('dropdownTestRunner', {
+      title: 'Run Tests',
+      // features: features,
+      // languages: languages,
+      user: req.user.firstname
+
+    });
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
   });
-}
+};
 
-// // select count(*) from results where result = 'PASS';
-//   db.sequelize.query(`select distinct Language from results;`).then(results => {
 
-//     results = results[0];
+// // // New export tool
+// // exports.getExportFromResults = function(req, res, next) {
 
-//     //console.log(results[0].Language);
+// //   //console.log(req.query.feature);
+// //   //console.log(req.query.language);
+// //   //console.log(req.query.testresult);
+// //   //console.log(typeof(req.query.testresult));
 
-//     lang=results;
+// //   // TODO: Export all tool
 
-//     // select count(*) from results where result = 'PASS';
-//     db.sequelize.query(`select count(*) from results where result = 'PASS';`).then(results => {
+// //   let language = req.query.language;
+// //   let feature = req.query.feature;
+// //   let testresult = req.query.testresult;
+// //   let query = req.query.query;
 
-//       results = results[0];
+// //   query = query.replace(/ /g, "%");
 
-//       overall.pass = JSON.stringify(results[0]);
-//       overall.pass = overall.pass.replace("{\"count(*)\":", "");
-//       overall.pass = overall.pass.replace("}", "");
-//       overall.pass = parseInt(overall.pass);
+// //   ///results/locale/:locale'
+// //   if (feature === "All" && testresult === "") {
 
-//       // Call next query:
+// //     db.sequelize.query(`SELECT * from Result where Language = '${language}';`).then(results => {
 
-//       // select count(*) from results where result = 'FAIL';
-//       db.sequelize.query(`select count(*) from results where result = 'FAIL';`).then(results => {
+// //       results = results[0];
 
-//         results = results[0];
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
-//         overall.fail = JSON.stringify(results[0]);
-//         overall.fail = overall.fail.replace("{\"count(*)\":", "");
-//         overall.fail = overall.fail.replace("}", "");
-//         overall.fail = parseInt(overall.fail);
+// //       }
 
-//         // select count(*) from results where result = 'SKIP';
-//         db.sequelize.query(`select count(*) from results where result = 'SKIP';`).then(results => {
+// //       req.results = results;
 
-//           results = results[0];
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//           overall.skip = JSON.stringify(results[0]);
-//           overall.skip = overall.skip.replace("{\"count(*)\":", "");
-//           overall.skip = overall.skip.replace("}", "");
-//           overall.skip = parseInt(overall.skip);
+// //       return next();
 
-//           res.render('dropdownTestRunner', {
-//             title: 'Test Runner 2',
-//             feature: feature,
-//             language: language,
-//             overall: overall,
-//             resultsTotal: null,
-//             languagesArray: lang,
-//             currentUrl: req.url
-//           });
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//         }).catch(function(err) {
-//           console.log('error: ' + err);
-//           return err;
+// //     ///results/locale/:locale/testresult/:testresult'
+// //   } else if (feature === "All" && testresult !== "") {
 
-//         })
+// //     db.sequelize.query(`SELECT * from Result where Language = '${language}' and Result = '${testresult}';`).then(results => {
 
-//       }).catch(function(err) {
-//         console.log('error: ' + err);
-//         return err;
+// //       results = results[0];
 
-//       })
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
-//     }).catch(function(err) {
-//       console.log('error: ' + err);
-//       return err;
+// //       }
 
-//     })
-//   }).catch(function(err) {
-//     console.log('error: ' + err);
-//     return err;
+// //       req.results = results;
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//   })
+// //       return next();
 
-// };
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-// //app.get('/dashboard/custom/:custom', api_dashbboard.getResultMetaByCustom)
+// //     //results/feature/:template/query/:custom
+// //   } else if (feature !== "All" && language === "All" && testresult === "" && query !== "") {
 
-// exports.getResultMetaByCustom = function(req, res) {
+// //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Output like '%${query}%';`).then(results => {
 
-//   let custom = req.params.custom;
+// //       results = results[0];
 
-//   // Modify search query on ec2 to obtain correct result.
-//   custom = custom.replace(/ /g, "%");
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
+// //       }
 
-//   let language = "all";
-//   let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
-//   let pass = null;
-//   let fail = null;
-//   let skip = null;
+// //       req.results = results;
 
-//   let resultsTotal = [];
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//   let overall = {
-//     pass: 0,
-//     skip: 0,
-//     fail: 0
-//   };
+// //       return next();
 
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//   getResultsTotal(0);
+// //     //results/feature/:template/query/:custom/testresult/:testresult
+// //   } else if (feature !== "All" && language === "All" && testresult !== "" && query !== "") {
 
-//   function getResultsTotal(i) {
+// //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Result = '${testresult}'and Output like '%${query}%';`).then(results => {
 
-//     // select count(*) from results where result = 'PASS';
-//     db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'PASS' AND Output LIKE '%${custom}%'`).then(results => {
+// //       results = results[0];
 
-//       results = results[0];
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
-//       pass = JSON.stringify(results[0]);
-//       pass = pass.replace("{\"count(*)\":", "");
-//       pass = pass.replace("}", "");
-//       pass = parseInt(pass);
+// //       }
 
-//       overall.pass += pass;
+// //       req.results = results;
 
-//       // New value = pass
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//       // select count(*) from results where result = 'FAIL';
-//       db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'FAIL' AND Output LIKE '%${custom}%'`).then(results => {
+// //       return next();
 
-//         results = results[0];
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//         fail = JSON.stringify(results[0]);
-//         fail = fail.replace("{\"count(*)\":", "");
-//         fail = fail.replace("}", "");
-//         fail = parseInt(fail);
+// //   } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {
 
-//         overall.fail += fail;
 
-//         // New value = fail
+// //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and language = '${language}';`).then(results => {
 
-//         // select count(*) from results where result = 'SKIP';
-//         db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'SKIP' AND Output LIKE '%${custom}%'`).then(results => {
+// //       results = results[0];
 
-//           results = results[0];
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
-//           skip = JSON.stringify(results[0]);
-//           skip = skip.replace("{\"count(*)\":", "");
-//           skip = skip.replace("}", "");
-//           skip = parseInt(skip);
+// //       }
 
-//           overall.skip += skip;
+// //       req.results = results;
 
-//           // New value = skip
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//           // Now push to the array
+// //       return next();
 
-//           resultsTotal.push({
-//             language: language,
-//             feature: features[i],
-//             pass: pass,
-//             fail: fail,
-//             skip: skip
-//           })
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//           if (i === features.length - 1) {
+// //   }else if (feature !== "All" && language !== "All" && testresult !== "" && query === "") {
 
-//             //console.log(resultsTotal);
-//             //res.send(resultsTotal);
-//             //res.send(overall);
+// //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Result = '${testresult}' and language = '${language}';`).then(results => {
 
-//               // Remove % marks for output to page
-//               custom = custom.replace(/%/g, " ");
+// //       results = results[0];
 
-//             res.render('dropdownTestRunner', {
-//               language: language,
-//               feature: "all",
-//               title: 'Results with query: ' + custom ,
-//               resultsTotal : resultsTotal,
-//               overall: overall,
-//               currentUrl: req.url
-//             });
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
-//           } else {
+// //       }
 
-//             setTimeout(() => { getResultsTotal(i + 1); });
-//           }
+// //       req.results = results;
 
-//         }).catch(function(err) {
-//           console.log('error: ' + err);
-//           return err;
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//         })
+// //       return next();
 
-//       }).catch(function(err) {
-//         console.log('error: ' + err);
-//         return err;
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//       })
+// //   }else if (feature !== "All" && language !== "All" && query !== "" && testresult === "" ) {
 
-//     }).catch(function(err) {
-//       console.log('error: ' + err);
-//       return err;
+// //     console.log("I am executing.\n\n\n");
 
-//     })
-//   }
-// };
+// //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Language = '${language}' and Output like '%${query}%';`).then(results => {
 
-// exports.getResultMetaByLocale = function(req, res) {
+// //       results = results[0];
 
-//   let locale = req.params.locale;
-//   let language = locale;
-//   let features = ['F1', 'F2', 'F3', 'F4', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F15', 'F16', 'F17', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24', 'F25'];
-//   let pass = null;
-//   let fail = null;
-//   let skip = null;
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
+// //       }
 
+// //       req.results = results;
 
-//   let resultsTotal = [];
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//   let overall = {
-//     pass: 0,
-//     skip: 0,
-//     fail: 0
-//   };
+// //       return next();
 
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//   getResultsTotal(0);
+// //   }else if (feature !== "All" && language !== "All" && query !== "" && testresult !== "" ) {
 
-//   function getResultsTotal(i) {
+// //     console.log("I am executing.\n\n\n");
 
-//     // select count(*) from results where result = 'PASS';
-//     db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'PASS' and Language = '${locale}'`).then(results => {
+// //     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Language = '${language}' and Output like '%${query}%' and Result = '${testresult}';`).then(results => {
 
-//       results = results[0];
+// //       results = results[0];
 
-//       pass = JSON.stringify(results[0]);
-//       pass = pass.replace("{\"count(*)\":", "");
-//       pass = pass.replace("}", "");
-//       pass = parseInt(pass);
+// //       // Needed To convert the blob object into a string 
+// //       // Otherwise it returns a buffer array object.
+// //       for (var i = 0; i < results.length; i++) {
+// //         results[i].Output = String(results[i].Output);
 
-//       overall.pass += pass;
+// //       }
 
-//       // New value = pass
+// //       req.results = results;
 
-//       // select count(*) from results where result = 'FAIL';
-//       db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'FAIL' and Language = '${locale}'`).then(results => {
+// //       req.language = language;
+// //       req.testresult = testresult;
 
-//         results = results[0];
+// //       return next();
 
-//         fail = JSON.stringify(results[0]);
-//         fail = fail.replace("{\"count(*)\":", "");
-//         fail = fail.replace("}", "");
-//         fail = parseInt(fail);
+// //     }).catch(function(err) {
+// //       console.log('error: ' + err);
+// //       return err;
+// //     })
 
-//         overall.fail += fail;
+// //   }
 
-//         // New value = fail
-
-//         // select count(*) from results where result = 'SKIP';
-//         db.sequelize.query(`SELECT count(*) FROM results WHERE Template = '${features[i]}' AND result = 'SKIP' and Language = '${locale}'`).then(results => {
-
-//           results = results[0];
-
-//           skip = JSON.stringify(results[0]);
-//           skip = skip.replace("{\"count(*)\":", "");
-//           skip = skip.replace("}", "");
-//           skip = parseInt(skip);
-
-//           overall.skip += skip;
-
-//           // New value = skip
-
-//           // Now push to the array
-
-//           resultsTotal.push({
-//             language: language,
-//             feature: features[i],
-//             pass: pass,
-//             fail: fail,
-//             skip: skip
-//           })
-
-//           if (i === features.length - 1) {
-
-//             //console.log(resultsTotal);
-//             //res.send(resultsTotal);
-//             //res.send(overall);
-
-//             res.render('dropdownTestRunner', {
-//               language: language,
-//               feature: "all",
-//               title: 'Results by Language',
-//               resultsTotal : resultsTotal,
-//               overall: overall,
-//               currentUrl: req.url
-//             });
-
-//           } else {
-
-//             setTimeout(() => { getResultsTotal(i + 1); });
-//           }
-
-//         }).catch(function(err) {
-//           console.log('error: ' + err);
-//           return err;
-
-//         })
-
-//       }).catch(function(err) {
-//         console.log('error: ' + err);
-//         return err;
-
-//       })
-
-//     }).catch(function(err) {
-//       console.log('error: ' + err);
-//       return err;
-
-//     })
-//   }
-// };
-
-
+// // };
 
