@@ -73,6 +73,7 @@ exports.getExportFromResults = function(req, res, next) {
   let langArray = [];
   let fArray = [];
   let loopedQuery='SELECT * from Result where ';
+  let results = null;
 
 
   //---------------------------------------------------------start of multiple choice query builder ------------------>
@@ -82,8 +83,6 @@ exports.getExportFromResults = function(req, res, next) {
 
     langArray=language.split(",");
     fArray=feature.split(",");
-    console.log(fArray[1] + "-------------------------------------------------------------------------------------------------------");
-    console.log(langArray[1]);
 
     loopedQuery +='(Language = ' + "'" + langArray[0] + "'";
     for (var x = 1; x<langArray.length; x++){
@@ -99,22 +98,21 @@ exports.getExportFromResults = function(req, res, next) {
   }else if (language.includes(",") && !feature.includes(",")){ //if multiple selections were made for language only
 
     langArray=language.split(",");
-    loopedQuery ='(Language = ' + "'" +langArray[0] + "'";
+    loopedQuery +='(Language = ' + "'" +langArray[0] + "'";
     for (var x = 1; x<langArray.length; x++){
-      loopedQuery += " OR Language = " + + "'" + langArray[x] + "'";
+      loopedQuery += " OR Language = " + "'" + langArray[x] + "'";
     }
-    loopedQuery += ") AND Template = '" + feature + "'";
+    loopedQuery += ") AND Template = " + "'"  + feature + "'";
 
   } else if (feature.includes(",") && !language.includes(",")){// if multiple selections were made for features only
 
     fArray=feature.split(",");
-    loopedQuery ='(Template = ' + fArray[0];
+    loopedQuery +='(Template = ' + "'" + fArray[0] + "'";
     for (var x = 1; x<fArray.length; x++){
-      loopedQuery += " OR Template = " + fArray[x];
+      loopedQuery += " OR Template = " + "'" + fArray[x]+ "'";
     }
-    loopedQuery += ") AND Language = '" + language + "'";
+    loopedQuery += ") AND Language = "  + "'" + language + "'";
   }
-  console.log(loopedQuery);
   //---------------------------------------------------------end of multiple choice query builder ------------------>
   // if multiple selections were made for either language or template, the first 'if' statement below will run
 
@@ -364,13 +362,6 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
   }
-   language = null;
-   feature = null;
-   testresult = null;
-   query = null;
-   langArray = [];
-   fArray = [];
-   loopedQuery='';
 };
 
 // Inititally Supportes only a feature 
