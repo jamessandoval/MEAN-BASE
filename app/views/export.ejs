@@ -53,7 +53,7 @@
         <ul class="dropdown-menu btn-block width-set">
           <li class="dropdown-item">
             <a href="#">
-              <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+              <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
           </li>
           <% for(var i=0; i < features.length; i++) { %>
           <li class="dropdown-item">
@@ -174,11 +174,15 @@
     <div class="row exportTool">
       <div class="col-lg-12">
         <div class="button-group">
+          <!--test button -->
+          <!-- <a href="/export?feature=F1' OR Template = 'F7&language=en-us' OR Language = 'de-de&testresult=&query=">test</a> -->
           <a id="myhref">
-            <button type="button" class="btn btn-md" id="runTest" onclick="exportSelections()"><b>Export Data</b></button>
+            <button type="button" class="btn btn-md" id="runTest" onclick="exportSelections()"><b>Export Data</b></button> <!-- the exportSelections() function is in the "runTests.js" file -->
           </a>
           <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
-          <button type="button" class="btn btn-md btn-success exportToolBtn" id="exportAll" onclick="exportAll()"><b>Build Comprehensive Report</b></button>
+          <a href="/export?feature=All&language=All&testresult=&query=">
+            <button type="button" class="btn btn-md btn-success exportToolBtn" id="exportAll"><b>Build Comprehensive Report</b></button>  <!--onclick="exportAll()"-->
+          </a>
         </div>
       </div><!-- end .col-lg-12 -->
     </div><!-- end .row -->

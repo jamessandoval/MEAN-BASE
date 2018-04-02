@@ -24,7 +24,7 @@ function displayChecked(checkedID) {
   }
 
   var checkboxes = new Array();
-  var allBox = document.getElementById("all");
+  var allBox = document.getElementById("All");
   checkboxes = document.getElementsByTagName('input');
 
   
@@ -36,7 +36,7 @@ function displayChecked(checkedID) {
 	paragraph.setAttribute('id',checkedID+'x');
 	placement.appendChild(paragraph);
 
-	if (checkedID == "all"){
+	if (checkedID == "All"){
 		while (placement.firstChild){
 			placement.removeChild(placement.firstChild);
 		}
@@ -48,20 +48,20 @@ function displayChecked(checkedID) {
 		}		
 	} else{}
 	
-  } else { // If you are un-checking the box, you will remove the child element that had been created.
-		if (checkedID == "all"){  //If I'm un-checking the "all" box
+  } else { // If you are un-checking the box, you will remove the child paragraph element that had been created.
+		if (checkedID == "All"){  //If I'm un-checking the "all" box, uncheck ALL the boxes
 			for(var i=0; i<checkboxes.length; i++){
 				if (checkboxes[i].parentNode.id == "Fx"){
 					checkboxes[i].checked = false;  // un-check all the boxes 
 				}
 			}
-			var child = document.getElementById(checkedID+'x'); // and add "all" under pages selected
-			child.parentNode.removeChild(child);
+			var child = document.getElementById(checkedID+'x'); 
+			child.parentNode.removeChild(child); // and remove "all" under pages selected
 		}			
-		else if (checkedID != "all"){  //If I'm un-checking anything but the "all" box
+		else if (checkedID != "All"){  //If I'm un-checking anything but the "all" box
 			if (allBox.checked == true && parentId == "Fx"){ //If the "all" box HAD been checked
 				allBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
-				var allChild = document.getElementById('allx');
+				var allChild = document.getElementById('Allx');
 				allChild.parentNode.removeChild(allChild);
 				var eliminator = checkedID;  //note which page you were un-selecting
 				
