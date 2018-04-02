@@ -146,7 +146,7 @@ function exportAll() {
 function exportSelections(){
 
   var template = '';
-  template = document.getElementById("pageChildren").children[0].id; 
+  template = document.getElementById("pageChildren").children[0].id;
   template=template.slice(0,-1);
   console.log(template);
   var language = ''; 
