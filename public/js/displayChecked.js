@@ -5,81 +5,82 @@ function displayChecked(checkedID) {
   
   var checkBox = document.getElementById(checkedID);  // Get the checkbox
   var parent = document.getElementById(checkedID).parentNode;
-  //var parent2 = document.getElementById(checkedID).parentNode;  
+  var parentId=checkBox.parentNode.id;
   var text = parent.textContent; // Get the checkbox's text
- // var text2 = parent.textContent; // Get the checkbox's text
-  //console.log(text);
   var paragraph = document.createElement("p");
-  //var paragraph2 = document.createElement("p");
   var content = document.createTextNode(text);
-  //var content2 = document.createTextNode(text);
 
-  if(checkBox.className == "FX"){
+  if(checkBox.className == "FX double"){
   	var placement = document.getElementById("pageChildren");
   }
-  else {
+  else if(checkBox.className == "case double"){
+	var placement = document.getElementById("caseChildren");
+  }
+  else if(checkBox.className == "date double"){
+	var placement = document.getElementById("dateChildren");
+  }
+  else{
   	var placement = document.getElementById("langChildren");
-  	//var placement2 = document.getElementById("langChildren2");
   }
 
   var checkboxes = new Array();
-  var allBox = document.getElementById("all");
+  var allBox = document.getElementById("All");
   checkboxes = document.getElementsByTagName('input');
-  //console.log(checkboxes);
+
   
   if (checkBox.checked == true){  // If the checkbox is checked, create a paragraph element and input the checkbox's text
-    paragraph.appendChild(content);
-	//paragraph2.appendChild(content2);
+	if (parentId =="dates" && document.getElementById("dateChildren").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
+		document.getElementById("dateChildren").innerHTML="";
+	}
+	paragraph.appendChild(content);
 	paragraph.setAttribute('id',checkedID+'x');
-	//paragraph2.setAttribute('id',checkedID+'x');
 	placement.appendChild(paragraph);
-	//placement2.appendChild(paragraph2);
-	
-	if (checkedID == "all"){
+
+	if (checkedID == "All"){
 		while (placement.firstChild){
 			placement.removeChild(placement.firstChild);
 		}
-	//	while (placement2.firstChild){
-	//		placement2.removeChild(placement2.firstChild);
-	//	}
-		//placement2.appendChild(paragraph);
 		placement.appendChild(paragraph);
 		for(var i=0; i<checkboxes.length; i++){
-		checkboxes[i].checked = true;
+			if(checkboxes[i].parentNode.id == "Fx"){
+				checkboxes[i].checked = true;
+			}
 		}		
 	} else{}
 	
-  } else { // If you are un-checking the box, you will remove the child element that had been created.
-		if (checkedID == "all"){  //If I'm un-checking the "all" box
+  } else { // If you are un-checking the box, you will remove the child paragraph element that had been created.
+		if (checkedID == "All"){  //If I'm un-checking the "all" box, uncheck ALL the boxes
 			for(var i=0; i<checkboxes.length; i++){
-				checkboxes[i].checked = false;  // un-check all the boxes 
+				if (checkboxes[i].parentNode.id == "Fx"){
+					checkboxes[i].checked = false;  // un-check all the boxes 
+				}
 			}
-			var child = document.getElementById(checkedID+'x'); // and add "all" under pages selected
-			child.parentNode.removeChild(child);
+			var child = document.getElementById(checkedID+'x'); 
+			child.parentNode.removeChild(child); // and remove "all" under pages selected
 		}			
-		else if (checkedID != "all"){  //If I'm un-checking anything but the "all" box
-			if (allBox.checked == true){ //If the "all" box HAD been checked
-				console.log("allBox was just unchecked");
+		else if (checkedID != "All"){  //If I'm un-checking anything but the "all" box
+			if (allBox.checked == true && parentId == "Fx"){ //If the "all" box HAD been checked
 				allBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
-				var allChild = document.getElementById('allx');
+				var allChild = document.getElementById('Allx');
 				allChild.parentNode.removeChild(allChild);
 				var eliminator = checkedID;  //note which page you were un-selecting
 				
 				for(var i=1; i<checkboxes.length-1; i++){
-					var ID = 'option'+i;
-					var checkBox = document.getElementById(ID);  
-					console.log(ID);
-					var parent = document.getElementById(ID).parentNode;
-					var text = parent.textContent;
-					var paragraph = document.createElement("p");
-					var content = document.createTextNode(text);
-					var placement = document.getElementById("pageChildren");
-					//var placement2 = document.getElementById("pageChildren2");
-					if (ID != eliminator){
-						paragraph.appendChild(content);
-						paragraph.setAttribute('id',"option"+i+'x');
-						placement.appendChild(paragraph);
-						//placement2 = document.getElementById("pageChildren2");
+					var ID = 'F'+i;
+					if(document.getElementById(ID)){
+						var checkBox = document.getElementById(ID);  
+						console.log(ID);
+						var parent = document.getElementById(ID).parentNode;
+						var text = parent.textContent;
+						var paragraph = document.createElement("p");
+						var content = document.createTextNode(text);
+						var placement = document.getElementById("pageChildren");
+
+						if (ID != eliminator){
+							paragraph.appendChild(content);
+							paragraph.setAttribute('id',"F"+i+'x');
+							placement.appendChild(paragraph);
+						}
 					}
 				}
 			}

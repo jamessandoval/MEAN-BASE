@@ -43,7 +43,7 @@ exports.getExport = function(req, res) {
     }
 
     res.render('export', {
-      title: 'Export Tool',
+      title: 'Export Results',
       features: features,
       languages: languages,
       user: req.user.firstname
@@ -70,11 +70,95 @@ exports.getExportFromResults = function(req, res, next) {
   let feature = req.query.feature;
   let testresult = req.query.testresult;
   let query = req.query.query;
+  let langArray = [];
+  let fArray = [];
+  let loopedQuery='SELECT * from Result where ';
+  let results = null;
+
+
+  //---------------------------------------------------------start of multiple choice query builder ------------------>
+  //below we are looking to see if multiple choices were selected for either template or language and build a query that would work for the selections
+
+  if (language.includes(",") && feature.includes(",")){ //if multiple selections were made for both template and language...
+
+    langArray=language.split(",");
+    fArray=feature.split(",");
+
+    loopedQuery +='(Language = ' + "'" + langArray[0] + "'";
+    for (var x = 1; x<langArray.length; x++){
+      loopedQuery += " OR Language = " + "'" + langArray[x] + "'";
+    }
+    loopedQuery += ") AND (";
+    loopedQuery +='Template = ' + "'"+ fArray[0] + "'";
+    for (var x = 1; x<fArray.length; x++){
+      loopedQuery += " OR Template = " + "'"+ fArray[x] + "'";
+    }
+    loopedQuery += ");";
+
+  }else if (language.includes(",") && !feature.includes(",")){ //if multiple selections were made for language only
+
+    langArray=language.split(",");
+    loopedQuery +='(Language = ' + "'" +langArray[0] + "'";
+    for (var x = 1; x<langArray.length; x++){
+      loopedQuery += " OR Language = " + "'" + langArray[x] + "'";
+    }
+    loopedQuery += ") AND Template = " + "'"  + feature + "'";
+
+  } else if (feature.includes(",") && !language.includes(",")){// if multiple selections were made for features only
+
+    fArray=feature.split(",");
+    loopedQuery +='(Template = ' + "'" + fArray[0] + "'";
+    for (var x = 1; x<fArray.length; x++){
+      loopedQuery += " OR Template = " + "'" + fArray[x]+ "'";
+    }
+    loopedQuery += ") AND Language = "  + "'" + language + "'";
+  }
+  //---------------------------------------------------------end of multiple choice query builder ------------------>
+  // if multiple selections were made for either language or template, the first 'if' statement below will run
+
+
 
   query = query.replace(/ /g, "%");
 
   ///results/locale/:locale'
-  if (feature === "All" && testresult === "") {
+  if (langArray.length > 0 || fArray.length > 0){
+    db.sequelize.query(loopedQuery).then(results =>{
+
+      results = results[0];
+      // Needed To convert the blob object into a string Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+      }
+
+      req.results = results;
+      req.language = language;
+      req.testresult = testresult;
+      return next();
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+  }else if (feature ==="All" && language ==="All"){
+    db.sequelize.query(`SELECT * from Result;`).then(results => {
+
+      results = results[0];
+      // Needed To convert the blob object into a string 
+      // Otherwise it returns a buffer array object.
+      for (var i = 0; i < results.length; i++) {
+        results[i].Output = String(results[i].Output);
+      }
+      req.results = results;
+      req.language = language;
+      req.testresult = testresult;
+      return next();
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+
+
+  }else if (feature === "All" && testresult === "") {
 
     db.sequelize.query(`SELECT * from Result where Language = '${language}';`).then(results => {
 
@@ -84,11 +168,9 @@ exports.getExportFromResults = function(req, res, next) {
       // Otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {
         results[i].Output = String(results[i].Output);
-
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
 
@@ -176,9 +258,8 @@ exports.getExportFromResults = function(req, res, next) {
       return err;
     })
 
-  } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {
-
-
+  } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {  // if only one selection was made for language and one for feature
+   
     db.sequelize.query(`SELECT * from Result where Template = '${feature}' and language = '${language}';`).then(results => {
 
       results = results[0];
@@ -280,9 +361,7 @@ exports.getExportFromResults = function(req, res, next) {
       console.log('error: ' + err);
       return err;
     })
-
   }
-
 };
 
 // Inititally Supportes only a feature 

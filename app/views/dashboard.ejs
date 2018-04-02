@@ -26,7 +26,7 @@
 
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
-        var myTitle = 'Locale: <%= language %>,By <%= feature %> Feature Page';
+        var myTitle = 'All results:';
       } else {
         var legendLocation = 'none';
         var myTitle = '';
@@ -59,7 +59,9 @@
         ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
 
         <% if(resultsTotal){ %>
-        <% for(var i=0; i < resultsTotal.length; i++) { %> ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
+        <% for(var i=0; i < resultsTotal.length; i++) { %> 
+          ['<%= resultsTotal[i].feature %>', <%= resultsTotal[i].pass%>, <%= resultsTotal[i].fail%>, <%= resultsTotal[i].skip%>, ''],
+
         <% }} %>
 
       ]);
@@ -165,14 +167,16 @@
         <h6>Please note that results may take a few moments to load.</h6>
         <br>
         <br>
-        <% for(var i=1; i < 25; i++) { %>
-          <a href='/results/feature/f<%= [i] %>/locale/<%= language %>'>
-            <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
-            <b>F<%= [i] %></b>
-            <br>
-            </button>
-          </a>
-        <% } %><!-- end for(var i=1; i < 25; i++) -->
+        <% for(var i=0; i < resultsTotal.length; i++) { 
+          if(resultsTotal[i].pass > 0 || resultsTotal[i].fail >0 || resultsTotal[i].skip >0){%>
+
+            <a href='/results/feature/<%= resultsTotal[i].feature %>/locale/<%= language %>'>
+              <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
+              <b><%=resultsTotal[i].feature%></b>
+              <br>
+              </button>
+            </a>
+        <% }} %><!-- end for(var i=1; i < 25; i++) -->
       <% } %><!-- end if(resultsTotal) -->
       <!-- Results by Language button links : END -->
     </div><!-- end .col-lg-4 -->

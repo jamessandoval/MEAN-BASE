@@ -7,6 +7,9 @@
         margin-top: 0px !important;
         margin-left: 10px !important;
     }
+    .homePgBodyText {
+      text-align: center !important;
+  }
 }
 @media (min-width: 768px) { 
 	.button-group {
@@ -26,9 +29,12 @@
     }
 }
 @media (min-width: 992px) {
-    .homePgBodyText {
+    .loginAndSignupTxtAlign {
         text-align: center !important;
     }
+    /*.homePgBodyText {
+        text-align: center !important;
+    }*/
 }
 /*@media (min-width: 1200px) {
     .homePgBodyText {
@@ -41,9 +47,27 @@ body {
     margin-bottom: 0;
     min-height: 100vh;
     position: relative;
+    background-color:#eaeaea;
 }
 .center {
-	text-align:center;
+    text-align:center;
+}
+.width-set{
+    width:300px;
+}
+.bottomSpace{
+    margin-bottom:20px;
+}
+.topSpace{
+    margin-top:20px;
+}
+.topbar{
+    height:10px;
+    width:100%;
+    margin-top:20px;
+    position:fixed;
+    background-color:#EFB60F;
+    z-index:1001;
 }
 .container-main {
 	margin: 0 auto !important;
@@ -51,6 +75,7 @@ body {
 }
 .navbar {
     min-height: 80px;
+    background-color:#212121;
 }
 .navigation {
 	float:right !important;
@@ -142,7 +167,6 @@ a button {
 	width:100%;
 }
 .btn {
-
 	min-width: 5em;
 }
 .double {
@@ -239,9 +263,9 @@ button[type=submit]:hover {
 	border-radius:16px;
 	top:0;
 	left:0;	
-  background:url("/img/bubble.png") 0 0;
-animation: flame 1500ms linear infinite;
-opacity:0.2;
+    background:url("/img/bubble.png") 0 0;
+    animation: flame 1500ms linear infinite;
+    opacity:0.2;
 }
 
 @keyframes flame {
@@ -251,8 +275,8 @@ opacity:0.2;
 /*end progress bar*/
 
 
-/* login page */
-.loginDiv {
+/* login and signup pages */
+.loginAndSignupForm {
       max-width: 450px;
       min-width: 290px;
       margin: auto;
@@ -262,6 +286,10 @@ opacity:0.2;
 .loginBtn {
   max-width: 250px;
   margin: auto;
+}
+label {
+    margin-top: 10px;
+    font-weight: 550;
 }
 input[type=text], input[type=password] {
   width: 100%;
@@ -276,7 +304,13 @@ input[type=text]:focus, input[type=password]:focus {
 input[type=checkbox] {
   margin-bottom: 15px;
 }
-/* end login page */
+input[type=submit] {
+    margin-top: 15px;
+}
+button[type=submit] {
+    margin-top: 20px;
+}
+/* end login and signup pages */
 
 
 /*loading animation section */
@@ -355,5 +389,8 @@ input[type=checkbox] {
         transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
     }
 }
-
 /*end of loading animation section */
+
+.redeye {
+  max-width: 410px;
+}

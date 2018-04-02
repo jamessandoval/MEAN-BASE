@@ -3,7 +3,7 @@
 exports.getHome = function(req, res) {
 
   res.render('home', {
-    title: 'Home Page',
+    title: 'Q.A. Automated Testing Suite',
     currentUrl: req.url
   });
 
