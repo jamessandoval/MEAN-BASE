@@ -2,8 +2,8 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Status', {
-    TestRunId: {
-      type: DataTypes.STRING(50),
+    TestPassId: {
+      type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true
     },
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     EndTime: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     }
   }, {
     tableName: 'Status'

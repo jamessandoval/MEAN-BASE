@@ -2,18 +2,14 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Result', {
-    ScenarioNumber: {
+    TestCaseId: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
-      references: {
-        model: 'TestCase',
-        key: 'ScenarioNumber'
-      },
+      allowNull: true,
       primaryKey: true
     },
-    TestRunId: {
-      type: DataTypes.STRING(50),
-      allowNull: false
+    TestPassId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
     },
     Template: {
       type: DataTypes.CHAR(5),
