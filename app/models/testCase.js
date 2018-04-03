@@ -2,11 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('TestCase', {
-    ScenarioNumber: {
+    TestCaseId: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     HashValue: {
       type: DataTypes.STRING(50),
@@ -22,8 +21,8 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     },
     Gherkin: {
-      type: DataTypes.STRING(2000),
-      allowNull: false
+      type: DataTypes.STRING(20000),
+      allowNull: true
     }
   }, {
     tableName: 'TestCase'
