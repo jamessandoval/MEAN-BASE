@@ -28,8 +28,8 @@ const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 const authenticate = require('../app/routes/authentication');
 const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
-
 const api_login = require('../app/routes/api_login');
+
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -148,20 +148,14 @@ module.exports = function() {
   //app.get('/results/fundamentals/page') 
 
   // Dashboard Pages
-
   app.get('/dashboard', isLoggedIn, api_dashboard.getOverview);
-
   app.get('/dashboardTWO', api_dashboardTWO.render);
-
   app.get('/dashboard/locale/:locale', isLoggedIn, api_dashboard.getResultMetaByLocale);
-
   app.get('/dashboard/query/:custom', isLoggedIn, api_dashboard.getResultMetaByCustom);
 
   // Results Pages 
-
   // locale - ok
   // locale - testresult - ok
-
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
   app.get('/results/locale/:locale/:page', isLoggedIn, api_results.getResultByLanguage);
 
@@ -205,7 +199,6 @@ module.exports = function() {
 
   // Export Tool
   app.get('/export-tool', isLoggedIn, api_export.getExport);
-
   app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
 
   // old .. deprececated
@@ -216,12 +209,10 @@ module.exports = function() {
   app.post('/run-test', isLoggedIn, api_file_data.runTest);
 
   // Test Runner Routes
-
   app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview); 
-
   app.get('/test-status', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
 
   // Language Detection Route
