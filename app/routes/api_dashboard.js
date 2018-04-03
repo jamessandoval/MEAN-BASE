@@ -12,7 +12,8 @@ exports.getOverview = function(req, res) {
   let feature = "ALL";
   let language = "ALL";
   let lang =[];
-  let allDate = []; 
+  let allDate = ""; 
+  let date = '';
 
 
   let overall = {
@@ -22,7 +23,7 @@ exports.getOverview = function(req, res) {
   }
 
 
-// select count(*) from results where result = 'PASS';
+  // select count(*) from results where result = 'PASS';
   db.sequelize.query(`select distinct Language from Result;`).then(results => {
 
     results = results[0];
@@ -40,7 +41,9 @@ exports.getOverview = function(req, res) {
      allDate = allDate.replace("{\"RunDate\":", "");
      allDate = allDate.replace("\"", "");
      allDate = allDate.replace("\"}", "");
+     let date = allDate.substring(0,10);
      allDate = "Most recent complete test date: " + allDate.substring(0,10);
+     
      
 
     // select count(*) from results where result = 'PASS';
@@ -84,7 +87,8 @@ exports.getOverview = function(req, res) {
             languagesArray: lang,
             currentUrl: req.url,
             allDate: allDate,
-            user: req.user.firstname
+            user: req.user.firstname,
+            date: date
 
           });
 
@@ -255,6 +259,7 @@ exports.getResultMetaByLocale = function(req, res) {
   let fail = null;
   let skip = null;
   let allDate = null;
+  let date ='';
 
 
   let resultsTotal = [];
@@ -270,83 +275,103 @@ exports.getResultMetaByLocale = function(req, res) {
 
   function getResultsTotal(i) {
 
-    // select count(*) from results where result = 'PASS';
-    db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'PASS' and Language = '${locale}'`).then(results => {
 
+    db.sequelize.query('select distinct RunDate from Result limit 1').then(results =>{
       results = results[0];
 
-      pass = JSON.stringify(results[0]);
-      pass = pass.replace("{\"count(*)\":", "");
-      pass = pass.replace("}", "");
-      pass = parseInt(pass);
+     // console.log("This is the type of variable " + results[0]);
+     allDate = JSON.stringify(results[0]);
+     allDate = allDate.replace("{\"RunDate\":", "");
+     allDate = allDate.replace("\"", "");
+     allDate = allDate.replace("\"}", "");
+     let date = allDate.substring(0,10);
+     allDate = "Most recent complete test date: " + allDate.substring(0,10);
 
-      overall.pass += pass;
 
-      // New value = pass
-
-      // select count(*) from results where result = 'FAIL';
-      db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'FAIL' and Language = '${locale}'`).then(results => {
+      // select count(*) from results where result = 'PASS';
+      db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'PASS' and Language = '${locale}'`).then(results => {
 
         results = results[0];
 
-        fail = JSON.stringify(results[0]);
-        fail = fail.replace("{\"count(*)\":", "");
-        fail = fail.replace("}", "");
-        fail = parseInt(fail);
+        pass = JSON.stringify(results[0]);
+        pass = pass.replace("{\"count(*)\":", "");
+        pass = pass.replace("}", "");
+        pass = parseInt(pass);
 
-        overall.fail += fail;
+        overall.pass += pass;
 
-        // New value = fail
+        // New value = pass
 
-        // select count(*) from results where result = 'SKIP';
-        db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'SKIP' and Language = '${locale}'`).then(results => {
+        // select count(*) from results where result = 'FAIL';
+        db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'FAIL' and Language = '${locale}'`).then(results => {
 
           results = results[0];
 
-          skip = JSON.stringify(results[0]);
-          skip = skip.replace("{\"count(*)\":", "");
-          skip = skip.replace("}", "");
-          skip = parseInt(skip);
+          fail = JSON.stringify(results[0]);
+          fail = fail.replace("{\"count(*)\":", "");
+          fail = fail.replace("}", "");
+          fail = parseInt(fail);
 
-          overall.skip += skip;
+          overall.fail += fail;
 
-          // New value = skip
+          // New value = fail
 
-          // Now push to the array
+          // select count(*) from results where result = 'SKIP';
+          db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'SKIP' and Language = '${locale}'`).then(results => {
 
-          resultsTotal.push({
-            language: language,
-            feature: features[i],
-            pass: pass,
-            fail: fail,
-            skip: skip
-          })
+            results = results[0];
 
-          if (i === features.length - 1) {
+            skip = JSON.stringify(results[0]);
+            skip = skip.replace("{\"count(*)\":", "");
+            skip = skip.replace("}", "");
+            skip = parseInt(skip);
 
-            //console.log(resultsTotal);
-            //res.send(resultsTotal);
-            //res.send(overall);
+            overall.skip += skip;
 
-            res.render('dashboard', {
+            // New value = skip
+
+            // Now push to the array
+
+            resultsTotal.push({
               language: language,
-              feature: "all",
-              title: 'Results by Language',
-              resultsTotal : resultsTotal,
-              overall: overall,
-              currentUrl: req.url,
-              allDate: allDate,
-              user: req.user.firstname
-            });
+              feature: features[i],
+              pass: pass,
+              fail: fail,
+              skip: skip
+            })
 
-          } else {
+            if (i === features.length - 1) {
 
-            setTimeout(() => { getResultsTotal(i + 1); });
-          }
+              //console.log(resultsTotal);
+              //res.send(resultsTotal);
+              //res.send(overall);
+
+              res.render('dashboard', {
+                language: language,
+                feature: "all",
+                title: 'Results by Language',
+                resultsTotal : resultsTotal,
+                overall: overall,
+                currentUrl: req.url,
+                allDate: allDate,
+                user: req.user.firstname,
+                date:date
+              });
+
+            } else {
+
+              setTimeout(() => { getResultsTotal(i + 1); });
+            }
+
+          }).catch(function(err) {
+            console.log('error: ' + err);
+            return err;
+
+          })
 
         }).catch(function(err) {
           console.log('error: ' + err);
-          return err;
+         return err;
 
         })
 
@@ -355,7 +380,6 @@ exports.getResultMetaByLocale = function(req, res) {
         return err;
 
       })
-
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;

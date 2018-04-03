@@ -77,8 +77,7 @@ exports.getExportFromResults = function(req, res, next) {
 
 
   //---------------------------------------------------------start of multiple choice query builder ------------------>
-  //below we are looking to see if multiple choices were selected for either template or language and build a query that would work for the selections
-
+  //below we are looking to see if multiple choices were selected for either template or language and build a query that works for the selections
   if (language.includes(",") && feature.includes(",")){ //if multiple selections were made for both template and language...
 
     langArray=language.split(",");
@@ -140,22 +139,25 @@ exports.getExportFromResults = function(req, res, next) {
     })
 
   }else if (feature ==="All" && language ==="All"){
-    db.sequelize.query(`SELECT * from Result;`).then(results => {
+ 
+      db.sequelize.query(`SELECT * from Result;`).then(results => {
 
-      results = results[0];
-      // Needed To convert the blob object into a string 
-      // Otherwise it returns a buffer array object.
-      for (var i = 0; i < results.length; i++) {
-        results[i].Output = String(results[i].Output);
-      }
-      req.results = results;
-      req.language = language;
-      req.testresult = testresult;
-      return next();
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
-    })
+        results = results[0];
+        // Needed To convert the blob object into a string 
+        // Otherwise it returns a buffer array object.
+        for (var i = 0; i < results.length; i++) {
+          results[i].Output = String(results[i].Output);
+        }
+        req.results = results;
+        req.language = language;
+        req.testresult = testresult;
+        return next();
+      }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+      })
+
+    
 
 
   }else if (feature === "All" && testresult === "") {
@@ -399,11 +401,15 @@ exports.export_to_excel = function(req, res) {
 
   let workbook = new Excel.stream.xlsx.WorkbookWriter(streamOptions);
 
-  let worksheet = workbook.addWorksheet('Raw_Data');
+  let worksheet = workbook.addWorksheet('Raw_Data',{
+    views: [
+    {state: 'frozen', ySplit: 1}
+    ]
+    });
 
   worksheet.columns = [
     { header: 'Scenario Id:', key: 'ScenarioNumber', width: 20 },
-    { header: 'Test Run Id:', key: 'TestRunId', width: 32 },
+    { header: 'Test Pass Id:', key: 'TestRunId', width: 32 },
     { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
     { header: 'Template:', key: 'Template', width: 10 },
     { header: 'Language:', key: 'Language', width: 10 },
@@ -411,6 +417,8 @@ exports.export_to_excel = function(req, res) {
     { header: 'URL:', key: 'URLs', width: 50 },
     { header: 'Output:', key: 'Output', width: 100 }
   ];
+  
+
 
   console.log("the size of results is " + results.length);
 
@@ -430,6 +438,7 @@ exports.export_to_excel = function(req, res) {
         URLs: results[j].URLs,
         Output: results[j].Output
       }).commit();
+
 
       setTimeout(() => { processItems(j + 1); });
 

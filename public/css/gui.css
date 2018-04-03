@@ -267,6 +267,13 @@ button[type=submit]:hover {
     animation: flame 1500ms linear infinite;
     opacity:0.2;
 }
+.vault {
+    background:url("/img/v.png") 0 0;
+    background-repeat: no-repeat;
+    width:30px;
+    height:36px;
+    display:inline-block;
+}
 
 @keyframes flame {
 	from {background-position: 0 0;}
