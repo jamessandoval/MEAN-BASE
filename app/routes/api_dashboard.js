@@ -116,7 +116,7 @@ exports.getOverview = function(req, res) {
   })
 
  
-}).catch(function(err) {
+ }).catch(function(err) {
    console.log('error: ' + err);
    return err;
 
@@ -124,7 +124,7 @@ exports.getOverview = function(req, res) {
 
 };
 
-//app.get('/dashboard/custom/:custom', api_dashbboard.getResultMetaByCustom)
+  //app.get('/dashboard/custom/:custom', api_dashbboard.getResultMetaByCustom)
 
 exports.getResultMetaByCustom = function(req, res) {
 
