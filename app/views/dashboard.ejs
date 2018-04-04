@@ -104,13 +104,29 @@
     <div class="col-lg-4 offset-lg-4 text-center">
       <br /><br>
       <h2><%= title %></h2>
+
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
   
   <div class="row">
+      <form action="/dashboard" method="get" class="form-inline col-sm-3 offset-sm-5">
+        <div class="form-group">
+        <select class="form-control form-control-sm" name="testpassid">
+          <% for(var i=0; i < statusDates.length; i++) { %> 
+          <option name="testpassid" value="<%= statusDates[i].TestPassID %>"><%= statusDates[i].RunDate %></option>
+          <% }%>
+        </select>
+        <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
+        </div>
+        <div class="form-group">
+         
+         </div>
+      </form>
     <div class="col-lg-4 offset-lg-4">
       <h3 class="text-center">Locale: <%= language %></h3>
       <!-- Module for Specific Language -->
+      
+
       <% if(language != "ALL"){ %>
       <!--<h5>Drill-Down Links:</h5>-->
       <div class="drill-down">
@@ -151,7 +167,7 @@
         <br />
         <br />
         <% for(var i=0; i < languagesArray.length; i++) { %>
-          <a href='/dashboard/locale/<%= languagesArray[i].Language %>'>
+          <a href='/dashboard/locale/<%= languagesArray[i].Language %>?testpassid=<%= testPassId %>'>
             <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
               <b><%= languagesArray[i].Language %></b>
             </button>
@@ -170,7 +186,7 @@
         <% for(var i=0; i < resultsTotal.length; i++) { 
           if(resultsTotal[i].pass > 0 || resultsTotal[i].fail >0 || resultsTotal[i].skip >0){%>
 
-            <a href='/results/feature/<%= resultsTotal[i].feature %>/locale/<%= language %>'>
+            <a href='/results/feature/<%= resultsTotal[i].feature %>/locale/<%= language %>?testpassid=<%= testPassId %>'>
               <button type="button" class="btn btn-warning locale-button" onclick="loadingAnimation()">
               <b><%=resultsTotal[i].feature%></b>
               <br>

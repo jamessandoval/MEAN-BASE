@@ -41,13 +41,13 @@ module.exports = function() {
   var app = express();
 
   // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
+
+
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));
   } else if (process.env.NODE_ENV === 'production') {
     app.use(compress());
   }
-
-
 
   // Use the 'body-parser' and 'method-override' middleware functions
   app.use(bodyParser.urlencoded({
@@ -92,7 +92,8 @@ module.exports = function() {
     "flukeqa",
     "H0lidayApples", {
       "dialect": "mysql",
-      "storage": "./session.mysql"
+      "storage": "./session.mysql",
+      "logging": false
     });
 
   let dbSessionStore = new SequelizeStore({

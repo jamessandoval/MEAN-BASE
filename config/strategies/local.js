@@ -13,8 +13,6 @@ module.exports = function() {
   // Use the Passport's Local strategy 
   passport.use('local', new LocalStrategy(function(username, password, done) {
 
-  	console.log("Now we are free");
-
     // Use the 'User' model 'findOne' method to find a user with the current username
     db.user.findOne({ where: { username: username } }).then(function(user) {
 

@@ -82,8 +82,6 @@ module.exports = function(passport, user) {
 
     function(req, email, password, done) {
 
-      console.log("do I get called.");
-
       var User = user;
 
       var isValidPassword = function(userpass, password) {
