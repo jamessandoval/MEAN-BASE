@@ -203,6 +203,7 @@ exports.getResultByIdLanguageCustom = function(req, res) {
   let total = null;
   let basePath = null;
   let urlString = null;
+  let users = null;
 
   // Modify search query on ec2 to obtain correct result.
   custom = custom.replace(/ /g, "%");
@@ -344,7 +345,8 @@ exports.getResultByIdLanguageCustom = function(req, res) {
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname
+        user: req.user.firstname,
+        users: users
 
       });
       return null;
