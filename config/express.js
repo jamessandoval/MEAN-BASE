@@ -29,6 +29,7 @@ const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 const authenticate = require('../app/routes/authentication');
 const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 const api_login = require('../app/routes/api_login');
+const test_case_editor = require('../app/routes/test_case_editor');
 
 
 // Angular App Routes
@@ -215,6 +216,10 @@ module.exports = function() {
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview); 
   app.get('/test-status', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
+
+
+  // Edit Test Cases
+  app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);
 
   // Language Detection Route
   app.post('/detect', language.postLanguage);
