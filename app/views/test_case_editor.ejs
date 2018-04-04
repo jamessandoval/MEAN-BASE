@@ -15,69 +15,12 @@
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
-  <div class="row">
-    <div class="col-lg-4 offset-lg-4 text-center">
-        <h3><%= template %> - <%= language %></h3>
-        <div>
-          <a href="/export?feature=<%= template %>&language=<%= language %>&testresult=<%= testresult %>&query=<%= %>"<button class='btn btn-secondary btn-sm'>Export</button></a>
-        </div>
-        <br />
-        <div>
-          <h6>Results Found: <%= length %></h6>
-        </div>
-    </div><!-- end .col-sm-4 -->
-  </div><!-- end .row -->
 
-  <div class="row">
-    <!-- pass/fail links here -->
-    <div class="col-lg-4 text-center" style="border-top: none !important; padding-bottom: .5em">
-      <% if(results){ %>
-        <a href="<%= pfsUrl %>PASS">
-          <div class="legend Pass"></div>
-          <div class="LinksToResults">Pass</div>
-        </a>
-        <a href="<%= pfsUrl %>FAIL">
-          <div class="legend Fail"></div>
-          <div class="LinksToResults">Fail</div>
-        </a>
-        <a href="<%= pfsUrl %>SKIP">
-          <div class="legend Skip"></div>
-          <div class="LinksToResults">Skip</div>
-        </a>
-        <%}%>
-    </div><!-- end .col-sm-4 -->
-    <!-- end pass/fail/skip -->
-
-    <!-- pagination Begins here -->
-    <div class="col-lg-2 offset-lg-6 text-center">
-      <nav aria-label="...">
-        <ul class="pagination">
-          <% if(page <= 1 ) { %>
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-          <% } else { %>
-            <li class="page-item">
-              <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
-            </li>
-          <% }%>
-            <li class="page-item active page-number">
-              <a class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></a>
-            </li>
-          <% if(page >= pages){ %>
-            <li class="page-item disabled">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          <% }else{ %>
-            <li class="page-item page-number">
-              <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
-            </li>
-          <% } %>
-        </ul>
-      </nav>
-    </div><!-- end .col-lg-2 .offset-lg-6 -->
-    <!-- pagination Ends here -->
-  </div><!-- end .row -->
+  <div class="col-lg-4 offset-lg-2">
+      <select size="25" name="cases">
+          <% for(var i=0; i < testcases.length; i++)
+      </select>
+  </div>
 
 
     <div class="table-responsive">
@@ -171,7 +114,7 @@
                             <option value="<% users[x] %>"><%= users[x] %></option>
                           <% }} %>
                         </select>
-                        <input type="submit"/>
+                        <input type="submit">
                         <% } %>
                     </td>
                     <td>
@@ -180,7 +123,7 @@
                         <button onclick="editNote(<%= [i] %>)">edit</button>
                         <%} else{ %>
                         <textarea name="note" rows="1" cols="20">notes</textarea>
-                        <input type="submit"/>
+                        <input type="submit">
                         <%}%>
                     </td>
                                        
@@ -189,35 +132,7 @@
       </table>
     </div><!-- end .table-responsive -->
   </div><!-- end .row -->
-  <!-- pagination Begins here -->
-  <div class="col-lg-2 offset-lg-10 text-center">
-      <nav aria-label="...">
-        <ul class="pagination">
-          <% if(page <= 1 ) { %>
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-          <% } else { %>
-            <li class="page-item">
-              <a class="page-link" href="<%= currentUrl %><%= page-1 %>" tabindex="-1">Previous</a>
-            </li>
-          <% }%>
-            <li class="page-item active page-number">
-              <a class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></a>
-            </li>
-          <% if(page >= pages){ %>
-            <li class="page-item disabled">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          <% }else{ %>
-            <li class="page-item page-number">
-              <a class="page-link" href="<%= currentUrl %><%= page+1 %>">Next</a>
-            </li>
-          <% } %>
-        </ul>
-      </nav>
-    </div><!-- end .col-lg-2 .offset-lg-6 -->
-    <!-- pagination Ends here -->
+  
   </div><!-- end .container -->
 
   <br /><br /><br /><br />
