@@ -148,8 +148,13 @@ body {
 	width: 90%;
 	height: 350px;
 }
-.pieChart {
+/*.pieChart {
 	width: 90%;
+	height: 500px;
+	margin-bottom: 10px;
+}*/
+#barGraph {
+  width: 90%;
 	height: 500px;
 	margin-bottom: 10px;
 }
@@ -278,6 +283,22 @@ button[type=submit]:hover.login {
     animation: flame 1500ms linear infinite;
     opacity:0.2;
 }
+
+.logoText {
+  vertical-align: bottom;
+}
+
+
+/*
+.vault {
+    background:url("/img/v.png") 0 0;
+    background-repeat: no-repeat;
+    width:30px;
+    height:36px;
+    display:inline-block;
+}
+*/
+
 
 @keyframes flame {
 	from {background-position: 0 0;}

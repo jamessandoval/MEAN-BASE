@@ -272,6 +272,7 @@ exports.getResultMetaByCustom = function(req, res) {
                 currentUrl: req.url,
                 user: req.user.firstname,
                 statusDates: statusDates,
+                testPassId: testPassId,
                 testPassId: testPassId
 
               });

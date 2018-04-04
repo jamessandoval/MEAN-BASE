@@ -529,6 +529,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
   let basePath = null;
   let custom = null; //req.params.custom;
   let testresult = null;
+  let userArray=[];
 
   // Pagination Logic Part I of II Begins here
 
@@ -611,68 +612,84 @@ exports.getResultByIdAndLanguage = function(req, res) {
     // Obtain Total Count from results
     db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}'`).then(count => {
 
+      db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-      // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
-      if (language === "%") {
-        language = "All";
-      }
-
-
-      // Obtain Total count from query
-      let Totalcount = count[0];
-
-      Totalcount = JSON.stringify(count[0]);
-
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
-
-      // Parse Results based on previous Query
-
-      // Pagination Logic Part II Begins Here
-
-      total = Totalcount;
-
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
-
-      results = results[0];
-
-      end = start + results.length;
-
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
-
-      }
-
-      // Pagination Logic Part II Ends Here
-
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
-      }
+        users=users[0];  
+        for (let x = users.length - 1; x >= 0; x--) {
+          userArray.push(users[x].firstname);
+        }
 
 
-      res.render('results_custom', {
-        title: 'Test Results:',
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
-        results: results,
-        template: template,
-        language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
-        pfsUrl: pfsUrl,
-        testresult: testresult,
-        custom: custom,
-        user: req.user.firstname
+        // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
+        if (language === "%") {
+          language = "All";
+        }
 
-      });
 
+        // Obtain Total count from query
+        let Totalcount = count[0];
+
+        Totalcount = JSON.stringify(count[0]);
+
+        Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+        Totalcount = Totalcount.replace("}]", "");
+        Totalcount = parseInt(Totalcount);
+
+        // Parse Results based on previous Query
+
+        // Pagination Logic Part II Begins Here
+
+        total = Totalcount;
+
+        // Get total number of pages
+        let pages = Math.ceil(total / rowsToReturn);
+
+        results = results[0];
+
+        end = start + results.length;
+
+        if (page === 0) {
+          page = 1;
+        } else {
+          ++page;
+
+        }
+
+        // Pagination Logic Part II Ends Here
+
+        for (let i = results.length - 1; i >= 0; i--) {
+          results[i].Output = String(results[i].Output);
+        }
+
+
+        res.render('results_custom', {
+          title: 'Test Results:',
+          start: start,
+          end: end,
+          page: page,
+          pages: pages,
+          results: results,
+          template: template,
+          language: language,
+          length: total,
+          currentUrl: req.url,
+          basePath: basePath,
+          pfsUrl: pfsUrl,
+          testresult: testresult,
+          custom: custom,
+          user: req.user.firstname,
+          users: userArray
+
+        });
+
+        return null;
+
+      }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+  
+      })
+  
       return null;
 
     }).catch(function(err) {
@@ -771,7 +788,8 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
   let basePath = null;
   let custom = null;
   let testresult = req.params.testresult;
-  let total = null
+  let total = null;
+  let userArray =[];
 
 
   // Remove Pagination from current url variable
@@ -857,68 +875,83 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
     // Obtain Total Count from results
     db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}'`).then(count => {
 
-      // Return language to human readable string 
-      if (language === "%") {
-        language = "All";
-      }
+      db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-      // Obtain Total count from query
-      let Totalcount = count[0];
+        users=users[0];  
+        for (let x = users.length - 1; x >= 0; x--) {
+          userArray.push(users[x].firstname);
+        }
 
-      Totalcount = JSON.stringify(count[0]);
+        // Return language to human readable string 
+        if (language === "%") {
+          language = "All";
+        }
 
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
+        // Obtain Total count from query
+        let Totalcount = count[0];
 
-      console.log("Something should be here: " + testresult);
+        Totalcount = JSON.stringify(count[0]);
 
-      // Pagination Logic Part II Begins Here
+        Totalcount = Totalcount.replace("[{\"count(*)\":", "");
+        Totalcount = Totalcount.replace("}]", "");
+        Totalcount = parseInt(Totalcount);
 
-      total = Totalcount;
+        console.log("Something should be here: " + testresult);
 
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
+        // Pagination Logic Part II Begins Here
 
-      results = results[0];
-      console.log("Number of pages is " + pages);
+        total = Totalcount;
 
-      end = start + results.length;
+        // Get total number of pages
+        let pages = Math.ceil(total / rowsToReturn);
 
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
+        results = results[0];
+        console.log("Number of pages is " + pages);
 
-      }
+        end = start + results.length;
 
-      // Pagination Logic Part II Ends Here
+        if (page === 0) {
+          page = 1;
+        } else {
+          ++page;
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
-      }
+        }
 
-      res.render('results_custom', {
-        title: 'Test Results:',
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
-        results: results,
-        template: template,
-        language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
-        pfsUrl: pfsUrl,
-        testresult: testresult,
-        custom: custom,
-        user: req.user.firstname
+        // Pagination Logic Part II Ends Here
 
-      });
+        for (let i = results.length - 1; i >= 0; i--) {
+          results[i].Output = String(results[i].Output);
+        }
 
+        res.render('results_custom', {
+          title: 'Test Results:',
+          start: start,
+          end: end,
+          page: page,
+          pages: pages,
+          results: results,
+          template: template,
+          language: language,
+          length: total,
+          currentUrl: req.url,
+          basePath: basePath,
+          pfsUrl: pfsUrl,
+          testresult: testresult,
+          custom: custom,
+          user: req.user.firstname,
+          users:userArray
+
+        });
+
+        return null;
+      
+      }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+  
+      })
+  
       return null;
-
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
