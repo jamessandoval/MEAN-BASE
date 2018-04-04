@@ -11,7 +11,7 @@ exports.getOverview = function(req, res) {
   let language = "ALL";
   let lang = [];
   let allDate = [];
-  let statusDates = null;
+  let testPassData = null;
   let testPassId = null;
 
   let overall = {
@@ -52,11 +52,11 @@ exports.getOverview = function(req, res) {
       lang = results;
 
       // Select Run Dates from Status
-      db.sequelize.query('select TestPassID, RunDate from Status').then(results => {
+      db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
 
         results = results[0];
 
-        statusDates = results;
+        testPassData = results;
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
@@ -99,7 +99,7 @@ exports.getOverview = function(req, res) {
                 languagesArray: lang,
                 currentUrl: req.url,
                 user: req.user.firstname,
-                statusDates: statusDates,
+                testPassData: testPassData,
                 testPassId: testPassId
 
               });
@@ -161,7 +161,7 @@ exports.getResultMetaByCustom = function(req, res) {
   let pass = null;
   let fail = null;
   let skip = null;
-  let statusDates = null;
+  let testPassData = null;
   let testPassId = null;
 
   let resultsTotal = [];
@@ -208,11 +208,11 @@ exports.getResultMetaByCustom = function(req, res) {
 
       overall.pass += pass;
 
-      db.sequelize.query('select TestPassID, RunDate from Status').then(results => {
+      db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
 
         results = results[0];
 
-        statusDates = results;
+        testPassData = results;
 
         // New value = pass
 
@@ -271,9 +271,8 @@ exports.getResultMetaByCustom = function(req, res) {
                 overall: overall,
                 currentUrl: req.url,
                 user: req.user.firstname,
-                statusDates: statusDates,
+                testPassData: testPassData,
                 testPassId: testPassId,
-                testPassId: testPassId
 
               });
 
@@ -322,7 +321,7 @@ exports.getResultMetaByLocale = function(req, res) {
   let fail = null;
   let skip = null;
   let allDate = null;
-  let statusDates = null;
+  let testPassData = null;
   let testPassId = null;
 
   let resultsTotal = [];
@@ -368,11 +367,11 @@ exports.getResultMetaByLocale = function(req, res) {
       overall.pass += pass;
 
 
-      db.sequelize.query('select TestPassID, RunDate from Status').then(results => {
+      db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
 
         results = results[0];
 
-        statusDates = results;
+        testPassData = results;
 
         // select count(*) from results where result = 'FAIL';
         db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'FAIL' and Language = '${locale}' AND TestPassID = ${testPassId};`).then(results => {
@@ -426,7 +425,7 @@ exports.getResultMetaByLocale = function(req, res) {
                 overall: overall,
                 currentUrl: req.url,
                 user: req.user.firstname,
-                statusDates: statusDates,
+                testPassData: testPassData,
                 testPassId: testPassId
 
               });

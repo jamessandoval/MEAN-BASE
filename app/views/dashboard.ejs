@@ -112,10 +112,14 @@
       <form action="/dashboard" method="get" class="form-inline col-sm-3 offset-sm-5">
         <div class="form-group">
         <select class="form-control form-control-sm" name="testpassid">
-          <% for(var i=0; i < statusDates.length; i++) { %> 
-          <option name="testpassid" value="<%= statusDates[i].TestPassID %>"><%= statusDates[i].RunDate %></option>
+          <% for(var i=0; i < testPassData.length; i++) { %> 
+          <option name="testpassid" value="<%= testPassData[i].TestPassID %>"><%= testPassData[i].RunDate %></option>
+          
           <% }%>
         </select>
+        <% for(var i=0; i < testPassData.length; i++) { %> <br>
+        <p>Description: <%= testPassData[i].Description %></p>
+         <% }%>
         <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
         </div>
         <div class="form-group">
