@@ -171,7 +171,7 @@
                             <option value="<% users[x] %>"><%= users[x] %></option>
                           <% }} %>
                         </select>
-                        <input type="submit"/>
+                        <div style="margin-top:10px;"><input type="submit" value="Submit" /></div>
                         <% } %>
                     </td>
                     <td>
@@ -180,7 +180,7 @@
                         <button onclick="editNote(<%= [i] %>)">edit</button>
                         <%} else{ %>
                         <textarea name="note" rows="1" cols="20">notes</textarea>
-                        <input type="submit"/>
+                        <input type="submit" value="Submit" />
                         <%}%>
                     </td>
                                        

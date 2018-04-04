@@ -77,11 +77,11 @@
         'colors': ['#109618', '#DC3912', '#2569ff'],
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '33%', height: '80%' },
+        'chartArea': { width: '80%', height: '80%' },
         'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
         'hAxis': {
           'minValue': 0,
-          'ticks': [0, .3, .6, .9, 1]
+          'ticks': [0, .2, .4, .6, .8, 1]
         }
       };
 
@@ -101,15 +101,16 @@
 
 
 <div class="container-fluid" id="page">
-  <div class="row">
-    <div class="col-lg-4 offset-lg-4 text-center">
+  <div class="row text-center">
+    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
       <br /><br>
+      <!--div><img src="/img/v.png" alt="vault" /></div-->
       <h2><%= title %></h2>
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
   
   <div class="row text-center">
-    <div class="col-lg-4 offset-lg-2">
+    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
       <h3>Locale: <%= language %></h3> <br>
       <!-- Module for Specific Language -->
       <% if(language != "ALL"){ %> <br>
@@ -135,17 +136,17 @@
         <!-- legend module here -->
     </div><!-- end .col-lg-4 -->
 
-    <div class="col-lg-3">
+    <div class="col-lg-4 col-xl-4">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
-        <div id="barGraph" class="pieChart">BarGraph</div>
+        <div id="barGraph">BarGraph</div>
         <%  } %>
       <!-- Secondary Bar Graph Ends here -->
     </div><!-- end .col-lg-4 -->
   </div><!-- end .row -->
 
   <div class="row">
-    <div class="col-lg-6 offset-lg-3">
+    <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
       <!-- Dashboard button links : BEGIN-->
       <% if(!resultsTotal){ %>
         <h3> Click on Locale links for more detailed information:</h3>

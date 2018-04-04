@@ -15,27 +15,17 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- Adding ajax for google chart dashboard -->
-
-  <style type="text/css">
-  /* Do not move this .table{} class to external css, it needs to be here. Used for the test_runner page. */
-  .testRunTable { 
-    max-width: 700px;
-    margin: auto;
-  }
-  </style>
-
 </head>
-
 
 <body style="padding-top: 60px;" onload="uncheckAll()">
 
 <!-- begin .nav -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
- 
-  <a class="navbar-brand">
-      <div class='vault'></div>
-    <span class="navbar-brand">ault</span>
-  </a>
+
+  <!-- Vault logo -->
+  <div class="navbar-brand">
+    <img src="/img/v.png" alt="vault" /><span class="logoText">ault</span>
+  </div>
 
   <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -62,19 +52,18 @@
 
       
       <% if(typeof user == 'string' && user){ %>
-        <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" href="/signup" onclick="loadingAnimation()">Create User</a>
       </li>
-               <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" href="/logout" onclick="loadingAnimation()">Log Out</a>
-        <li>
+      <li>
 
       <% }else{ %>
-
       <li class="nav-item">
         <a class="nav-link" href="/login">Log In</a>
       </li>
-        <% } %>
+      <% } %>
 
     </ul>
     
