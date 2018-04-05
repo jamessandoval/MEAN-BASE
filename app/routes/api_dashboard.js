@@ -10,8 +10,6 @@ exports.getOverview = function(req, res) {
   let feature = "ALL";
   let language = "ALL";
   let lang = [];
-  //let allDate = [];
-  //let date = '';
   let testPassData = null;
   let testPassId = null;
 
@@ -333,7 +331,6 @@ exports.getResultMetaByLocale = function(req, res) {
   let pass = null;
   let fail = null;
   let skip = null;
-  let allDate = null;
   let testPassData = null;
   let testPassId = null;
 

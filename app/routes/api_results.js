@@ -2,8 +2,8 @@
 
 const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
-
-const Op = Sequelize.Op;
+const async = require('async');
+const util = require('util');
 
 // Read Excel File Data
 var fs = require('fs');
@@ -13,10 +13,185 @@ var path = require('path');
 var rootPath = path.normalize(__dirname + '../../../');
 var rootPath = rootPath + 'temp_directory';
 
+// Pagination Logic
+const rowsToReturn = 25;
+
 // Excel functionality:
 // https://github.com/guyonroche/exceljs#create-a-workbook
 const Excel = require('exceljs');
 
+// Pagination part 1 of 2:
+function paginationProcess1of2(page, rowsToReturn) {
+  if (!page) {
+    page = 1;
+  }
+  // else page = page
+  if (page === '1') {
+    page = 0;
+  } else {
+    page = page - 1;
+  }
+
+  let start = page * rowsToReturn;
+
+  return {
+    start: start,
+    page: page
+  }
+}
+
+// Pagination part 1 of 2:
+function paginationProcess2of2(page, total, start, rowsToReturn, length) {
+
+  // Get total number of pages
+  let pages = Math.ceil(total / rowsToReturn);
+  let end = start + length;
+
+  if (page === 0) {
+    page = 1;
+  } else {
+    ++page;
+  }
+
+  return {
+    pages: pages,
+    end: end,
+    page: page
+  }
+}
+
+// Process Local Urls to return correct url to ejs view template:
+
+function processLocalPageUrls(reqUrl) {
+
+  let urlString = null;
+  let regexNum = /^[0-9]*$/;
+
+  // Remove Query String from Path
+  reqUrl = reqUrl.replace(/\?.*/, "");
+
+  let urlArray = reqUrl.split("/");
+  let basePath = urlArray.slice(0);
+
+  if (urlArray[urlArray.length - 1].match(regexNum)) {
+
+    urlArray.pop();
+    basePath.pop();
+
+    urlString = urlArray.toString();
+
+    reqUrl = urlString.replace(/,/g, "/");
+
+  } else {
+
+    urlString = urlArray.toString();
+    reqUrl = urlString.replace(/,/g, "/");
+
+  }
+
+  basePath = basePath.toString();
+  basePath = basePath.replace(/,/g, "/");
+  basePath = basePath + "/";
+
+  reqUrl = reqUrl + "/";
+
+  let localUrlData = {
+
+    basePath: basePath,
+    reqUrl: reqUrl,
+
+  }
+
+  return localUrlData;
+}
+
+// Get testpass Id
+function EvaluateTestPassIdAndGetResults(testPassId) {
+
+  if (!testPassId) {
+    return new Promise(function(resolve, reject) {
+      db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate limit 1;`).then(testPassId => {
+        testPassId = testPassId[0][0].TestPassId;
+
+        if (!testPassId) {
+          reject("Test Pass id Is not defined");
+
+        } else {
+          resolve(testPassId);
+
+        }
+      });
+    })
+
+  } else {
+    return new Promise(function(resolve, reject) {
+      if (!testPassId) {
+
+        reject("Test Pass id Is not defined");
+      } else {
+        resolve(testPassId);
+      }
+    });
+  }
+}
+
+// Render the page 
+function renderPage(renderPageData, req, res) {
+
+  let users = renderPageData.results.users;
+  let testPassData = renderPageData.results.testPassData;
+  let length = renderPageData.results.length;
+  let language = renderPageData.language;
+  let page = renderPageData.page;
+  let start = renderPageData.start;
+  let rowsToReturn = renderPageData.rowsToReturn;
+  let template = renderPageData.template;
+  let reqUrl = renderPageData.reqUrl;
+  let basePath = renderPageData.basePath;
+  let pfsUrl = renderPageData.pfsUrl;
+  let testresult = renderPageData.testresult;
+  let custom = renderPageData.custom;
+  let reqUserfirstname = renderPageData.reqUserfirstname;
+  let testPassId = renderPageData.results.testPassId;
+  let total = renderPageData.results.count;
+
+
+  let results = renderPageData.results.results;
+  // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
+  if (language === "%") {
+    language = "All";
+  }
+
+  let paginationData = paginationProcess2of2(page, total, start, rowsToReturn, length);
+
+  let pages = paginationData.pages;
+  let end = paginationData.end;
+  page = paginationData.page;
+
+  // Pagination Logic Part II Ends Here
+
+  res.render('results_custom', {
+    title: 'Test Results:',
+    start: start,
+    end: end,
+    page: page,
+    pages: pages,
+    results: results,
+    template: template,
+    language: language,
+    total: total,
+    currentUrl: reqUrl,
+    basePath: basePath,
+    pfsUrl: pfsUrl,
+    testresult: testresult,
+    custom: custom,
+    user: reqUserfirstname,
+    users: users,
+    testPassData: testPassData,
+    testPassId: testPassId
+
+  });
+}
 
 // result
 exports.postResults = function(req, res, next) {
@@ -131,17 +306,6 @@ exports.postResults = function(req, res, next) {
 // and a language Combination.
 exports.export_to_excel = function(req, res, next) {
 
-  /*
-  // read from a file
-  var workbook = new Excel.Workbook();
-  workbook.xlsx.readFile(filename)
-    .then(function() {
-      // use workbook
-    });
-  */
-
-
-
   let results = req.results;
   const filepath = rootPath + '/' + `Report-${results[0].Template}-${results[0].Language}.xlsx`;
 
@@ -196,1461 +360,781 @@ exports.export_to_excel = function(req, res, next) {
 ///results/feature/:template/locale/:locale/query/:custom
 exports.getResultByIdLanguageCustom = function(req, res) {
 
+  
+
   let template = req.params.template;
   let language = req.params.locale;
   let custom = req.params.custom;
-  let testresult = null;
-  let total = null;
-  let basePath = null;
-  let urlString = null;
-  let users = null;
+  let testresult = req.params.testresult;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
+  let reqUrl = req.url;
 
-  // Modify search query on ec2 to obtain correct result.
-  custom = custom.replace(/ /g, "%");
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let pfsUrl = null;
-  pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
+    getResults(testPassId);
+
+  });
+
+  let pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
   pfsUrl = pfsUrl.replace(/%/g, " ");
-
-  let urlArray = req.url.split("/");
-
-  let regexNum = /^[0-9]*$/;
-
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
-
-    urlArray.pop();
-
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-
-    urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-    req.url = urlString.replace(/,/g, "/");
-
-  } else {
-
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-  }
-
-  req.url = req.url + "/";
-  basePath = basePath + "/";
-
-  // <!-- end of remove pagination
-
-  // Pagination Logic Part I of II Begins here
-
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
-
-  console.log("start is " + start);
-
+  custom = custom.replace(/ /g, "%");
   // Pagination Logic Part I of II Ends Here
+  function getResults(testPassId) {
 
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
+    if (language === "all") {
+      language = "%";
+    }
 
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%'`).then(count => {
+    async.parallel({
 
-      // Obtain Total count from query
-      let Totalcount = count[0];
+      results: function(cb) {
 
-      Totalcount = JSON.stringify(count[0]);
+        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
+          results = results[0];
 
-      // Parse Results based on previous Query
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
-      // Pagination Logic Part II Begins Here
+          cb(null, results);
+        });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-      total = Totalcount;
+          testPassData = testPassData[0];
 
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language = '${language}' AND Output like '%${custom}%' AND TestPassId = '${testPassId}'`).then(count => {
 
-      results = results[0];
-      console.log("Number of pages is " + pages);
+          count = count[0][0]['count(*)'];
 
-      end = start + results.length;
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
+          users = users[0];
 
+          cb(null, users);
+        });
       }
+    }, (err, results) => {
 
-      // Pagination Logic Part II Ends Here
+      let renderPageData = {
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output); 
-      }
-
-      console.log("template is " + template)
-
-      // Modify search query on ec2 to obtain correct result.
-      custom = custom.replace(/%/g, " ");
-
-      res.render('results_custom', {
-        title: 'Results with Query: ' + custom,
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
         results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
         template: template,
         language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname,
-        users: users
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
 
-      });
-      return null;
+      }
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
+      renderPage(renderPageData, req, res);
 
-    })
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  })
+    });
+  }
 };
+
 
 // getResultByLanguage
 
 exports.getResultByLanguage = function(req, res) {
 
+  
+
   let template = "All";
+  let custom = req.params.custom;
+  let testresult = req.params.testresult;
   let language = req.params.locale;
-  let total = null
-  let urlString = null;
-  let basePath = null;
-  let custom = null; //req.params.custom;
-  let testresult = null;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
 
-  // Pagination Logic Part I of II Begins here
 
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
+  let reqUrl = req.url;
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  let pfsUrl = null;
-  pfsUrl = `/results/locale/${language}/testresult/`;
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let urlArray = req.url.split("/");
-  basePath = urlArray.slice(0);
+    getResults(testPassId);
 
-  let regexNum = /^[0-9]*$/;
+  });
 
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
-
-    urlArray.pop();
-    basePath.pop();
-
-    urlString = urlArray.toString();
-
-    req.url = urlString.replace(/,/g, "/");
-
-  } else {
-
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-
-  }
-
-  basePath = basePath.toString();
-  basePath = basePath.replace(/,/g, "/");
-  basePath = basePath + "/";
-
-  req.url = req.url + "/";
-
-  // <!-- end of remove pagination
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
+  let pfsUrl = `/results/locale/${language}/testresult/`;
 
   // Pagination Logic Part I of II Ends Here
+  function getResults(testPassId) {
 
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
+    if (language === "all") {
+      language = "%";
+    }
 
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Language = '${language}'`).then(count => {
 
-      // Obtain Total count from query
-      let Totalcount = count[0];
+    async.parallel({
 
-      Totalcount = JSON.stringify(count[0]);
+      results: function(cb) {
 
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
+        db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-      // Parse Results based on previous Query
+          results = results[0];
 
-      // Pagination Logic Part II Begins Here
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
-      total = Totalcount;
+          cb(null, results);
+        });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
+          testPassData = testPassData[0];
 
-      results = results[0];
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND TestPassId = '${testPassId}';`).then(count => {
 
-      end = start + results.length;
+          count = count[0][0]['count(*)'];
 
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
+          users = users[0];
+
+          cb(null, users);
+        });
       }
+    }, (err, results) => {
 
-      // Pagination Logic Part II Ends Here
+      let renderPageData = {
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
-      }
-
-
-      res.render('results_custom', {
-        title: 'Report:',
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
         results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
         template: template,
         language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
 
-      });
-      return null;
+      }
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
+      renderPage(renderPageData, req, res);
 
-    })
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  })
-
+    });
+  }
 };
+
 
 // results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
 
+  
   let template = req.params.template;
   let language = req.params.locale;
-  let total = null
-  let urlString = null;
-  let basePath = null;
-  let custom = null; //req.params.custom;
-  let testresult = null;
-  let userArray=[];
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
+  let custom = req.params.custom;
+  let testresult = req.params.testresult;
+  let pfsUrl = `/results/feature/${template}/locale/${language}/testresult/`;
+  let reqUrl = req.url;
 
-  // Pagination Logic Part I of II Begins here
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
+    getResults(testPassId);
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
-
-  let pfsUrl = null;
-  pfsUrl = `/results/feature/${template}/locale/${language}/testresult/`;
-
-
-  let urlArray = req.url.split("/");
-  basePath = urlArray.slice(0);
-
-  // END IN WORK
-
-  let regexNum = /^[0-9]*$/;
-
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
-
-    urlArray.pop();
-    basePath.pop();
-
-    urlString = urlArray.toString();
-
-    req.url = urlString.replace(/,/g, "/");
-
-  } else {
-
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-
-  }
-
-  basePath = basePath.toString();
-  basePath = basePath.replace(/,/g, "/");
-  basePath = basePath + "/";
-
-  req.url = req.url + "/";
-
-  // <!-- end of remove pagination
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
-
-  if (language === "all") {
-    language = "%";
-  }
+  });
 
   // Pagination Logic Part I of II Ends Here
+  function getResults(testPassId) {
 
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn} ;`).then(results => {
+    if (language === "all") {
+      language = "%";
+    }
 
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}'`).then(count => {
+    async.parallel({
 
-      db.sequelize.query(`select distinct firstname from User`).then(users => {
+      results: function(cb) {
+        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-        users=users[0];  
-        for (let x = users.length - 1; x >= 0; x--) {
-          userArray.push(users[x].firstname);
-        }
+          results = results[0];
 
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
-        // RETURN THE LANGUAGE VARIABLE TO HUMAN READABLE
-        if (language === "%") {
-          language = "All";
-        }
-
-
-        // Obtain Total count from query
-        let Totalcount = count[0];
-
-        Totalcount = JSON.stringify(count[0]);
-
-        Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-        Totalcount = Totalcount.replace("}]", "");
-        Totalcount = parseInt(Totalcount);
-
-        // Parse Results based on previous Query
-
-        // Pagination Logic Part II Begins Here
-
-        total = Totalcount;
-
-        // Get total number of pages
-        let pages = Math.ceil(total / rowsToReturn);
-
-        results = results[0];
-
-        end = start + results.length;
-
-        if (page === 0) {
-          page = 1;
-        } else {
-          ++page;
-
-        }
-
-        // Pagination Logic Part II Ends Here
-
-        for (let i = results.length - 1; i >= 0; i--) {
-          results[i].Output = String(results[i].Output);
-        }
-
-
-        res.render('results_custom', {
-          title: 'Test Results:',
-          start: start,
-          end: end,
-          page: page,
-          pages: pages,
-          results: results,
-          template: template,
-          language: language,
-          length: total,
-          currentUrl: req.url,
-          basePath: basePath,
-          pfsUrl: pfsUrl,
-          testresult: testresult,
-          custom: custom,
-          user: req.user.firstname,
-          users: userArray
-
+          cb(null, results);
         });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-        return null;
+          testPassData = testPassData[0];
 
-      }).catch(function(err) {
-        console.log('error: ' + err);
-        return err;
-  
-      })
-  
-      return null;
-
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
-
-    })
-
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  })
-};
-
-exports.getTotalResultCount = function(req, res) {
-
-  let feature = "ALL";
-  let language = "ALL";
-  let pass = 0;
-  let fail = 0;
-  let skip = 0;
-
-  // select count(*) from results where result = 'PASS';
-  db.sequelize.query(`select count(*) from Result where result = 'PASS';`).then(results => {
-
-    results = results[0];
-
-    pass = JSON.stringify(results[0]);
-    pass = pass.replace("{\"count(*)\":", "");
-    pass = pass.replace("}", "");
-    pass = parseInt(pass);
-
-    // Call next query:
-
-    // select count(*) from results where result = 'FAIL';
-    db.sequelize.query(`select count(*) from Result where result = 'FAIL';`).then(results => {
-
-      results = results[0];
-
-      fail = JSON.stringify(results[0]);
-      fail = fail.replace("{\"count(*)\":", "");
-      fail = fail.replace("}", "");
-      fail = parseInt(fail);
-
-      // select count(*) from results where result = 'SKIP';
-      db.sequelize.query(`select count(*) from Result where result = 'SKIP';`).then(results => {
-
-        results = results[0];
-
-        skip = JSON.stringify(results[0]);
-        skip = skip.replace("{\"count(*)\":", "");
-        skip = skip.replace("}", "");
-        skip = parseInt(skip);
-
-        res.send({
-          feature: feature,
-          language: language,
-          pass: pass,
-          fail: fail,
-          skip: skip
+          cb(null, testPassData);
         });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}';`).then(count => {
 
-      }).catch(function(err) {
-        console.log('error: ' + err);
-        return err;
+          count = count[0][0]['count(*)'];
 
-      })
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
+          users = users[0];
 
-    })
+          cb(null, users);
+        });
+      }
+    }, (err, results) => {
 
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
+      let renderPageData = {
 
-  })
+        results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
+        template: template,
+        language: language,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
+        pfsUrl: pfsUrl,
+        testresult: testresult,
+        custom: custom,
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
+
+      }
+
+      renderPage(renderPageData, req, res);
+
+    });
+  }
 };
-
-
 
 
 //From express.js:
-//app.get('/results/:template/:locale/:testresult/:page', api_results.getResultByLangFeatureAndTestResult);
+// /results/feature/:template/locale/:locale/testresult/:testresult/
 
 exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
+  
   let template = req.params.template;
   let language = req.params.locale;
-  let urlString = null;
-  let basePath = null;
-  let custom = null;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
+  let custom = req.params.custom;
   let testresult = req.params.testresult;
-  let total = null;
-  let userArray =[];
+  let pfsUrl = `/results/feature/${template}/locale/${language}/testresult/`;
+  let reqUrl = req.url;
 
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let pfsUrl = null;
-  pfsUrl = `/results/feature/${template}/locale/${language}/testresult/`;
+    getResults(testPassId);
 
-  let urlArray = req.url.split("/");
-
-  let regexNum = /^[0-9]*$/;
-
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
-
-    urlArray.pop();
-
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-
-    urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-    req.url = urlString.replace(/,/g, "/");
-
-  } else {
-
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-  }
-
-  req.url = req.url + "/";
-  basePath = basePath + "/";
-
-  // <!-- end of remove pagination
-
-  // Pagination Logic Part I of II Begins here
-
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
+  });
 
   // Pagination Logic Part I of II Ends Here
+  function getResults(testPassId) {
 
-  if (language === "all") {
+    if (language === "all") {
+      language = "%";
+    }
 
-    language = "%";
-  }
+    async.parallel({
 
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
+      results: function(cb) {
+        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}'`).then(count => {
+          results = results[0];
 
-      db.sequelize.query(`select distinct firstname from User`).then(users => {
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
-        users=users[0];  
-        for (let x = users.length - 1; x >= 0; x--) {
-          userArray.push(users[x].firstname);
-        }
-
-        // Return language to human readable string 
-        if (language === "%") {
-          language = "All";
-        }
-
-        // Obtain Total count from query
-        let Totalcount = count[0];
-
-        Totalcount = JSON.stringify(count[0]);
-
-        Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-        Totalcount = Totalcount.replace("}]", "");
-        Totalcount = parseInt(Totalcount);
-
-        console.log("Something should be here: " + testresult);
-
-        // Pagination Logic Part II Begins Here
-
-        total = Totalcount;
-
-        // Get total number of pages
-        let pages = Math.ceil(total / rowsToReturn);
-
-        results = results[0];
-        console.log("Number of pages is " + pages);
-
-        end = start + results.length;
-
-        if (page === 0) {
-          page = 1;
-        } else {
-          ++page;
-
-        }
-
-        // Pagination Logic Part II Ends Here
-
-        for (let i = results.length - 1; i >= 0; i--) {
-          results[i].Output = String(results[i].Output);
-        }
-
-        res.render('results_custom', {
-          title: 'Test Results:',
-          start: start,
-          end: end,
-          page: page,
-          pages: pages,
-          results: results,
-          template: template,
-          language: language,
-          length: total,
-          currentUrl: req.url,
-          basePath: basePath,
-          pfsUrl: pfsUrl,
-          testresult: testresult,
-          custom: custom,
-          user: req.user.firstname,
-          users:userArray
-
+          cb(null, results);
         });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-        return null;
-      
-      }).catch(function(err) {
-        console.log('error: ' + err);
-        return err;
-  
-      })
-  
-      return null;
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
+          testPassData = testPassData[0];
 
-    })
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
-    return null;
+          count = count[0][0]['count(*)'];
 
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-  })
+          users = users[0];
+
+          cb(null, users);
+        });
+      }
+    }, (err, results) => {
+
+      let renderPageData = {
+
+        results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
+        template: template,
+        language: language,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
+        pfsUrl: pfsUrl,
+        testresult: testresult,
+        custom: custom,
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
+
+      }
+
+      renderPage(renderPageData, req, res);
+
+    });
+  }
 };
+
+
 
 //app.get('/results/feature/:template/query/:custom', api_results.getResultByTemplateCustom);
 
 exports.getResultByTemplateCustom = function(req, res) {
 
+  
   let template = req.params.template;
   let language = "All";
-  let total = null;
-  let basePath = null;
-  let urlString = null;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
   let custom = req.params.custom;
-  let testresult = null;
+  let testresult = req.params.testresult;
+  let pfsUrl = `/results/feature/${template}/query/${custom}/testresult/`;
+  let reqUrl = req.url;
 
-  // Modify search query on ec2 to obtain correct result.
-  custom = custom.replace(/ /g, "%");
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let pfsUrl = null;
-  pfsUrl = `/results/feature/${template}/query/${custom}/testresult/`;
-  pfsUrl = pfsUrl.replace(/%/g, " ");
+    getResults(testPassId);
 
-  console.log("This is custom:" + custom);
-
-
-  let urlArray = req.url.split("/");
-
-  let regexNum = /^[0-9]*$/;
-
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
-
-    urlArray.pop();
-
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-
-    urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-    req.url = urlString.replace(/,/g, "/");
-
-  } else {
-
-    basePath = urlArray.slice(0);
-    basePath.pop();
-
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-  }
-
-  req.url = req.url + "/";
-  basePath = basePath + "/";
-
-  // <!-- end of remove pagination
-
-  // Pagination Logic Part I of II Begins here
-
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
-
-  console.log("start is " + start);
+  });
 
   // Pagination Logic Part I of II Ends Here
+  function getResults(testPassId) {
 
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Output like '%${custom}%' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
+    if (language === "all") {
+      language = "%";
+    }
 
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Output like '%${custom}%'`).then(count => {
+    async.parallel({
 
-      // Obtain Total count from query
-      let Totalcount = count[0];
+      results: function(cb) {
+        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Output like '%${custom}%' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-      Totalcount = JSON.stringify(count[0]);
+          results = results[0];
 
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
-      // Parse Results based on previous Query
+          cb(null, results);
+        });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-      // Pagination Logic Part II Begins Here
+          testPassData = testPassData[0];
 
-      total = Totalcount;
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND TestPassId = '${testPassId}' AND Output like '%${custom}%'`).then(count => {
 
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
+          count = count[0][0]['count(*)'];
 
-      results = results[0];
-      console.log("Number of pages is " + pages);
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-      end = start + results.length;
+          users = users[0];
 
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
-
+          cb(null, users);
+        });
       }
+    }, (err, results) => {
 
-      // Pagination Logic Part II Ends Here
+      let renderPageData = {
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
-      }
-
-      // Modify search query on ec2 to obtain correct result.
-      custom = custom.replace(/%/g, " ");
-
-      res.render('results_custom', {
-        title: 'Results with Query: ' + custom,
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
         results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
         template: template,
         language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
 
-      });
+      }
 
-      return null;
+      renderPage(renderPageData, req, res);
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
-
-    })
-
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  })
-
+    });
+  }
 };
+
 
 //app.get('/results/feature/:template/query/:custom/testresult/:testresult', api_results.getResultByTemplateCustomAndTestResult);
 
 exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 
+  
+
   let template = req.params.template;
-  let testResult = req.params.testresult;
   let language = "All";
-  let total = null;
-  let basePath = null;
-  let urlString = null;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
   let custom = req.params.custom;
   let testresult = req.params.testresult;
+  let pfsUrl = `/results/feature/${template}/query/${custom}/testresult/`;
+  let reqUrl = req.url;
 
-  // Modify search query on ec2 to obtain correct result.
-  custom = custom.replace(/ /g, "%");
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let pfsUrl = null;
-  pfsUrl = `/results/feature/${template}/query/${custom}/testresult/`;
-  pfsUrl = pfsUrl.replace(/%/g, " ");
+    getResults(testPassId);
 
-  console.log("This is custom:" + custom);
+  });
 
+  function getResults(testPassId) {
 
-  let urlArray = req.url.split("/");
+    if (language === "all") {
+      language = "%";
+    }
 
-  let regexNum = /^[0-9]*$/;
+    async.parallel({
 
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
+      results: function(cb) {
+        db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' AND Output like '%${custom}%' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-    urlArray.pop();
+          results = results[0];
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
+          cb(null, results);
+        });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-    urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-    req.url = urlString.replace(/,/g, "/");
+          testPassData = testPassData[0];
 
-  } else {
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Result = '${testresult}' AND Output like '%${custom}%' AND TestPassId = '${testPassId}'`).then(count => {
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
+          count = count[0][0]['count(*)'];
 
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-  }
+          users = users[0];
 
-  req.url = req.url + "/";
-  basePath = basePath + "/";
-
-  // <!-- end of remove pagination
-
-  // Pagination Logic Part I of II Begins here
-
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
-
-  console.log("start is " + start);
-
-  // Pagination Logic Part I of II Ends Here
-
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Result = '${testresult}' AND Output like '%${custom}%' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
-
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Result = '${testresult}' AND Output like '%${custom}%'`).then(count => {
-
-      // Obtain Total count from query
-      let Totalcount = count[0];
-
-      Totalcount = JSON.stringify(count[0]);
-
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
-
-      // Parse Results based on previous Query
-
-      // Pagination Logic Part II Begins Here
-
-      total = Totalcount;
-
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
-
-      results = results[0];
-      console.log("Number of pages is " + pages);
-
-      end = start + results.length;
-
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
-
+          cb(null, users);
+        });
       }
+    }, (err, results) => {
 
-      // Pagination Logic Part II Ends Here
+      let renderPageData = {
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
-      }
-
-      // Modify search query on ec2 to obtain correct result.
-      custom = custom.replace(/%/g, " ");
-
-      res.render('results_custom', {
-        title: 'Results with Query: ' + custom,
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
         results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
         template: template,
         language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
 
-      });
+      }
 
-      return null;
+      renderPage(renderPageData, req, res);
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
-
-    })
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  })
-
+    });
+  }
 };
+
 
 // from express.js:
 // app.get('/results/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
 exports.getResultByLangAndTestResult = function(req, res) {
 
-  console.log("I am the walrus.");
-
-  var features = [];
+  
+  let template = "All";
   let language = req.params.locale;
-  let urlString = null;
-  let basePath = null;
-  let custom = null;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
+  let custom = req.params.custom;
   let testresult = req.params.testresult;
+  let pfsUrl = `/results/locale/${language}/testresult/`;
+  let reqUrl = req.url;
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  let pfsUrl = null;
-  pfsUrl = `/results/locale/${language}/testresult/`;
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let urlArray = req.url.split("/");
+    getResults(testPassId);
 
-  let regexNum = /^[0-9]*$/;
+  });
 
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
+  function getResults(testPassId) {
 
-    urlArray.pop();
+    if (language === "all") {
+      language = "%";
+    }
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
+    async.parallel({
 
-    urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-    req.url = urlString.replace(/,/g, "/");
+      results: function(cb) {
+        db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-  } else {
+          results = results[0];
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
+          cb(null, results);
+        });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-  }
+          testPassData = testPassData[0];
 
-  req.url = req.url + "/";
-  basePath = basePath + "/";
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
-  // <!-- end of remove pagination
+          count = count[0][0]['count(*)'];
 
-  // Pagination Logic Part I of II Begins here
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
+          users = users[0];
 
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
-
-  // Pagination Logic Part I of II Ends Here
-
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND Result = '${testresult}' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
-
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Result = '${testresult}'`).then(count => {
-
-      // Obtain Total count from query
-      let Totalcount = count[0];
-
-      Totalcount = JSON.stringify(count[0]);
-
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
-
-      results = results[0];
-
-
-      // Needed To convert the blob object into a string 
-      // Otherwise it returns a buffer array object.
-      for (var i = 0; i < results.length; i++) {
-        results[i].Output = String(results[i].Output);
-
+          cb(null, users);
+        });
       }
+    }, (err, results) => {
 
-      let total = Totalcount;
+      let renderPageData = {
 
-      // Pagination Logic Part II Begins Here
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
-
-      end = start + results.length
-
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
-
-      }
-
-      // Pagination Logic Part II Ends Here
-      res.render('results_custom', {
-        title: 'Test Result: ' + testresult,
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
-        template: 'All',
-        features: features,
-        language: language,
         results: results,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
+        template: template,
+        language: language,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
 
-      });
+      }
 
-      return null;
+      renderPage(renderPageData, req, res);
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
-    })
-
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-  })
-
+    });
+  }
 };
 
 //app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult)
 
 exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
+
   let template = req.params.template;
   let language = req.params.locale;
-  let urlString = null;
-  let basePath = null;
+  let testPassId = req.query.testpassid;
+  let page = req.query.page;
   let custom = req.params.custom;
   let testresult = req.params.testresult;
+  let pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
+  let reqUrl = req.url;
 
-  console.log("This is test result " + testresult);
-  console.log("This is feature " + template);
-  console.log("This is language " + language);
-  console.log("This is custom " + custom);
+  let localUrlData = processLocalPageUrls(reqUrl);
+  let paginationData = paginationProcess1of2(page, rowsToReturn);
 
-  // Remove Pagination from current url variable
-  // Additionally, obtain base path from current url.
+  EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
-  let pfsUrl = null;
-  pfsUrl = `/results/feature/${template}/locale/${language}/query/${custom}/testresult/`;
+    getResults(testPassId);
 
-  pfsUrl = pfsUrl.replace(/%/g, " ");
+  });
 
-  // remove special characters from pfsUr
+  function getResults(testPassId) {
 
-  let urlArray = req.url.split("/");
+    if (language === "all") {
+      language = "%";
+    }
 
-  let regexNum = /^[0-9]*$/;
+    async.parallel({
 
-  if (urlArray[urlArray.length - 1].match(regexNum)) {
+      results: function(cb) {
+        db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${paginationData.start}, ${rowsToReturn};`).then(results => {
 
-    urlArray.pop();
+          results = results[0];
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
+          // Convert Result back to string
+          for (let i = results.length - 1; i >= 0; i--) {
+            results[i].Output = String(results[i].Output);
+          }
 
+          cb(null, results);
+        });
+      },
+      testPassData: function(cb) {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
-    urlString = urlArray.toString();
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
-    req.url = urlString.replace(/,/g, "/");
+          testPassData = testPassData[0];
 
-  } else {
+          cb(null, testPassData);
+        });
+      },
+      count: function(cb) {
+        db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' AND TestPassId = '${testPassId}';`).then(count => {
 
-    basePath = urlArray.slice(0);
-    basePath.pop();
+          count = count[0][0]['count(*)'];
 
-    basePath = basePath.toString();
-    basePath = basePath.replace(/,/g, "/");
+          cb(null, count);
+        });
+      },
+      users: function(cb) {
+        db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-    urlString = urlArray.toString();
-    req.url = urlString.replace(/,/g, "/");
-  }
+          users = users[0];
 
-  req.url = req.url + "/";
-  basePath = basePath + "/";
-
-  // <!-- end of remove pagination
-
-  // Modify search query on ec2 to obtain correct result.
-  custom = custom.replace(/ /g, "%");
-
-  let total = null
-  // Pagination Logic Part I of II Begins here
-
-  let page = null;
-  let start = 0;
-  let end = 0;
-  let rowsToReturn = 25;
-
-  if (typeof req.params.page === 'undefined') {
-    // the variable is define
-    req.params.page;
-    page = 1;
-
-  } else {
-
-    page = req.params.page;
-
-  }
-
-  if (page === '1') {
-
-    page = 0;
-
-  } else {
-
-    page = page - 1;
-
-  }
-
-  start = page * rowsToReturn;
-
-  // Pagination Logic Part I of II Ends Here
-
-  // `select * from results where Template = '${template}' and where Language = '${language}' and where Result = '${result}';`
-  db.sequelize.query(`SELECT * FROM Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
-
-    // Obtain Total Count from results
-    db.sequelize.query(`select count(*) from Result WHERE Language = '${language}' AND Template = '${template}' AND Output like '%${custom}%' AND Result = '${testresult}'`).then(count => {
-
-      // Obtain Total count from query
-      let Totalcount = count[0];
-
-      Totalcount = JSON.stringify(count[0]);
-
-      Totalcount = Totalcount.replace("[{\"count(*)\":", "");
-      Totalcount = Totalcount.replace("}]", "");
-      Totalcount = parseInt(Totalcount);
-
-      // Pagination Logic Part II Begins Here
-
-      total = Totalcount;
-
-      console.log("This total count is " + Totalcount + "\n\n\n");
-
-      // Get total number of pages
-      let pages = Math.ceil(total / rowsToReturn);
-
-      results = results[0];
-
-      end = start + results.length;
-
-      if (page === 0) {
-        page = 1;
-      } else {
-        ++page;
-
+          cb(null, users);
+        });
       }
+    }, (err, results) => {
 
-      // Pagination Logic Part II Ends Here
+      let renderPageData = {
 
-      for (let i = results.length - 1; i >= 0; i--) {
-        results[i].Output = String(results[i].Output);
-      }
-
-      // Modify search query on ec2 to obtain correct result.
-      custom = custom.replace(/ /g, "%");
-
-      res.render('results_custom', {
-        title: 'Test Results:',
-        start: start,
-        end: end,
-        page: page,
-        pages: pages,
         results: results,
+        start: paginationData.start,
+        rowsToReturn: rowsToReturn,
         template: template,
         language: language,
-        length: total,
-        currentUrl: req.url,
-        basePath: basePath,
+        reqUrl: localUrlData.reqUrl,
+        basePath: localUrlData.basePath,
         pfsUrl: pfsUrl,
         testresult: testresult,
         custom: custom,
-        user: req.user.firstname
+        reqUserfirstname: req.user.firstname,
+        testPassData: results.testPassData,
+        testPassId: testPassId,
+        page: paginationData.page
 
+      }
 
-      });
-      return null;
+      renderPage(renderPageData, req, res);
 
-    }).catch(function(err) {
-      console.log('error: ' + err);
-      return err;
-
-    })
-    return null;
-
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-
-  })
+    });
+  }
 };
