@@ -119,47 +119,6 @@
           <option name="testpassid" value="<%= testPassData[i].TestPassID %>"><%= testPassData[i].TestPassID %> | <%= testPassData[i].RunDate %></option>
           <% }%>
         </select>
-<<<<<<< HEAD
-        <br />
-        <button class="btn btn-sm btn-primary date-submit-btn" onclick="testSelect()">Go</button>
-        </div><!-- end .form-group -->
-    </div><!-- end .col-lg-12 -->
-  </div><!-- end .row -->
-
-<br />
-
-<div class="row">
-  <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
-      <div class="form-group">
-          <% for(var i=0; i < testPassData.length; i++) { %> 
-
-            <div><span>Description:</span> <span id="testpassDesc<%[i]%>"><%= testPassData[i].Description %></span></div>
-            <!--div><span>Description:</span> <%= testPassData[i].Description %></div-->
-          
-           <% }%>
-       </div>
-    </form>
-
-  <!--br />
-  <div class="row">
-    <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
-        <div class="form-group">
-            <% for(var i=0; i < testPassData.length; i++) { %> 
-
-              <div><span>Description:</span> <%= testPassData[i].Description %></div>
-            
-             <% }%>
-         </div>
-      </form-->
-
-    </div><!-- end .col-lg-12 -->
-  </div><!-- end .row -->
-
-  <br />
-  <div class="row text-center">
-    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
-      <h3>Locale: <%= language %></h3>
-=======
         <% for(var i=0; i < testPassData.length; i++) { %> <br>
         <!--<p>Description: <%= testPassData[i].Description %></p>-->
          <% }%>
@@ -168,7 +127,6 @@
       </form>
     <div class="col-lg-4 offset-lg-4">
       <h3 class="text-center">Locale: <%= language %></h3>
->>>>>>> d4385ca1ffe764d1a1a28ace5d7a910b54d51000
       <!-- Module for Specific Language -->
 
       <% if(language != "ALL"){ %>
