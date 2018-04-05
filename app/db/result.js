@@ -1,43 +1,96 @@
 // Result Queries
 
 const db = require('../../config/sequelize');
+const async = require('async');
 
-exports.allNoPagination = function() {
+exports.getResultsByLanguageAndTemplate = function(template, language, testPassId, start, rowsToReturn) {
 
-  db.result.findAndCountAll().then(results => {
+  async.parallel({
 
-  
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-  });
-}
+    results: function(cb) {
+      db.sequelize.query(`SELECT * FROM Result WHERE Template = '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}' ORDER BY TestCaseId, URLs limit ${start}, ${rowsToReturn};`).then(results => {
 
+        results = results[0];
 
-exports.allWithPagination = function() {
+        cb(null, results);
+      });
+    },
+    testPassData: function(cb) {
+      db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testData => {
 
-  db.result.findAndCountAll(limit: 10, offset: 10).then()
+        testPassData = testData[0];
 
+        cb(null, testPassData);
+      });
+    },
+    count: function(cb) {
+      db.sequelize.query(`select count(*) from Result WHERE Template = '${template}' AND Language LIKE '${language}' AND TestPassId = '${testPassId}';`).then(count => {
 
-}
+        count = count[0];
 
+        cb(null, count);
+      });
+    },
+    users: function(cb) {
+      db.sequelize.query(`select distinct firstname from User`).then(users => {
 
-/* GET ALL Results */
-exports.all = function(req, res) {
+        users = users[0];
 
-  db.result.findAll().then(results => {
-
-    // Needed To convert the blob object into a string 
-    // Otherwise it returns a buffer array object.
-    for (var i = 0; i < results.length; i++) {
-      results[i].Output = String(results[i].Output);
-
+        cb(null, users);
+      });
     }
+  }, (err, results) => {
 
-    res.send(results);
+    //console.log(results.testPassData);
+    //console.log(results.testPass);
+    //console.log(results.count);
+    //console.log(results.users);
 
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
   });
+
 }
+
+/*
+
+async.parallel({
+  card_count: function(cb) {
+    db
+      .Card
+      .findAll({
+        where: { course_id: 'some id' }
+      })
+      .then(function(results) {
+        var t = [];
+        results.forEach(function(result) {
+          var e = {};
+          e['name'] = result.name;
+          e['order_code'] = result.order_code;
+          t.push(e);
+        })
+        cb(null, t);
+      });
+  },
+  pack_count: function(cb) {
+    db
+      .Pack
+      .findAll({
+        where: { course_id: 'some other id' }
+      })
+      .then(function(results) {
+        var s = [];
+        results.forEach(function(result) {
+          var e = {};
+          e['name'] = result.name;
+          e['order_code'] = result.order_code;
+          s.push(e);
+        })
+        cb(null, s);
+      });
+  }
+}, function(err, results) {
+  var card_count = results.card_count;
+  var pack_count = results.pack_count;
+  // results is now { "card_count": t, "pack_count": s }
+});
+
+*/

@@ -42,13 +42,13 @@ module.exports = function() {
   var app = express();
 
   // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
+
+
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));
   } else if (process.env.NODE_ENV === 'production') {
     app.use(compress());
   }
-
-
 
   // Use the 'body-parser' and 'method-override' middleware functions
   app.use(bodyParser.urlencoded({
@@ -93,7 +93,8 @@ module.exports = function() {
     "flukeqa",
     "H0lidayApples", {
       "dialect": "mysql",
-      "storage": "./session.mysql"
+      "storage": "./session.mysql",
+      "logging": false
     });
 
   let dbSessionStore = new SequelizeStore({
@@ -156,9 +157,8 @@ module.exports = function() {
 
   // Results Pages 
   // locale - ok
-  // locale - testresult - ok
+  // locale - testresult - o
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
-  app.get('/results/locale/:locale/:page', isLoggedIn, api_results.getResultByLanguage);
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
   app.get('/results/locale/:locale/testresult/:testresult/:page', isLoggedIn, api_results.getResultByLangAndTestResult);
@@ -174,29 +174,22 @@ module.exports = function() {
   // feature - query - testresult - ok
 
   app.get('/results/feature/:template/query/:custom', isLoggedIn, api_results.getResultByTemplateCustom);
-  app.get('/results/feature/:template/query/:custom/:page', isLoggedIn, api_results.getResultByTemplateCustom);
 
   app.get('/results/feature/:template/query/:custom/testresult/:testresult', isLoggedIn, api_results.getResultByTemplateCustomAndTestResult);
-  app.get('/results/feature/:template/query/:custom/testresult/:testresult/:page', isLoggedIn, api_results.getResultByTemplateCustomAndTestResult);
 
   // locale - feature - ok
   // locale - feature - testresult
 
   app.get('/results/feature/:template/locale/:locale', isLoggedIn, api_results.getResultByIdAndLanguage);
-  app.get('/results/feature/:template/locale/:locale/:page', isLoggedIn, api_results.getResultByIdAndLanguage);
-
+  
   app.get('/results/feature/:template/locale/:locale/testresult/:testresult/',isLoggedIn,  api_results.getResultByLangFeatureAndTestResult);
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/:page', isLoggedIn,  api_results.getResultByLangFeatureAndTestResult);
 
   // Feature - locale - query
   // Feature - template - query - test result 
 
   app.get('/results/feature/:template/locale/:locale/query/:custom', isLoggedIn, api_results.getResultByIdLanguageCustom);
-  app.get('/results/feature/:template/locale/:locale/query/:custom/:page', isLoggedIn, api_results.getResultByIdLanguageCustom);
 
   app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/', api_results.getResultByIdLanguageCustomTestResult);
-  app.get('/results/feature/:template/locale/:locale/query/:custom/testresult/:testresult/:page', api_results.getResultByIdLanguageCustomTestResult);
-
 
   // Export Tool
   app.get('/export-tool', isLoggedIn, api_export.getExport);

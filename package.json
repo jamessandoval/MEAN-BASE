@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "^5.2.9",
     "@angular/router": "^5.2.9",
     "angular-page-loader": "^1.0.2",
+    "async": "^2.6.0",
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
@@ -60,6 +61,7 @@
     "socket.io": "^2.0.4",
     "stream-array": "^1.1.2",
     "update": "^0.7.4",
+    "util": "^0.10.3",
     "winston": "^2.4.1",
     "zone.js": "^0.8.19"
   },
