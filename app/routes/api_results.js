@@ -152,7 +152,7 @@ function renderPage(renderPageData, req, res) {
   let testresult = renderPageData.testresult;
   let custom = renderPageData.custom;
   let reqUserfirstname = renderPageData.reqUserfirstname;
-  let testPassId = renderPageData.results.testPassId;
+  let testPassId = renderPageData.testPassId;
   let total = renderPageData.results.count;
 
 
@@ -168,9 +168,11 @@ function renderPage(renderPageData, req, res) {
   let end = paginationData.end;
   page = paginationData.page;
 
+  console.log("Test pass id is " + testPassId);
+
   // Pagination Logic Part II Ends Here
 
-  res.render('results_custom', {
+  res.render('results', {
     title: 'Test Results:',
     start: start,
     end: end,
@@ -648,6 +650,8 @@ exports.getResultByIdAndLanguage = function(req, res) {
         page: paginationData.page
 
       }
+
+      
 
       renderPage(renderPageData, req, res);
 
