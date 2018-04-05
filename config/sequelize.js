@@ -26,7 +26,7 @@ var sequelize = new Sequelize('test', 'flukeqa', 'H0lidayApples', {
 		  	idle: 10000
 		},
         // Disable Logging temporarily
-        //logging: false
+        logging: false
 });
 
 sequelize
