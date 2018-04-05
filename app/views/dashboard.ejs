@@ -119,14 +119,66 @@
           <option name="testpassid" value="<%= testPassData[i].TestPassID %>"><%= testPassData[i].TestPassID %> | <%= testPassData[i].RunDate %></option>
           <% }%>
         </select>
-        <% for(var i=0; i < testPassData.length; i++) { %> <br>
-        <!--<p>Description: <%= testPassData[i].Description %></p>-->
-         <% }%>
-        <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
-        </div>
-      </form>
-    <div class="col-lg-4 offset-lg-4">
-      <h3 class="text-center">Locale: <%= language %></h3>
+        <br />
+        <button class="btn btn-sm btn-primary date-submit-btn" onclick="testSelect()">Go</button>
+        </div><!-- end .form-group -->
+    </div><!-- end .col-lg-12 -->
+  </div><!-- end .row -->
+
+
+
+  <script>
+
+    function testSelect() {
+          //testPassData = document.getElementById("testpassid").value;
+          //alert('working-1');
+          db.sequelize.query('SELECT TestPassID, Description FROM TestPass').then(results => {
+            results = results[0];
+            testPassData = results;
+            console.log(testPassData[0]);
+          });
+          alert('working-2');
+          //testPassData = req.query.Description;
+          //document.getElementById("testpassDesc").innerHTML = testPassData;
+          //testPassData = testPassData.Description;
+          
+        }
+
+  </script>
+
+
+<br />
+<div class="row">
+  <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
+      <div class="form-group">
+          <% for(var i=0; i < testPassData.length; i++) { %> 
+
+            <div><span>Description:</span> <span id="testpassDesc<%[i]%>"><%= testPassData[i].Description %></span></div>
+            <!--div><span>Description:</span> <%= testPassData[i].Description %></div-->
+          
+           <% }%>
+       </div>
+    </form>
+
+  <!--br />
+  <div class="row">
+    <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
+        <div class="form-group">
+            <% for(var i=0; i < testPassData.length; i++) { %> 
+
+              <div><span>Description:</span> <%= testPassData[i].Description %></div>
+            
+             <% }%>
+         </div>
+      </form-->
+
+    </div><!-- end .col-lg-12 -->
+  </div><!-- end .row -->
+
+  <br />
+  <div class="row text-center">
+    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
+      <h3>Locale: <%= language %></h3>
       <!-- Module for Specific Language -->
 
       <% if(language != "ALL"){ %>
