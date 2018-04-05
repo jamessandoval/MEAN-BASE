@@ -161,7 +161,6 @@ module.exports = function() {
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
-  app.get('/results/locale/:locale/testresult/:testresult/:page', isLoggedIn, api_results.getResultByLangAndTestResult);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
