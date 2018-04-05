@@ -1,139 +1,119 @@
 <%- include('header') %>
 
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-4 offset-lg-4 text-center">
-      <br /><br>
-      <h1><%= title %></h1>
 
-      <% if(typeof user == 'string' && user){ %>
+    <div class="row">
+        <div class="col-lg-4 offset-lg-4 text-center">
+        <br /><br>
+        <h1><%= title %></h1>
+        </div><!-- end .col-lg-4 -->
+    </div><!-- end .row -->
+        
+    <br/>
 
-      <h3>User is: <%= user %></h3>
+    <div class="row">
+        <div class="col-lg-4 offset-lg-2">
+            <h2>Scenarios:</h2>
+            <select size="5" name="cases" style="width:600px; " onChange="showIt(this.id)" id="tcSelection">
+                <% for(var i=0; i < testcases.length; i++){ %>
+                    <option value="<%= testcases[i].Gherkin %>" style="white-space:pre-wrap; border-bottom: 1px solid #ddd;">
+                        <%=testcases[i].TestCaseId%>  | <%= testcases[i].TestCaseDescription %>
+                    </option>
+                <% } %>
+            </select>
+        </div>
+        <div class="col-lg-4">
+            <h2>Behat Code:</h2>
+            <p style="height:300px;" id="gherkin">Select a Scenario on the left to view the related Gherkin.  Then you may edit the selected Gherkin by clicking below.</p>
 
-      <% } %>
+            <br><br>
+        </div>
+    </div>
 
-    </div><!-- end .col-sm-12 -->
-  </div><!-- end .row -->
+    <br>
+    <div class="row">
+        <div class="col-lg-4 offset-lg-2 text-center">
+            <button class="btn btn-warning width-set" onclick'createTc()'>Create New Test Case</button>
+        </div>
+        <div class="col-lg-4 text-center">
+            <button class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button>
+        </div>
+    </div>
 
+    <br><br>
 
-  <div class="col-lg-4 offset-lg-2">
-      <select size="25" name="cases">
-          <% for(var i=0; i < testcases.length; i++)
-      </select>
-  </div>
+    <div id="hiddenRow" style="display:none">
 
+        <div class="row">
+            <div class="col-lg-1 offset-lg-2">
+                <h2> ID: </h2>
+                <p id="theID"></p>
+            </div>
+            <div class="col-lg-3" >
+                <h2>Scenario: </h2>
+                <textarea  rows="4" cols="60" id="theScenario"></textarea>
+            </div>
+            <div class="col-lg-4">
+                <h2>Gherkin: </h2>
+                <textarea  rows="4" cols="60" id="theGherkin"></textarea>
+            </div>
+        </div>
+        <br><br>
+        
+        <div class="row">
+            <div class="col-lg-4 offset-lg-2">
+                <h2> Apply to Feature Page: </h2>
+                <% for(var i=1; i < 26; i++) { %>
+                    <button type="button" class="btn btn-warning locale-button" id="active<%=[i]%>">
+                    <b>F<%= [i] %></b>
+                    </button>
+                <% }%><!-- end for(var i=0; i < languagesArray.length; i++) -->
+            </div>
+            <div class="col-lg-4" >
+                <h2> When you are absolutely sure:</h2>
+                <br><br>
+                <div class="text-center"><button type="button" class="btn btn-danger locale-button width-set">Save Edits</button></div>
+            </div>
+        </div>
+    </div><!-- end of hiddenRow -hidden area that unhides on "edit selected test case" button click -->
 
-    <div class="table-responsive">
-      <table class="table table-hover table-bordered">
-          <thead class="thead-light">
-            <tr>
-              <th>Run  Date:</th>
-              <th>Test Pass ID:</th>
-              <th>Template: </th>
-              <th>Language:</th>
-              <th>Test Scenario: </th>
-              <th class="text-center">Test Case ID:</th>
-              <th class="text-left">Result:</th>
-              <th>Message: </th>
-              <th class="text-left">URL:</th>
-              <th>Owner:</th>
-              <th>Notes:</th>
-            </tr>
-          </thead>
-          <!-- ###                                                               -->
-          <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
-          <!-- ###                                                               -->
-          <% if(results){ %>
-            <% for(var i=0; i < results.length; i++) { %>
-                  <tr>
-                    <td>
-                     <% var a = results[i].RunDate.toString();
-                      var b = a.substring(0, a.indexOf('GMT')); %>
-                      <%=b%>
-                    </td>
-                    <td>
-                      <!-- Titled Test Pass ID -->
-                      <%= results[i].TestPassId %>
-                    </td>
-                    <td>
-                      <%= results[i].Template %>
-                    </td>
-                    <td>
-                      <%= results[i].Language %>
-                    </td>
-                    <td>
-                      <% if(results[i].Output.includes("Result:")){
-                        var q = results[i].Output;
-                        var r = q.split("Result:")[0];
-                          r = r.replace("Scenario:",'');
-                      }else{
-                        var r = results[i].Output;
-                          r = r.replace("Scenario:",'');
-                      } %> 
-                      <a href="<%= currentUrl %>query/<%=r%>"><%=r%></a>
-                    </td>
-                    
-                    <td>
-                      <!-- Titled 'Test Case ID' -->
-                      <%= results[i].TestCaseId %> 
-                    </td>
-                    <td>
-                      <%if (results[i].Result === "PASS") { %>
-                        <a href="<%= pfsUrl %>PASS" class="btn btn-success">PASS</a>
-                        <% }else if(results[i].Result === "FAIL"){ %>
-                          <a href="<%= pfsUrl %>FAIL" class="btn btn-danger">FAIL</a>
-                          <% }else{%>
-                            <a href="<%= pfsUrl %>SKIP" class="btn btn-primary">SKIP</a>
-                            <% } %>
-                    </td>
-                    <td>
-                      <!-- Titled 'Message' and includes fail errors and skip messages ID -->
-                      <% if(results[i].Output.includes("Result:")){
-                        var y = results[i].Output;
-                        var x = y.substring(y.indexOf("Result:"));
-                        x = x.replace("Result:",'');
-                      }else{
-                        var x = '';
-                      } %> 
-                      <%=x%>
-                    </td>
-                    <td>
-                      <a href="<%= results[i].URLs %>" target="_blank">
-                        <%= results[i].URLs %>
-                      </a>
-                    </td>
-                    <td>
-                      <% if  (results[i].Owner) { %>
-                        <%= results[i].Owner %>
-                        <label><input type="radio" onclick="removeOwner();"> Remove </label>
-                        <%  } else { %>
-                        <select name="users">
-                          <% if (users){ %>
-                            <option value="none" selected>None</option>
-                            <% for (var x=0; x < users.length; x++){%>
-                            <option value="<% users[x] %>"><%= users[x] %></option>
-                          <% }} %>
-                        </select>
-                        <input type="submit">
-                        <% } %>
-                    </td>
-                    <td>
-                      <% if (results[i].Notes){ %>
-                        <%= results[i].Notes %>
-                        <button onclick="editNote(<%= [i] %>)">edit</button>
-                        <%} else{ %>
-                        <textarea name="note" rows="1" cols="20">notes</textarea>
-                        <input type="submit">
-                        <%}%>
-                    </td>
-                                       
-                  </tr>
-              <% }} %>
-      </table>
-    </div><!-- end .table-responsive -->
-  </div><!-- end .row -->
-  
-  </div><!-- end .container -->
+</div><!-- end .container -->
 
   <br /><br /><br /><br />
+
+  <script>
+
+    function showIt(ID){
+        var p = document.getElementById("gherkin");
+        var text =document.getElementById("tcSelection").value;
+        p.innerHTML = text;
+    }
+    
+    function editTc(){
+        var hidden=document.getElementById("hiddenRow");
+        hidden.setAttribute("style", "display:visible");
+        
+        var placement1= document.getElementById("theID");
+        //----------------------------------------------------------------The below code will need to be changed if we stop displaying all scenarios (ie-we only show 'live') since the ID won't match the index------------------
+        var content1=document.getElementById("tcSelection").selectedIndex; //this grabs the index, starting at 0, which is then displayed under "ID" with +1
+        placement1.innerHTML=content1 +1;
+
+        var placement2= document.getElementById("theScenario");
+        var content2=document.getElementById("tcSelection").options;
+        content2 =content2[content1].text;
+        content2=content2.replace(/^[^Scenario]*/, ''); //this gets rid of the ID that was added to the beginning of the content1 string
+        placement2.innerHTML = content2;
+
+        var placement3= document.getElementById("theGherkin");
+        var content3=document.getElementById("tcSelection").value;
+
+        content3= content3.replace(content2,''); //this gets rid of the Scenario so that content3 only contains Gherkin 
+        content3=content3.replace("@javascript",''); //this gets rid of the '@javascript' that is in some of these Gherkin strings
+        placement3.innerHTML=content3;
+        // getLive(content1);
+    }
+
+                       
+
+  </script>
   <%- include('footer') %>

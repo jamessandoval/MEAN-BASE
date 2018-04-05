@@ -28,6 +28,8 @@ exports.getOverview = function(req, res) {
 
       testPassId = testPassId[0][0].TestPassId;
 
+      //console.log('The value is - ' + testPassId);
+
       GetResultOverview(testPassId);
 
     });
@@ -39,16 +41,20 @@ exports.getOverview = function(req, res) {
 
   }
 
-
+  
   function GetResultOverview(testPassId) {
 
     db.sequelize.query(`select distinct Language from Result where TestPassID = ${testPassId};`).then(results => {
 
       results = results[0];
-
       //console.log(results[0].Language);
 
       lang = results;
+      //console.log('The value is - ' + lang[0].Language);
+
+
+
+
 
       // Select Run Dates from Status
       db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
@@ -56,6 +62,12 @@ exports.getOverview = function(req, res) {
         results = results[0];
 
         testPassData = results;
+        //console.log(testPassData[0]);
+        //console.log('Hey Waldo, these are the results you are looking for - ' + testPassData[0].Description);
+
+
+
+
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
@@ -271,7 +283,7 @@ exports.getResultMetaByCustom = function(req, res) {
                 currentUrl: req.url,
                 user: req.user.firstname,
                 testPassData: testPassData,
-                testPassId: testPassId,
+                testPassId: testPassId
 
               });
 
