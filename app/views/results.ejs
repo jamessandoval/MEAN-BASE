@@ -1,120 +1,230 @@
 <%- include('header') %>
-  <% if(features){ %>
-    <h3>Available Features</h3>
-    <% for(var i=0; i < features.length; i++) { %>
-      <div style="display: inline-block;">
-        <h4>&bull; <%= features[i] %></h4></div>
-      <% }}%>
-        <% if(languages){ %>
-          <h3>Available Languages:</h3>
-          <% for(var i=0; i < languages.length; i++) { %>
-            <div style="display: inline-block;">
-              <h4>&bull; <%= languages[i]   %></h4></div>
-            <% }}%>
-              <table class="table">
-                <tr>
-                  <th colspan="2" style="border-top: none !important; padding: 0px !important">
-                    <h2>Results: <%= length %></h2></th>
-                </tr>
-                <tr>
-                  <td colspan="5" style="border-top: none !important; padding: 0px !important">
-                    <ul class="nav nav-pills" id="myTabs">
-                      <li class="active">
-                        <a href="#all" data-toggle="tab" aria-controls="all" role="tab">ALL</a>
-                      </li>
-                      <li>
-                        <a href="<%= features[i] %>" data-toggle="dropdown" class="dropdown-toggle">
-                            Features:
-                              <span class="caret"></span>
-                            </a>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a href="#allFeatures" class="dropdown-item">ALL</a>
-                          </li>
-                          <% if(features){ %>
-                            <% for(var i=0; i < features.length; i++) { %>
-                              <li>
-                                <a href="#<%= features[i] %>" class="dropdown-item" data-toggle="tab" aria-controls="<%= features[i] %>" role="tab">
-                                  <%= features[i] %>
-                                </a>
-                              </li>
-                              <% }}%>
-                        </ul>
-                      </li>
-                      <li>
-                        <a href="<%= languages[i] %>" data-toggle="dropdown" class="dropdown-toggle">
-                            Languages:
-                              <span class="caret"></span>
-                            </a>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a href="#alllanguages" class="dropdown-item" data-toggle="tab" role="tab">ALL</a>
-                          </li>
-                          <% if(languages){ %>
-                            <% for(var i=0; i < languages.length; i++) { %>
-                              <li>
-                                <a href="#<%= languages[i] %> " class="dropdown-item">
-                                  <%= languages[i] %>
-                                </a>
-                              </li>
-                              <% }}%>
-                        </ul>
-                      </li>
-                    </ul>
-                  </td>
-                  <td class="text-right" style="border:none !important">
-                    <!--<button type="button" class="btn btn-info">Export</button>-->
-                  </td>
-                </tr>
-                <tr>
-                  <th>TR ID:</th>
-                  <th>Run Date:</th>
-                  <th>Template: </th>
-                  <th>Language: </th>
-                  <th>Result: </th>
-                  <th class="text-center">URL:</th>
-                  <th class="text-center">Output:</th>
-                </tr>
-                <!-- ###                                                               -->
-                <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
-                <!-- ###                                                               -->
-                <% if(results){ %>
-                  <% for(var i=0; i < results.length; i++) { %>
-                    <div class="tab-content clearfix">
-                      <div class="tab-pane active" id="all">
-                        <tr>
-                          <td>
-                            <%= results[i].ID %>
-                          </td>
-                          <td>
-                            <%= results[i].Template %>
-                          </td>
-                          <td>
-                            <%= results[i].RunDate %>
-                          </td>
-                          <td>
-                            <%= results[i].Language %>
-                          </td>
-                          <td>
-                            <%if (results[i].Result === "PASS") { %>
-                              <button type="button" class="btn btn-success">PASS</button>
-                              <% }else if(results[i].Result === "FAIL"){ %>
-                                <button type="button" class="btn btn-danger">FAIL</button>
-                                <% }else{%>
-                                  <button type="button" class="btn btn-warning">SKIP</button>
-                                  <% } %>
-                          </td>
-                          <td>
-                            <a href="<%= results[i].URLs %>" target="_blank">
-                              <%= results[i].URLs %>
-                            </a>
-                          </td>
-                          <td>
-                            <%= results[i].Output %>
-                          </td>
-                        </tr>
-                      </div>
-                    </div>
-                    <% }} %>
-              </table>
-              <%- include('footer') %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4 text-center">
+      <br /><br>
+      <h1><%= title %></h1>
+
+      <div class="col-sm-4 offset-sm-3">
+      <form action="<%= currentUrl %>" method="get" class="form-inline">
+        <div class="form-group">
+        <select class="form-control form-control-sm" name="testpassid">
+          <% for(var i=0; i < testPassData.length; i++) { %> 
+
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>"><%= testPassData[i].TestPassId %> | <%= testPassData[i].RunDate %></option>
+
+          <% } %>
+        </select>
+        <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
+        </div>
+      </form>
+      </div>
+
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4 text-center">
+        <h3><%= template %> - <%= language %></h3>
+        <div>
+          <a href="/export?feature=<%= template %>&language=<%= language %>&testresult=<%= testresult %>&query=<%= %>&testpassid=<%= testPassId %>"<button class='btn btn-secondary btn-sm'>Export</button></a>
+        </div>
+        <br />
+        <div>
+          <h6>Results Found: <%= total %></h6>
+        </div>
+    </div><!-- end .col-sm-4 -->
+  </div><!-- end .row -->
+
+  <div class="row">
+    <!-- pass/fail links here -->
+    <div class="col-lg-4 text-center" style="border-top: none !important; padding-bottom: .5em">
+      <% if(results){ %>
+        <a href="<%= pfsUrl %>PASS?testpassid=<%= testPassId %>">
+          <div class="legend Pass"></div>
+          <div class="LinksToResults">Pass</div>
+        </a>
+        <a href="<%= pfsUrl %>FAIL?testpassid=<%= testPassId %> ">
+          <div class="legend Fail"></div>
+          <div class="LinksToResults">Fail</div>
+        </a>
+        <a href="<%= pfsUrl %>SKIP?testpassid=<%= testPassId %>">
+          <div class="legend Skip"></div>
+          <div class="LinksToResults">Skip</div>
+        </a>
+        <%}%>
+    </div><!-- end .col-sm-4 -->
+    <!-- end pass/fail/skip -->
+
+    <!-- pagination Begins here -->
+    <div class="col-lg-2 offset-lg-6 text-center">
+      <nav aria-label="...">
+        <ul class="pagination">
+          <% if(page <= 1 ) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= page-1 %>&testpassid=<%= testPassId %>" tabindex="-1">Previous</a>
+            </li>
+          <% }%>
+            <li class="page-item active page-number">
+              <span class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></span>
+            </li>
+          <% if(page >= pages){ %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          <% }else{ %>
+            <li class="page-item page-number">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= page+1 %>&testpassid=<%= testPassId %>">Next</a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+    </div><!-- end .col-lg-2 .offset-lg-6 -->
+    <!-- pagination Ends here -->
+  </div><!-- end .row -->
+
+
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered">
+          <thead class="thead-light">
+            <tr>
+              <th>Run  Date: <small>(PST)</small></th>
+              <th>Test Pass ID:</th>
+              <th>Template: </th>
+              <th>Language:</th>
+              <th>Test Scenario: </th>
+              <th class="text-center">Test Case ID:</th>
+              <th class="text-left">Result:</th>
+              <th>Message: </th>
+              <th class="text-left">URL:</th>
+              <th>Owner:</th>
+              <th>Notes:</th>
+            </tr>
+          </thead>
+          <!-- ###                                                               -->
+          <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
+          <!-- ###                                                               -->
+          <% if(results){ %>
+            <% for(var i=0; i < results.length; i++) { %>
+                  <tr>
+                    <td> <%= results[i].RunDate %>
+                    </td>
+                    <td>
+                      <!-- Titled Test Pass ID -->
+                      <%= results[i].TestPassId %>
+                    </td>
+                    <td>
+                      <%= results[i].Template %>
+                    </td>
+                    <td>
+                      <%= results[i].Language %>
+                    </td>
+                    <td>
+                      <% if(results[i].Output.includes("Result:")){
+                        var q = results[i].Output;
+                        var r = q.split("Result:")[0];
+                          r = r.replace("Scenario:",'');
+                      }else{
+                        var r = results[i].Output;
+                          r = r.replace("Scenario:",'');
+                      } %> 
+                      <a href="/results/feature/<%= template %>/locale/<%= language %>/query/<%= r %>?testpassid=<%= testPassId %>"><%=r%></a>
+                    </td>
+                    
+                    <td>
+                      <!-- Titled 'Test Case ID' -->
+                      <%= results[i].TestCaseId %> 
+                    </td>
+                    <td>
+                      <%if (results[i].Result === "PASS") { %>
+                        <a href="<%= pfsUrl %>PASS?testpassid=<%= testPassId %>" class="btn btn-success">PASS</a>
+                        <% }else if(results[i].Result === "FAIL"){ %>
+                          <a href="<%= pfsUrl %>FAIL?testpassid=<%= testPassId %>" class="btn btn-danger">FAIL</a>
+                          <% }else{%>
+                            <a href="<%= pfsUrl %>SKIP?testpassid=<%= testPassId %>" class="btn btn-primary">SKIP</a>
+                            <% } %>
+                    </td>
+                    <td>
+                      <!-- Titled 'Message' and includes fail errors and skip messages ID -->
+                      <% if(results[i].Output.includes("Result:")){
+                        var y = results[i].Output;
+                        var x = y.substring(y.indexOf("Result:"));
+                        x = x.replace("Result:",'');
+                      }else{
+                        var x = '';
+                      } %> 
+                      <%=x%>
+                    </td>
+                    <td>
+                      <a href="<%= results[i].URLs %>" target="_blank">
+                        <%= results[i].URLs %>
+                      </a>
+                    </td>
+                    <td>
+                      <% if  (results[i].Owner) { %>
+                        <%= results[i].Owner %>
+                        <label><input type="radio" onclick="removeOwner();"> Remove </label>
+                        <%  } else { %>
+                        <select name="users">
+                          <% if (users){ %>
+                            <option value="none" selected>None</option>
+                            <% for (var x=0; x < users.length; x++){%>
+                            <option value="<% users[x].firstname %>"><%= users[x].firstname %></option>
+                          <% }} %>
+                        </select>
+                        <div style="margin-top:10px;"><input type="submit" value="Submit" /></div>
+                        <% } %>
+                    </td>
+                    <td>
+                      <% if (results[i].Notes){ %>
+                        <%= results[i].Notes %>
+                        <button onclick="editNote(<%= [i] %>)">edit</button>
+                        <%} else{ %>
+                        <textarea name="note" rows="1" cols="20">notes</textarea>
+                        <input type="submit" value="Submit" />
+                        <%}%>
+                    </td>
+                                       
+                  </tr>
+              <% }} %>
+      </table>
+    </div><!-- end .table-responsive -->
+  </div><!-- end .row -->
+  <!-- pagination Begins here -->
+  <div class="col-lg-2 offset-lg-10 text-center">
+      <nav aria-label="...">
+        <ul class="pagination">
+          <% if(page <= 1 ) { %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+          <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= page-1 %>&testpassid=<%= testPassId %>" tabindex="-1">Previous</a>
+            </li>
+          <% }%>
+            <li class="page-item active page-number">
+              <a class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></a>
+            </li>
+          <% if(page >= pages){ %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          <% }else{ %>
+            <li class="page-item page-number">
+              <a class="page-link" href="<%= currentUrl %>?page=<%= page+1 %>&testpassid=<%= testPassId %>">Next</a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+    </div><!-- end .col-lg-2 .offset-lg-6 -->
+    <!-- pagination Ends here -->
+  </div><!-- end .container -->
+
+  <br /><br /><br /><br />
+  <%- include('footer') %>

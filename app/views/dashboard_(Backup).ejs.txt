@@ -26,6 +26,7 @@
 
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+        var myTitle = 'All results:';
       } else {
         var legendLocation = 'none';
         var myTitle = '';
@@ -68,7 +69,7 @@
 
       var options2 = {
 
-        'title': '<%= language %>',
+        'title': 'Locale: <%= language %>',
 
         'isStacked': 'percent',
         'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
@@ -124,8 +125,29 @@
     </div><!-- end .col-lg-12 -->
   </div><!-- end .row -->
 
-<br />
 
+
+  <script>
+
+    function testSelect() {
+          //testPassData = document.getElementById("testpassid").value;
+          //alert('working-1');
+          db.sequelize.query('SELECT TestPassID, Description FROM TestPass').then(results => {
+            results = results[0];
+            testPassData = results;
+            console.log(testPassData[0]);
+          });
+          alert('working-2');
+          //testPassData = req.query.Description;
+          //document.getElementById("testpassDesc").innerHTML = testPassData;
+          //testPassData = testPassData.Description;
+          
+        }
+
+  </script>
+
+
+<br />
 <div class="row">
   <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
       <div class="form-group">
@@ -156,7 +178,7 @@
   <br />
   <div class="row text-center">
     <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
-      <h3><%= language %></h3>
+      <h3>Locale: <%= language %></h3>
       <!-- Module for Specific Language -->
 
       <% if(language != "ALL"){ %>

@@ -20,6 +20,7 @@ const config = require('./config'),
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
 const api_file_data = require('../app/routes/api_file_data');
+const api_test_status = require('../app/routes/api_test_status');
 const api_export = require('../app/routes/api_export');
 const language = require('../app/routes/language');
 const main = require('../app/routes/main');
@@ -30,6 +31,7 @@ const authenticate = require('../app/routes/authentication');
 const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
+
 
 
 // Angular App Routes
@@ -161,7 +163,6 @@ module.exports = function() {
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
-  app.get('/results/locale/:locale/testresult/:testresult/:page', isLoggedIn, api_results.getResultByLangAndTestResult);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
@@ -207,7 +208,9 @@ module.exports = function() {
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview); 
-  app.get('/test-status', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
+
+
+  app.get('/test-status', isLoggedIn, api_test_status.getTestStatus);
 
 
   // Edit Test Cases

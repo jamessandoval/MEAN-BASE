@@ -4,6 +4,7 @@ const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 const async = require('async');
 const util = require('util');
+const dateFormat = require('dateformat');
 
 // Read Excel File Data
 var fs = require('fs');
@@ -109,7 +110,7 @@ function processLocalPageUrls(reqUrl) {
 function EvaluateTestPassIdAndGetResults(testPassId) {
 
   if (!testPassId) {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate limit 1;`).then(testPassId => {
         testPassId = testPassId[0][0].TestPassId;
 
@@ -124,7 +125,7 @@ function EvaluateTestPassIdAndGetResults(testPassId) {
     })
 
   } else {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       if (!testPassId) {
 
         reject("Test Pass id Is not defined");
@@ -152,7 +153,7 @@ function renderPage(renderPageData, req, res) {
   let testresult = renderPageData.testresult;
   let custom = renderPageData.custom;
   let reqUserfirstname = renderPageData.reqUserfirstname;
-  let testPassId = renderPageData.results.testPassId;
+  let testPassId = renderPageData.testPassId;
   let total = renderPageData.results.count;
 
 
@@ -170,7 +171,7 @@ function renderPage(renderPageData, req, res) {
 
   // Pagination Logic Part II Ends Here
 
-  res.render('results_custom', {
+  res.render('results', {
     title: 'Test Results:',
     start: start,
     end: end,
@@ -208,7 +209,7 @@ exports.postResults = function(req, res, next) {
 
     function getResultsTotalLanguages(features) {
       var j = 0;
-      var promises = features.map(function(item) { // return array of promises
+      var promises = features.map((item) => { // return array of promises
         return db.sequelize.query(`SELECT * FROM Result WHERE Language = '${features[j++].locale}';`)
           .then(data => {
 
@@ -220,7 +221,7 @@ exports.postResults = function(req, res, next) {
           });
       });
 
-      Promise.all(promises).then(function() {
+      Promise.all(promises).then(() => {
 
         resultCompilation[0].Template = "all";
         // Process Output strings to return correct values
@@ -273,7 +274,7 @@ exports.postResults = function(req, res, next) {
 
     function getResultsTotal(features) {
       var j = 0;
-      var promises = features.map(function(item) { // return array of promises
+      var promises = features.map((item) => { // return array of promises
         //console.log("the value of name is " + features[j].name);
         //console.log("the value of locale is " + features[j].locale);
         return db.sequelize.query(`SELECT * FROM Result WHERE Template = '${features[j].name}' AND Language LIKE '${features[j++].locale}';`)
@@ -287,10 +288,11 @@ exports.postResults = function(req, res, next) {
           });
       });
 
-      Promise.all(promises).then(function() {
+      Promise.all(promises).then(() => {
         // Process Output strings to return correct values
         for (var i = 0; i < resultCompilation.length; i++) {
           resultCompilation[i].Output = String(resultCompilation[i].Output);
+          results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
 
         }
         //res.redirect('/result');
@@ -349,7 +351,7 @@ exports.export_to_excel = function(req, res, next) {
       setTimeout(() => { processItems(j + 1); });
 
     } else {
-      workbook.xlsx.writeFile(filepath).then(function() {
+      workbook.xlsx.writeFile(filepath).then(() => {
         console.log("The Export File has been written.");
       });
     }
@@ -359,8 +361,6 @@ exports.export_to_excel = function(req, res, next) {
 
 ///results/feature/:template/locale/:locale/query/:custom
 exports.getResultByIdLanguageCustom = function(req, res) {
-
-  
 
   let template = req.params.template;
   let language = req.params.locale;
@@ -400,6 +400,7 @@ exports.getResultByIdLanguageCustom = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -409,6 +410,12 @@ exports.getResultByIdLanguageCustom = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
+
 
           cb(null, testPassData);
         });
@@ -461,15 +468,12 @@ exports.getResultByIdLanguageCustom = function(req, res) {
 
 exports.getResultByLanguage = function(req, res) {
 
-  
-
   let template = "All";
   let custom = req.params.custom;
   let testresult = req.params.testresult;
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
   let page = req.query.page;
-
 
   let reqUrl = req.url;
 
@@ -503,6 +507,7 @@ exports.getResultByLanguage = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -512,6 +517,11 @@ exports.getResultByLanguage = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
@@ -563,7 +573,7 @@ exports.getResultByLanguage = function(req, res) {
 // results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
 
-  
+
   let template = req.params.template;
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
@@ -599,6 +609,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -608,6 +619,11 @@ exports.getResultByIdAndLanguage = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
@@ -649,6 +665,8 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
       }
 
+
+
       renderPage(renderPageData, req, res);
 
     });
@@ -661,7 +679,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
 exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
-  
+
   let template = req.params.template;
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
@@ -697,6 +715,8 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+
           }
 
           cb(null, results);
@@ -706,6 +726,11 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
@@ -759,7 +784,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
 exports.getResultByTemplateCustom = function(req, res) {
 
-  
+
   let template = req.params.template;
   let language = "All";
   let testPassId = req.query.testpassid;
@@ -795,6 +820,7 @@ exports.getResultByTemplateCustom = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -804,6 +830,11 @@ exports.getResultByTemplateCustom = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
@@ -856,7 +887,7 @@ exports.getResultByTemplateCustom = function(req, res) {
 
 exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 
-  
+
 
   let template = req.params.template;
   let language = "All";
@@ -892,6 +923,7 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -901,6 +933,11 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
@@ -953,7 +990,7 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 // app.get('/results/:locale/testresult/:testResult', api_results.getResultByLangAndTestResult);
 exports.getResultByLangAndTestResult = function(req, res) {
 
-  
+
   let template = "All";
   let language = req.params.locale;
   let testPassId = req.query.testpassid;
@@ -988,6 +1025,7 @@ exports.getResultByLangAndTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -997,6 +1035,11 @@ exports.getResultByLangAndTestResult = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
@@ -1083,6 +1126,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
+            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -1092,6 +1136,11 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
 
           testPassData = testPassData[0];
+
+          for (let i = testPassData.length - 1; i >= 0; i--) {
+
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          }
 
           cb(null, testPassData);
         });
