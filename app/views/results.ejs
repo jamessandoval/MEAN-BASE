@@ -6,18 +6,20 @@
       <br /><br>
       <h1><%= title %></h1>
 
-      <form action="<%= currentUrl %>" method="get" class="form-inline col-sm-10 offset-sm-2">
+      <div class="col-sm-4 offset-sm-3">
+      <form action="<%= currentUrl %>" method="get" class="form-inline">
         <div class="form-group">
         <select class="form-control form-control-sm" name="testpassid">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>"><%= testPassData[i].RunDate %></option>
+          <option name="testpassid" value="<%= testPassData[i].TestPassID %>"><%= testPassData[i].TestPassId %> | <%= testPassData[i].RunDate %></option>
 
           <% } %>
         </select>
         <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
         </div>
       </form>
+      </div>
 
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
@@ -91,7 +93,7 @@
       <table class="table table-hover table-bordered">
           <thead class="thead-light">
             <tr>
-              <th>Run  Date:</th>
+              <th>Run  Date: <small>(PST)</small></th>
               <th>Test Pass ID:</th>
               <th>Template: </th>
               <th>Language:</th>
@@ -110,10 +112,7 @@
           <% if(results){ %>
             <% for(var i=0; i < results.length; i++) { %>
                   <tr>
-                    <td>
-                     <% var a = results[i].RunDate.toString();
-                      var b = a.substring(0, a.indexOf('GMT')); %>
-                      <%=b%> GMT
+                    <td> <%= results[i].RunDate %>
                     </td>
                     <td>
                       <!-- Titled Test Pass ID -->
@@ -134,7 +133,7 @@
                         var r = results[i].Output;
                           r = r.replace("Scenario:",'');
                       } %> 
-                      <a href="<%= currentUrl %>query/<%=r%>"><%=r%></a>
+                      <a href="/results/feature/<%= template %>/locale/<%= language %>/query/<%= r %>?testpassid=<%= testPassId %>"><%=r%></a>
                     </td>
                     
                     <td>

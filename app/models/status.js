@@ -7,10 +7,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    Template: {
-      type: DataTypes.CHAR(5),
-      allowNull: false
-    },
     RunDate: {
       type: DataTypes.DATE,
       allowNull: false
