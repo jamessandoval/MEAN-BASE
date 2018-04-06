@@ -109,52 +109,31 @@
 
 
   <div class="row">
-    <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
+    <div class="col-sm-12 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-9 offset-xl-3">
 
       <form action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
 
-        <select class="form-control form-control-sm" name="testpassid" id="testpassid">
+        <select class="form-control form-control-md" name="testpassid" id="testpassid">
           <% for(var i=0; i < testPassData.length; i++) { %> 
-          <option name="testpassid" value="<%= testPassData[i].TestPassID %>"><%= testPassData[i].TestPassID %> | <%= testPassData[i].RunDate %></option>
+
+          <option name="testpassid" value="<%= testPassData[i].TestPassID %>">
+            <%= testPassData[i].TestPassID %> | 
+            <%= testPassData[i].RunDate %> | 
+            Description: <%= testPassData[i].Description %>
+          </option>
+          
           <% }%>
         </select>
+        
         <br />
-        <button class="btn btn-sm btn-primary date-submit-btn" onclick="testSelect()">Go</button>
+        <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
         </div><!-- end .form-group -->
     </div><!-- end .col-lg-12 -->
   </div><!-- end .row -->
 
-<br />
-
-<div class="row">
-  <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
-      <div class="form-group">
-          <% for(var i=0; i < testPassData.length; i++) { %> 
-
-            <div><span>Description:</span> <span id="testpassDesc<%[i]%>"><%= testPassData[i].Description %></span></div>
-            <!--div><span>Description:</span> <%= testPassData[i].Description %></div-->
-          
-           <% }%>
-       </div>
-    </form>
-
-  <!--br />
-  <div class="row">
-    <div class="col-sm-11 offset-sm-1 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-8 offset-xl-4">
-        <div class="form-group">
-            <% for(var i=0; i < testPassData.length; i++) { %> 
-
-              <div><span>Description:</span> <%= testPassData[i].Description %></div>
-            
-             <% }%>
-         </div>
-      </form-->
-
-    </div><!-- end .col-lg-12 -->
-  </div><!-- end .row -->
-
   <br />
+
   <div class="row text-center">
     <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
       <h3>Locale: <%= language %></h3>

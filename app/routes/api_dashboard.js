@@ -62,8 +62,8 @@ exports.getOverview = function(req, res) {
         results = results[0];
 
         testPassData = results;
-        //console.log(testPassData[0]);
         //console.log('Hey Waldo, these are the results you are looking for - ' + testPassData[0].Description);
+        //console.log(util.inspect(testPassData, false, null))
 
 
 

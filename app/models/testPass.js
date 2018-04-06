@@ -18,8 +18,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     RunDate: {
-      type: DataTypes.DATE,
-      allowNull: true
+      type: DataTypes.DATEONLY,
+      get: function() {
+        return moment.utc(this.getDataValue('RunDate')).format('MM-DD-YY');
+      }
     },
     UrlIds: {
       type: DataTypes.STRING(1000),
