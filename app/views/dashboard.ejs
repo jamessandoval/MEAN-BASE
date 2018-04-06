@@ -26,7 +26,6 @@
 
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
-        var myTitle = 'All results:';
       } else {
         var legendLocation = 'none';
         var myTitle = '';
@@ -69,7 +68,7 @@
 
       var options2 = {
 
-        'title': 'Locale: <%= language %>',
+        'title': '<%= language %>',
 
         'isStacked': 'percent',
         'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
@@ -136,7 +135,7 @@
 
   <div class="row text-center">
     <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
-      <h3>Locale: <%= language %></h3>
+      <h3><%= language %></h3>
       <!-- Module for Specific Language -->
 
       <% if(language != "ALL"){ %>

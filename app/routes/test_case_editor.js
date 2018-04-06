@@ -16,19 +16,14 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
         db.sequelize.query(`SELECT * FROM TestCase;`).then(results => {
 
             results = results[0];
-            console.log(results);
-
             whereUsed= whereUsed[0];
 
-            for (let i = results.length - 1; i >= 0; i--) {
-                results[i].Output = String(results[i].Output);
-            }
 
 
             res.render('test_case_editor', {
                 title: 'Test Case Editor',
                 testcases: results,
-                whereUsed: whereUsed
+                template: whereUsed
             });
 
             return null;

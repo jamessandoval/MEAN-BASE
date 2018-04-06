@@ -1,0 +1,39 @@
+<%- include('header') %>
+
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-sm-12"><br><br></div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+  
+  <div class="row">
+    <div class="col-sm-12">
+
+      <table class="table table-hover testRunTable">
+        <tr>
+        <th>Test Pass Id:
+        </th>
+        <th>Run Date:
+        </th>
+      <th>Start Time:
+        </th>
+      <th>End Time:
+        </th>
+      </tr>
+
+      <% for(var i = 0; i < results.length; i++){ %>
+      <tr>
+        <td><%= results[i].TestPassId %></td>
+        <td><%= results[i].RunDate %></td>  
+        <td><%= results[i].StartTime %></td>  
+         <td><%= results[i].EndTime %></td>  
+
+      </tr>
+      <% } %>
+      </table>
+<h1>Running Tests:</h1>
+    </div><!-- end .col-sm-12 -->
+  </div><!-- end .row -->
+</div><!-- end .container-fluid -->
+
+<br /><br /><br />
+<%- include('footer') %>

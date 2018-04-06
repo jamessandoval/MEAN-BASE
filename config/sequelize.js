@@ -1,23 +1,30 @@
 
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var Sequelize = require('sequelize');
-var lodash = require('lodash');
-var db = {};
+const timezone = 'America/Los_Angeles';
 
-var rootPath = path.normalize(__dirname + '/..');
-var modelsDir = rootPath + '/app/models';
+// require('moment').tz.setDefault(timezone);
+
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const lodash = require('lodash');
+const db = {};
+
+let rootPath = path.normalize(__dirname + '/..');
+let modelsDir = rootPath + '/app/models';
 // create your instance of sequelize
 
-var sequelize = new Sequelize('test', 'flukeqa', 'H0lidayApples', {
+let sequelize = new Sequelize('test', 'flukeqa', 'H0lidayApples', {
         host: 'localhost',
         port: '3306',
         dialect: 'mysql',
+        timezone: timezone,
         define: {
         timestamps: false
     	},
+
+
 
         pool: {
 			max: 5,
