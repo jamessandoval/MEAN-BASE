@@ -108,7 +108,7 @@
 
 
   <div class="row">
-    <div class="col-sm-12 col-md-10 offset-md-2 col-lg-9 offset-lg-3 col-xl-9 offset-xl-3">
+    <div class="col-sm-12 col-lg-8 offset-lg-1 col-xl-8 offset-xl-3">
 
       <form action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
@@ -117,9 +117,7 @@
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
           <option name="testpassid" value="<%= testPassData[i].TestPassID %>">
-            <%= testPassData[i].TestPassID %> | 
-            <%= testPassData[i].RunDate %> | 
-            Description: <%= testPassData[i].Description %>
+            <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
           
           <% }%>
