@@ -1,0 +1,149 @@
+@header_background_color: #333;
+@sub_header_background_color: #333;
+@header_text_color: #FDFDFD;
+@alternate_row_background_color: #DDD;
+
+@table_body_height: 260px;
+@column_one_width: auto;
+@column_two_width: auto;
+@column_three_width: auto;
+@column_four_width: auto;
+@column_five_width: auto;
+
+.fixed_headers {
+  table-layout: fixed;
+  border: 1px solid #cdcdcd;
+
+
+  th,
+  {
+    text-decoration: none;
+  }
+  th,
+  td {
+    padding-top: 1em !important;
+    text-align: left;
+    vertical-align: center !important;
+    border: none !important;
+  }
+
+  td:nth-child(1),
+  th:nth-child(1) {
+    min-width: 2vw;
+    width: @column_one_width
+  }
+  td:nth-child(2),
+  th:nth-child(2) {
+    min-width: 13vw;
+    width: @column_two_width
+  }
+  td:nth-child(3),
+  th:nth-child(3) {
+    min-width: 13vw;
+    width: @column_three_width
+  }
+    td:nth-child(4),
+  th:nth-child(4) {
+    min-width: 28vw;
+    width: @column_four_width
+  }
+    td:nth-child(5),
+  th:nth-child(5) {
+    width: @column_five_width
+  }
+
+  thead {
+
+    tr {
+      display: block;
+      position: relative;
+    }
+    tr:nth-child(1) {
+      background-color: @header_background_color;
+      color: @header_text_color;
+    }
+    tr:nth-child(2) {
+      border-bottom: 1px solid #cdcdcd;
+    }
+  }
+  tbody {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    height: @table_body_height;
+    tr:nth-child(even) {
+      background-color: @alternate_row_background_color;
+    }
+  }
+}
+
+.fixed_headers-2 {
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  border: 1px solid #cdcdcd;
+
+
+  th,
+  {
+    text-decoration: none;
+  }
+  th,
+  td {
+    padding-top: 1em !important;
+    text-align: left;
+    vertical-align: center !important;
+    border: none !important;
+  }
+
+
+  td:nth-child(1),
+  th:nth-child(1) {
+    min-width: 2vw;
+    width: @column_one_width
+  }
+  td:nth-child(2),
+  th:nth-child(2) {
+    min-width: 13vw;
+    width: @column_two_width
+  }
+  td:nth-child(3),
+  th:nth-child(3) {
+    min-width: 13vw;
+    width: @column_three_width
+  }
+    td:nth-child(4),
+  th:nth-child(4) {
+    min-width: 28vw;
+    width: @column_four_width
+  }
+    td:nth-child(5),
+  th:nth-child(5) {
+    width: @column_five_width
+  }
+
+  thead {
+
+    tr {
+      display: block;
+      position: relative;
+    }
+    tr:nth-child(1) {
+      background-color: @header_background_color;
+      color: @header_text_color;
+    }
+    tr:nth-child(2) {
+      border-bottom: 1px solid #cdcdcd;
+    }
+  }
+  tbody {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    min-height: 5px;
+    max-height: 250px;
+    tr:nth-child(even) {
+      background-color: @alternate_row_background_color;
+    }
+  }
+}

@@ -25,11 +25,11 @@ exports.getOverview = function(req, res) {
 
   if (!req.query.testpassid) {
 
-    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate limit 1;`).then(testPassId => {
+    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
 
       testPassId = testPassId[0][0].TestPassId;
 
-      //console.log('The value is - ' + testPassId);
+      console.log('The value is - ' + testPassId);
 
       GetResultOverview(testPassId);
 
@@ -54,7 +54,7 @@ exports.getOverview = function(req, res) {
       //console.log('The value is - ' + lang[0].Language);
 
       // Select Run Dates from Status
-      db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
+      db.sequelize.query('select TestPassID, RunDate, Description from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -186,7 +186,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
   if (!req.query.testpassid) {
 
-    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate limit 1;`).then(testPassId => {
+    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
 
       testPassId = testPassId[0][0].TestPassId;
 
@@ -217,7 +217,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
       overall.pass += pass;
 
-      db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
+      db.sequelize.query('select TestPassID, RunDate, Description from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -350,7 +350,7 @@ exports.getResultMetaByLocale = function(req, res) {
 
   if (!req.query.testpassid) {
 
-    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate limit 1;`).then(testPassId => {
+    db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
 
       testPassId = testPassId[0][0].TestPassId;
 
@@ -380,7 +380,7 @@ exports.getResultMetaByLocale = function(req, res) {
       overall.pass += pass;
 
 
-      db.sequelize.query('select TestPassID, RunDate, Description from TestPass').then(results => {
+      db.sequelize.query('select TestPassID, RunDate, Description from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 

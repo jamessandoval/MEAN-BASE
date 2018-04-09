@@ -166,10 +166,9 @@ module.exports = function() {
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
-  //app.get('/results/feature/:template/:page', api_results.getResultByLanguage);
+
 
   //app.get('/results/feature/:template/testresult/:testresult', api_results.getResultByLangAndTestResult);
-  //app.get('/results/feature/:template/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
 
   // feature - query - ok
   // feature - query - testresult - ok
@@ -211,7 +210,8 @@ module.exports = function() {
 
 
   app.get('/test-status', isLoggedIn, api_test_status.getTestStatus);
-
+  app.get('/getprocesses', isLoggedIn, api_test_status.getProcesses);
+  app.get('/startprocess', isLoggedIn, api_test_status.startProcess);
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);

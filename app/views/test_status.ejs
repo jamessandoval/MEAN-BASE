@@ -1,39 +1,112 @@
 <%- include('header') %>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+          <h6 class="display-4">Test Status:</h6>
+          <hr />
+          <h3>Completed:</h3>
+          <table class="fixed_headers table table-sm">
+            <thead>
+              <tr>
+                <th>ID:
+                </th>
+                <th>Start Time:
+                </th>
+                <th>End Time:
+                </th>
+                <th>Description:
+                </th>
+                <th>Results:
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i = 0; i < status.length; i++){ %>
+                <tr>
+                  <td>
+                    <%= status[i].TestPassId %>
+                  </td>
+                  <td>
+                    <%= status[i].StartTime %>
+                  </td>
+                  <td>
+                    <%= status[i].EndTime %>
+                  </td>
+                  <td>
+                    <%= testPass[i].Description %>
+                  </td>
+                  <td><a href="/dashboard?TestPassId=<%= status[i].TestPassId %>"><span class="btn btn-sm btn-primary">View Results</span></a>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+          <h3>In Progress:</h3>
+          <table class="fixed_headers-2 table table-sm">
+            <tr>
+              <thead>
+                <tr>
+                  <th>ID:
+                  </th>
+                  <th>Start Time:
+                  </th>
+                  <th>Progress:
+                  </th>
+                  <th>Description:
+                  </th>
+                  <th>Results:
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>7</td>
+                  <td>Apr 7th, 2018, 12:00:00 PM</td>
+                  <td>
+                    <div class="progress" style="margin-top: .5em">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="50" aria-valuemax="100"></div>
+                    </div>
+                  </td>
+                  <td> One Template: f1, One Language: en-us, Limited Number of URLS: 1</td>
+                  <td><a href="#"><span class="btn btn-sm btn-primary" style="margin-top:.5em">View Results</span></a></td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+        <div class="col-sm-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center">
+          <h4 class="display-4"><a href="#">Test</a></h4>
+          <!-- Socket Io tutorial -->
+          <div class="text-center">
+            <ul id="messages" class="list-group">
+            </ul>
+            <form action="">
+              <input id="m" autocomplete="off" />
+              <button>Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <script>
+      $(function() {
+        var socket = io.connect('http://localhost:3000');
+        $('form').submit(function() {
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg) {
+          $('#messages').append($("<li class='list-group-item'>").text(msg));
+        });
+      });
 
-<div class="container-fluid">
-  <div class="row">
-      <div class="col-sm-12"><br><br></div><!-- end .col-sm-12 -->
-  </div><!-- end .row -->
-  
-  <div class="row">
-    <div class="col-sm-12">
-
-      <table class="table table-hover testRunTable">
-        <tr>
-        <th>Test Pass Id:
-        </th>
-        <th>Run Date:
-        </th>
-      <th>Start Time:
-        </th>
-      <th>End Time:
-        </th>
-      </tr>
-
-      <% for(var i = 0; i < results.length; i++){ %>
-      <tr>
-        <td><%= results[i].TestPassId %></td>
-        <td><%= results[i].RunDate %></td>  
-        <td><%= results[i].StartTime %></td>  
-         <td><%= results[i].EndTime %></td>  
-
-      </tr>
-      <% } %>
-      </table>
-<h1>Running Tests:</h1>
-    </div><!-- end .col-sm-12 -->
-  </div><!-- end .row -->
-</div><!-- end .container-fluid -->
-
-<br /><br /><br />
-<%- include('footer') %>
+      </script>
+      <%- include('footer') %>
