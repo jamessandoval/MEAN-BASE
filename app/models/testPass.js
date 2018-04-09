@@ -24,6 +24,10 @@ module.exports = function(sequelize, DataTypes) {
     UrlIds: {
       type: DataTypes.STRING(1000),
       allowNull: true
+    },
+    Description: {
+      type: "BLOB",
+      allowNull: true
     }
   }, {
     tableName: 'TestPass'
