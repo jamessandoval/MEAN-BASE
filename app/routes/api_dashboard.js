@@ -62,10 +62,13 @@ exports.getOverview = function(req, res) {
 
         for (let i = testPassData.length - 1; i >= 0; i--) {
 
-          testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
+          //testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yy, h:MM:ss TT"); // + " PST";
         }
-        //console.log(testPassData[0]);
+        
+        //console.log(util.inspect(testPassData, false, null))
         //console.log('Hey Waldo, these are the results you are looking for - ' + testPassData[0].Description);
+
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
