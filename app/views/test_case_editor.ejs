@@ -65,15 +65,15 @@
             <div class="col-lg-4 offset-lg-2">
                 <h2> Apply to Feature Page: </h2>
                 <% for(var x=0; x < template.length; x++) {%>
-                    <button type="button" class="btn locale-button x" id="<%=template[x].TestCaseId %>">
-                    <b><%=  template[x].Id  %></b>
+                    <button type="button" class="btn btn-light locale-button x" id="<%=  template[x].Id  %>" value="<%=template[x].TestCaseId %>" onclick="classSwitch(this)">
+                    <%=  template[x].Id  %>
                     </button>                   
-                <% console.log(template[x].TestCaseId);}%>
+                <%}%>
             </div>
             <div class="col-lg-4" >
                 <h2> When you are absolutely sure:</h2>
                 <br><br>
-                <div class="text-center"><button type="button" class="btn btn-danger locale-button width-set">Save Edits</button></div>
+                <div class="text-center"><button type="button" class="btn btn-danger locale-button width-set" onclick="saveIt()">Save Edits</button></div>
             </div>
         </div>
     </div><!-- end of hiddenRow -hidden area that unhides on "edit selected test case" button click -->
@@ -103,44 +103,82 @@
         var ID=document.getElementById("selectedID").innerHTML; //grab the TestCaseID from the hidden paragraph above
         placement1.innerHTML=ID;
 
-        var placement2= document.getElementById("theScenario");
-        var content2=document.getElementById("tcSelection").options;
-        var index = document.getElementById("tcSelection").selectedIndex;
-        content2 =content2[index].text;
-        content2=content2.replace(/^[^Scenario]*/, ''); //this gets rid of the ID that was added to the beginning of the content1 string
+        var placement2= document.getElementById("theScenario");  //get the location under the "Scenario" heading
+        var content2 = document.getElementById("gherkin").innerHTML;
+        if(content2.indexOf('Then') > -1){
+            content2=content2.substring(0, content2.indexOf('Then'));
+        }
+        if(content2.indexOf('When') > -1){
+            content2=content2.substring(0, content2.indexOf('When'));
+        }
         placement2.innerHTML = content2;
 
         var placement3= document.getElementById("theGherkin");
         var content3=document.getElementById("tcSelection").value;
         content3= content3.replace(content2,''); //this gets rid of the Scenario so that content3 only contains Gherkin 
         content3=content3.replace("@javascript",''); //this gets rid of the '@javascript' that is in some of these Gherkin strings
+        content3=content3.replace(/\n/,''); 
         placement3.innerHTML=content3;
         // getLive(content1);
 
         var buttons = document.getElementsByClassName("x");
 
          for (var q=0; q<buttons.length; q++){
-            buttons[q].setAttribute("class", "btn locale-button x");
+            buttons[q].setAttribute("class", "btn btn-light locale-button x");
         }
 
         var string = '"';
         for (var x=0; x<buttons.length; x++){
-            var buttonData = buttons[x].id;
+            var buttonData = buttons[x].value;
             buttonData = buttonData.split(",");
 
             if (buttonData.indexOf(ID.toString(),0) > -1){
-                buttons[x].setAttribute("class", "btn btn-success locale-button x");
+                buttons[x].setAttribute("class", "btn btn-warning locale-button x");
             }
         }
 
         
     }
     
-    function classSwitch(){
-
+    function classSwitch(thisOne){
+        var currentID = thisOne.getAttribute("id");
+        var currentClass = thisOne.getAttribute("class").toString();
+        if (currentClass.indexOf("btn-warning") > -1){
+            thisOne.setAttribute("class", "btn locale-button x btn-danger");
+        } else if (currentClass.indexOf("btn-danger") > -1) {
+            thisOne.setAttribute("class", "btn locale-button x btn-warning");
+        }else if (currentClass.indexOf("btn-light") > -1) {
+            thisOne.setAttribute("class", "btn locale-button x btn-success");
+        }else if (currentClass.indexOf("btn-success") > -1) {
+            thisOne.setAttribute("class", "btn locale-button x btn-light");
+        }
 
     }
 
+    function saveIt(){
+        var theCaseID = document.getElementById("theID").innerHTML;
+        var newScenario = document.getElementById("theScenario").value;
+        var newGherkin = document.getElementById("theGherkin").value;
+        var newPagesArray=[];
+        var removePagesArray = [];
+
+        var newPages = document.getElementsByClassName("btn locale-button x btn-success");        
+        for (var x=0; x<newPages.length;x++){
+            newPagesArray[x] = newPages[x].innerHTML;
+            newPagesArray[x]=newPagesArray[x].replace(/^[^f]*/, '');
+            newPagesArray[x]=newPagesArray[x].replace(/[^\d+]+$/, '');
+        }
+
+        var removals = document.getElementsByClassName("btn locale-button x btn-danger");
+        for (var q=0; q < removals.length; q++){
+            removePagesArray[q] = removals[q].innerHTML;
+            removePagesArray[q]=removePagesArray[q].replace(/^[^f]*/, '');
+            removePagesArray[q]=removePagesArray[q].replace(/[^\d+]+$/, '');
+        }
+
+        //function writeItToDatabase(theCaseID, newScenario, newGherkin, newPagesArray, removePagesArray){};
+
+    }
                        
 
   </script>
