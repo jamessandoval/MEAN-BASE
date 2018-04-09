@@ -34,7 +34,7 @@
     <br>
     <div class="row">
         <div class="col-lg-4 offset-lg-2 text-center">
-            <button class="btn btn-warning width-set" onclick'createTc()'>Create New Test Case</button>
+            <button class="btn btn-warning width-set" onclick='createTc()'>Create New Test Case</button>
         </div>
         <div class="col-lg-4 text-center">
             <button class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button>
@@ -179,7 +179,11 @@
         //function writeItToDatabase(theCaseID, newScenario, newGherkin, newPagesArray, removePagesArray){};
 
     }
-                       
+    
+    function createTc(){
+        var hidden=document.getElementById("hiddenRow");
+        hidden.setAttribute("style", "display:visible");
+    }
 
   </script>
   <%- include('footer') %>
