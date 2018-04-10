@@ -161,8 +161,8 @@
                       <%=mystring%>
                     </td>
                     <td>
-                      <a href="<%= results[i].URLs %>" target="_blank">
-                        Link
+                      <a href="<%= results[i].URLs %>" target="_blank" class="popup">
+                        Link <span class="tooltiptext"><%= results[i].URLs %></span>
                       </a>
                     </td>
                     <td>
@@ -202,10 +202,17 @@
                                     <p><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  |  <%= results[i].RunDate %></p>
                                     <p>Scenario: <%= r %></p>
                                     <p>Message: <%=mystring%></p>
+                                    <p>URL: <%= results[i].URLs %></p>
                                     <% if (results[i].Notes){ %>
-                                      <textarea name="note" rows="6" cols="100"><%= results[i].Notes %></textarea> 
+                                      <div class="form-group">
+                                        <label for="usr">Add a Note:</label>
+                                        <textarea class="form-control" rows="5" id="notes"></textarea>
+                                      </div>
                                       <%} else {%>
-                                      <textarea name="note" rows="6" cols="100">Add A Note...</textarea>
+                                        <div class="">
+                                          <label for="usr">Add a Note:</label>
+                                          <textarea class="form-control" rows="5" id="notes"></textarea>
+                                        </div>
                                       <% } %> 
                                 </div>
                               </div>
