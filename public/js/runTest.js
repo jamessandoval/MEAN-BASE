@@ -36,6 +36,10 @@ function runTest() {
   //console.log(arrayOfObjects);
   var finalObject = { "features": arrayOfObjects };
   var myJSON = JSON.stringify(finalObject);
+
+  console.log(finalObject);
+
+
   //document.getElementById("jsonStuff").innerHTML = myJSON;
 
 
@@ -55,15 +59,15 @@ function runTest() {
    //dataType: 'json'
   */
 
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("POST", "/export", true);
-  xmlhttp.setRequestHeader("Content-type", "application/json");
+  //var xmlhttp = new XMLHttpRequest();
+  //xmlhttp.open("POST", "/export", true);
+  //xmlhttp.setRequestHeader("Content-type", "application/json");
 
-  try {
-    xmlhttp.send(myJSON);
-  } catch (err) {
-    console.log("AJAX error: " + err);
-  }
+  //try {
+  //  xmlhttp.send(myJSON);
+  //} catch (err) {
+  //  console.log("AJAX error: " + err);
+  //}
 
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
