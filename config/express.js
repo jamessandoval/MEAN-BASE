@@ -162,7 +162,7 @@ module.exports = function() {
   // locale - testresult - o
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
 
-  app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
@@ -181,8 +181,8 @@ module.exports = function() {
   // locale - feature - testresult
 
   app.get('/results/feature/:template/locale/:locale', isLoggedIn, api_results.getResultByIdAndLanguage);
-  
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/',isLoggedIn,  api_results.getResultByLangFeatureAndTestResult);
+
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/', isLoggedIn, api_results.getResultByLangFeatureAndTestResult);
 
   // Feature - locale - query
   // Feature - template - query - test result 
@@ -206,7 +206,7 @@ module.exports = function() {
   app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
-  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview); 
+  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
 
 
   app.get('/test-status', isLoggedIn, api_test_status.getTestStatus);

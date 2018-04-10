@@ -21,6 +21,8 @@ exports.getOverview = function(req, res) {
     skip: 0
   }
 
+
+
   // 1st Get latest test Pass id
   // If test Pass Id not passed as query string, get latest default
 
@@ -178,6 +180,8 @@ exports.getResultMetaByCustom = function(req, res) {
 
   let resultsTotal = [];
 
+
+
   let overall = {
     pass: 0,
     skip: 0,
@@ -201,6 +205,8 @@ exports.getResultMetaByCustom = function(req, res) {
 
     testPassId = req.query.testpassid;
     getResultsTotal(0, testPassId);
+
+
 
   }
 
@@ -354,6 +360,8 @@ exports.getResultMetaByLocale = function(req, res) {
     fail: 0
   };
 
+
+
   // 1st Get latest test Pass id
   // If test Pass Id not passed as query string, get latest default
 
@@ -372,9 +380,15 @@ exports.getResultMetaByLocale = function(req, res) {
     testPassId = req.query.testpassid;
     getResultsTotal(0, testPassId);
 
+
+
   }
 
+
+
   function getResultsTotal(i, testPassId) {
+
+
 
     // select count(*) from results where result = 'PASS';
     db.sequelize.query(`SELECT count(*) FROM Result WHERE Template = '${features[i]}' AND Result = 'PASS' and Language = '${locale}' AND TestPassID = ${testPassId};`).then(results => {
@@ -398,10 +412,10 @@ exports.getResultMetaByLocale = function(req, res) {
         for (let i = testPassData.length - 1; i >= 0; i--) {
 
           testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
-        }
 
-        if (testPassData[i].TestPassId === testPassId) {
-          testPassInfo = testPassData[i];
+          if (testPassData[i].TestPassId === testPassId) {
+            testPassInfo = testPassData[i];
+          }
         }
 
         // select count(*) from results where result = 'FAIL';
