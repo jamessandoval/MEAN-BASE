@@ -13,6 +13,7 @@ exports.getOverview = function(req, res) {
   let lang = [];
   let testPassData = null;
   let testPassId = null;
+  let testPassInfo = null;
 
   let overall = {
     pass: 0,
@@ -28,8 +29,6 @@ exports.getOverview = function(req, res) {
     db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
 
       testPassId = testPassId[0][0].TestPassId;
-
-      console.log('The value is - ' + testPassId);
 
       GetResultOverview(testPassId);
 
@@ -54,7 +53,7 @@ exports.getOverview = function(req, res) {
       //console.log('The value is - ' + lang[0].Language);
 
       // Select Run Dates from Status
-      db.sequelize.query('select TestPassID, RunDate, Description from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -63,12 +62,11 @@ exports.getOverview = function(req, res) {
         for (let i = testPassData.length - 1; i >= 0; i--) {
 
           testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
-          //testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yy, h:MM:ss TT"); // + " PST";
-        }
-        
-        //console.log(util.inspect(testPassData, false, null))
-        //console.log('Hey Waldo, these are the results you are looking for - ' + testPassData[0].Description);
 
+          if (testPassData[i].TestPassId === testPassId) {
+            testPassInfo = testPassData[i];
+          }
+        }
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
@@ -112,7 +110,8 @@ exports.getOverview = function(req, res) {
                 currentUrl: req.url,
                 user: req.user.firstname,
                 testPassData: testPassData,
-                testPassId: testPassId
+                testPassId: testPassId,
+                testPassInfo: testPassInfo
 
               });
 
@@ -175,6 +174,7 @@ exports.getResultMetaByCustom = function(req, res) {
   let skip = null;
   let testPassData = null;
   let testPassId = null;
+  let testPassInfo = null;
 
   let resultsTotal = [];
 
@@ -220,7 +220,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
       overall.pass += pass;
 
-      db.sequelize.query('select TestPassID, RunDate, Description from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -229,6 +229,10 @@ exports.getResultMetaByCustom = function(req, res) {
         for (let i = testPassData.length - 1; i >= 0; i--) {
 
           testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+        }
+
+        if (testPassData[i].TestPassId === testPassId) {
+          testPassInfo = testPassData[i];
         }
 
         // New value = pass
@@ -289,7 +293,8 @@ exports.getResultMetaByCustom = function(req, res) {
                 currentUrl: req.url,
                 user: req.user.firstname,
                 testPassData: testPassData,
-                testPassId: testPassId
+                testPassId: testPassId,
+                testPassInfo: testPassInfo
 
               });
 
@@ -339,6 +344,7 @@ exports.getResultMetaByLocale = function(req, res) {
   let skip = null;
   let testPassData = null;
   let testPassId = null;
+  let testPassInfo = null;
 
   let resultsTotal = [];
 
@@ -383,7 +389,7 @@ exports.getResultMetaByLocale = function(req, res) {
       overall.pass += pass;
 
 
-      db.sequelize.query('select TestPassID, RunDate, Description from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -392,6 +398,10 @@ exports.getResultMetaByLocale = function(req, res) {
         for (let i = testPassData.length - 1; i >= 0; i--) {
 
           testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+        }
+
+        if (testPassData[i].TestPassId === testPassId) {
+          testPassInfo = testPassData[i];
         }
 
         // select count(*) from results where result = 'FAIL';
@@ -447,7 +457,8 @@ exports.getResultMetaByLocale = function(req, res) {
                 currentUrl: req.url,
                 user: req.user.firstname,
                 testPassData: testPassData,
-                testPassId: testPassId
+                testPassId: testPassId,
+                testPassInfo: testPassInfo
 
               });
 
