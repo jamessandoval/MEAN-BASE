@@ -28,6 +28,15 @@ module.exports = function(sequelize, DataTypes) {
     Description: {
       type: "BLOB",
       allowNull: true
+    },
+    Reliable: {
+      type: "BOOLEAN",
+      allowNull: true,
+      defaultValue: 1
+    },
+    Note: {
+      type: "TEXT",
+      allowNull: true
     }
   }, {
     tableName: 'TestPass'

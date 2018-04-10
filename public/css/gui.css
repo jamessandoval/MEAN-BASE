@@ -541,9 +541,7 @@ button[type=submit] {
 
 
 
-/* Tool Tip */
-
-
+/* Tool Tip section (Results page)*/
 .popup {
     position: relative;
     display: inline-block;
