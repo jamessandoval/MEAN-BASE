@@ -15,30 +15,9 @@ const path = require('path');
 let rootPath = path.normalize(__dirname + '../../../');
 rootPath = rootPath + 'temp_directory';
 
-// Excel functionality:
-// https://github.com/guyonroche/exceljs#create-a-workbook
 
 // OLD Export tool
 exports.getOverview = function(req, res) {
-
-  db.Result.findAll().then(results => {
-
-
-    // Needed To convert the blob object into a string 
-    // Otherwise it returns a buffer array object.
-    for (var i = 0; i < results.length; i++) {
-      results[i].Output = String(results[i].Output);
-
-      // // Save each unique template
-      // if (!features.includes(results[i].Template)) {
-      //   features.push(results[i].Template);
-      // }
-
-      // // Save Each unique Language
-      // if (!languages.includes(results[i].Language)) {
-      //   languages.push(results[i].Language);
-      // }
-    }
 
     res.render('dropdownTestRunner', {
       title: 'Run Tests',
@@ -47,9 +26,6 @@ exports.getOverview = function(req, res) {
       user: req.user.firstname
 
     });
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-  });
+
 };
 
