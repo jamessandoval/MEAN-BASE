@@ -53,7 +53,7 @@
           <div class="legend Skip"></div>
           <div class="LinksToResults">Skip</div>
         </a>
-        <%}%>
+      <%}%>
     </div><!-- end .col-sm-4 -->
     <!-- end pass/fail/skip -->
 
@@ -94,11 +94,11 @@
           <thead class="thead-light">
             <tr>
               <th>Run  Date: <small>(PST)</small></th>
-              <th>Test Pass ID:</th>
+              <th>Pass ID:</th>
               <th>Template: </th>
               <th>Language:</th>
-              <th>Test Scenario: </th>
-              <th class="text-center">Test Case ID:</th>
+              <th>Scenario: </th>
+              <th class="text-center">Case ID:</th>
               <th class="text-left">Result:</th>
               <th>Message: </th>
               <th class="text-left">URL:</th>
@@ -137,7 +137,7 @@
                     </td>
                     
                     <td>
-                      <!-- Titled 'Test Case ID' -->
+                      <!-- Titled 'Case ID' -->
                       <%= results[i].TestCaseId %> 
                     </td>
                     <td>
@@ -154,47 +154,77 @@
                       <% if(results[i].Output.includes("Result:")){
                         var y = results[i].Output;
                         var x = y.substring(y.indexOf("Result:"));
-                        x = x.replace("Result:",'');
+                        var mystring = x.replace("Result:",'');
                       }else{
-                        var x = '';
+                        var mystring = '';
                       } %> 
-                      <%=x%>
+                      <%=mystring%>
                     </td>
                     <td>
                       <a href="<%= results[i].URLs %>" target="_blank">
-                        <%= results[i].URLs %>
+                        Link
                       </a>
                     </td>
                     <td>
                       <% if  (results[i].Owner) { %>
                         <%= results[i].Owner %>
-                        <label><input type="radio" onclick="removeOwner();"> Remove </label>
-                        <%  } else { %>
-                        <select name="users">
+                        <%} else { %>
+                        <select name="users" style="margin-bottom:5px;">
                           <% if (users){ %>
                             <option value="none" selected>None</option>
                             <% for (var x=0; x < users.length; x++){%>
                             <option value="<% users[x].firstname %>"><%= users[x].firstname %></option>
                           <% }} %>
                         </select>
-                        <div style="margin-top:10px;"><input type="submit" value="Submit" /></div>
                         <% } %>
+                        
                     </td>
                     <td>
                       <% if (results[i].Notes){ %>
-                        <%= results[i].Notes %>
-                        <button onclick="editNote(<%= [i] %>)">edit</button>
-                        <%} else{ %>
-                        <textarea name="note" rows="1" cols="20">notes</textarea>
-                        <input type="submit" value="Submit" />
-                        <%}%>
-                    </td>
-                                       
+                        <textarea name="note" rows="3" cols="50"><%= results[i].Notes %></textarea> 
+                        <%} %>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg<%= i %>" data-whatever="<%= i %>">Edit</button>
+                    
+
+                    <!-- start of modal -->
+                      <div class="modal fade bd-example-modal-lg<%= i %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLongTitle">Add To Notes</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class = "row">
+                                <div class="col-md-12">
+                                    <p><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %></p>
+                                    <p>Scenario: <%= results[i].Output %></p>
+                                    <p>Message: <%=mystring%></p>
+                                    <% if (results[i].Notes){ %>
+                                      <textarea name="note" rows="6" cols="100"><%= results[i].Notes %></textarea> 
+                                      <%} else {%>
+                                      <textarea name="note" rows="6" cols="100">Add A Note...</textarea>
+                                      <% } %> 
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div> <!-- end footer-->
+                          </div><!-- end modal-content-->
+                        </div><!-- end modal-dialog -->
+                      </div> <!-- end modal-->
+                    <!-- end modal section -->   
+                  </td>            
                   </tr>
-              <% }} %>
+            <% }} %>
       </table>
     </div><!-- end .table-responsive -->
   </div><!-- end .row -->
+
   <!-- pagination Begins here -->
   <div class="col-lg-2 offset-lg-10 text-center">
       <nav aria-label="...">
