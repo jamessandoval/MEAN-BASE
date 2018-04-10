@@ -16,6 +16,11 @@ module.exports = function(sequelize, DataTypes) {
     Url: {
       type: "BLOB",
       allowNull: true
+    },
+    Live: {
+      type: "BOOLEAN",
+      allowNull: true,
+      defaultValue: 1
     }
   }, {
     tableName: 'Urls'

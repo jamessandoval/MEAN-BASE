@@ -26,7 +26,6 @@ module.exports = function(sequelize, DataTypes) {
     URLs: {
       type: DataTypes.TEXT,
       allowNull: false,
-      primaryKey: true
     },
     Output: {
       type: "BLOB",
@@ -35,6 +34,19 @@ module.exports = function(sequelize, DataTypes) {
     RunDate: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    Id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      primaryKey: true
+    },
+    Owner: {
+      type: DataTypes.CHAR(50),
+      allowNull: true
+    },
+    Notes: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     tableName: 'Result'
