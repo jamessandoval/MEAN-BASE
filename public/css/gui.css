@@ -541,8 +541,28 @@ button[type=submit] {
 
 
 
-/* Status Page */
+/* Tool Tip */
 
 
-/* Drop Down Search on the Test Case Editor page */
+.popup {
+    position: relative;
+    display: inline-block;
+}
+
+  .popup .tooltiptext {
+    padding:4px;
+    position:absolute;
+    visibility: hidden;
+    border-radius:3px;
+    bottom: 100%;
+    right:1%;
+    margin-left: -60px;
+    background-color:white;
+    border: 1px solid silver;
+    white-space:nowrap;
+}
+
+.popup:hover .tooltiptext {
+    visibility: visible;
+}
 
