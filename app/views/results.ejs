@@ -199,8 +199,8 @@
                             <div class="modal-body">
                               <div class = "row">
                                 <div class="col-md-12">
-                                    <p><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %></p>
-                                    <p>Scenario: <%= results[i].Output %></p>
+                                    <p><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  |  <%= results[i].RunDate %></p>
+                                    <p>Scenario: <%= r %></p>
                                     <p>Message: <%=mystring%></p>
                                     <% if (results[i].Notes){ %>
                                       <textarea name="note" rows="6" cols="100"><%= results[i].Notes %></textarea> 
