@@ -19,6 +19,7 @@ const config = require('./config'),
 
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
+const api_resultsDB = require('../app/routes/api_resultsDB');
 const api_file_data = require('../app/routes/api_file_data');
 const api_test_status = require('../app/routes/api_test_status');
 const api_export = require('../app/routes/api_export');
@@ -160,9 +161,12 @@ module.exports = function() {
   // Results Pages 
   // locale - ok
   // locale - testresult - o
+  
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
+
+  app.get('/something', isLoggedIn, api_resultsDB.addOwnerToDB);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);

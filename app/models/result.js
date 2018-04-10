@@ -35,6 +35,14 @@ module.exports = function(sequelize, DataTypes) {
     RunDate: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    Owner: {
+      type: DataTypes.CHAR(50),
+      allowNull: true
+    },
+    Notes: {
+      type: "TEXT",
+      allowNull: true
     }
   }, {
     tableName: 'Result'

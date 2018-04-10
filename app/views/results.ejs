@@ -12,7 +12,7 @@
         <select class="form-control form-control-sm" name="testpassid">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>"><%= testPassData[i].TestPassId %> | <%= testPassData[i].RunDate %></option>
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>"><%= testPassData[i].RunDate %></option>
 
           <% } %>
         </select>
@@ -166,6 +166,7 @@
                       </a>
                     </td>
                     <td>
+                    <form name="submitOwners" action="/something" method="get">
                       <% if  (results[i].Owner) { %>
                         <%= results[i].Owner %>
                         <label><input type="radio" onclick="removeOwner();"> Remove </label>
@@ -177,17 +178,20 @@
                             <option value="<% users[x].firstname %>"><%= users[x].firstname %></option>
                           <% }} %>
                         </select>
-                        <div style="margin-top:10px;"><input type="submit" value="Submit" /></div>
+                        <input type="submit" class="addOwner" value="Submit" />
                         <% } %>
+                    </form>
                     </td>
                     <td>
+                    <form name="SubmitNotes" action="" method="get">
                       <% if (results[i].Notes){ %>
                         <%= results[i].Notes %>
                         <button onclick="editNote(<%= [i] %>)">edit</button>
                         <%} else{ %>
                         <textarea name="note" rows="1" cols="20">notes</textarea>
-                        <input type="submit" value="Submit" />
+                        <input type="submit" class="addNotes" value="Submit" />
                         <%}%>
+                    </form>
                     </td>
                                        
                   </tr>
@@ -222,6 +226,7 @@
           <% } %>
         </ul>
       </nav>
+      
     </div><!-- end .col-lg-2 .offset-lg-6 -->
     <!-- pagination Ends here -->
   </div><!-- end .container -->
