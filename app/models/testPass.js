@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('TestPass', {
     TestPassId: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
+      allowNull: false,
       primaryKey: true
     },
     Template: {
@@ -23,6 +23,18 @@ module.exports = function(sequelize, DataTypes) {
     },
     UrlIds: {
       type: DataTypes.STRING(1000),
+      allowNull: true
+    },
+    Description: {
+      type: "BLOB",
+      allowNull: true
+    },
+    Reliable: {
+      type: "BOOLEAN",
+      allowNull: true
+    },
+    Note: {
+      type: "TEXT",
       allowNull: true
     }
   }, {

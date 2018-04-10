@@ -164,16 +164,15 @@ module.exports = function() {
   
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
 
-  app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn,  api_results.getResultByLangAndTestResult);
+  app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
 
   app.get('/something', isLoggedIn, api_resultsDB.addOwnerToDB);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
-  //app.get('/results/feature/:template/:page', api_results.getResultByLanguage);
+
 
   //app.get('/results/feature/:template/testresult/:testresult', api_results.getResultByLangAndTestResult);
-  //app.get('/results/feature/:template/testresult/:testresult/:page', api_results.getResultByLangAndTestResult);
 
   // feature - query - ok
   // feature - query - testresult - ok
@@ -186,8 +185,8 @@ module.exports = function() {
   // locale - feature - testresult
 
   app.get('/results/feature/:template/locale/:locale', isLoggedIn, api_results.getResultByIdAndLanguage);
-  
-  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/',isLoggedIn,  api_results.getResultByLangFeatureAndTestResult);
+
+  app.get('/results/feature/:template/locale/:locale/testresult/:testresult/', isLoggedIn, api_results.getResultByLangFeatureAndTestResult);
 
   // Feature - locale - query
   // Feature - template - query - test result 
@@ -211,11 +210,12 @@ module.exports = function() {
   app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
-  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview); 
+  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
 
 
   app.get('/test-status', isLoggedIn, api_test_status.getTestStatus);
-
+  app.get('/getprocesses', isLoggedIn, api_test_status.getProcesses);
+  app.get('/startprocess', isLoggedIn, api_test_status.startProcess);
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);

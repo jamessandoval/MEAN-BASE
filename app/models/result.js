@@ -4,8 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Result', {
     TestCaseId: {
       type: DataTypes.INTEGER(11),
-      allowNull: true,
-      primaryKey: true
+      allowNull: true
     },
     TestPassId: {
       type: DataTypes.INTEGER(11),
@@ -25,8 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     URLs: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      primaryKey: true
+      allowNull: false
     },
     Output: {
       type: "BLOB",
@@ -35,6 +33,11 @@ module.exports = function(sequelize, DataTypes) {
     RunDate: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    Id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      primaryKey: true
     },
     Owner: {
       type: DataTypes.CHAR(50),

@@ -7,14 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Quality Testing</title>
   <!--Stylesheet flukestrap include-->
+  <link rel="stylesheet/less" type="text/css" href="/scss/styles.less" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <!-- include bootstrap -->
   <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
   <!--Favicon/ shortcut icon-->
   <link rel="stylesheet" href="/css/gui.css">
+  
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
   <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- tempprary header script for socket.io -->
   <!-- Adding ajax for google chart dashboard -->
 </head>
 
@@ -48,6 +52,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/test-status" onclick="loadingAnimation()">Test Status</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/test-case-editor" onclick="loadingAnimation()">Test Case Editor</a>
       </li>
 
 

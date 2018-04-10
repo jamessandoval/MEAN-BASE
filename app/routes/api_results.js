@@ -111,7 +111,7 @@ function EvaluateTestPassIdAndGetResults(testPassId) {
 
   if (!testPassId) {
     return new Promise((resolve, reject) => {
-      db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate limit 1;`).then(testPassId => {
+      db.sequelize.query(`select TestPassId from Status where EndTime is not NUll order by RunDate DESC limit 1;`).then(testPassId => {
         testPassId = testPassId[0][0].TestPassId;
 
         if (!testPassId) {
@@ -411,7 +411,7 @@ exports.getResultByIdLanguageCustom = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -501,7 +501,6 @@ exports.getResultByLanguage = function(req, res) {
       language = "%";
     }
 
-
     async.parallel({
 
       results: function(cb) {
@@ -520,7 +519,7 @@ exports.getResultByLanguage = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -643,7 +642,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -750,7 +749,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -854,7 +853,7 @@ exports.getResultByTemplateCustom = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -957,7 +956,7 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -1059,7 +1058,7 @@ exports.getResultByLangAndTestResult = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 
@@ -1160,7 +1159,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
         });
       },
       testPassData: function(cb) {
-        db.sequelize.query('select TestPassId, RunDate, Description from TestPass').then(testPassData => {
+        db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(testPassData => {
 
           testPassData = testPassData[0];
 

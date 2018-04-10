@@ -8,11 +8,8 @@
     var fails = <%= overall.fail %>;
     var others = <%= overall.skip %>;
     
-
-
     // Draw the chart and set the chart values
     function drawCharts() {
-
       /////////////////////////////////// Pie Chart /////////////////////
 
       var data = google.visualization.arrayToDataTable([
@@ -47,13 +44,11 @@
         }
       };
 
-
       // Display the chart inside the <div> element with id="pieChart"
       var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
       chart.draw(data, options);
 
       /////////////////////////////////// Bar Chart /////////////////////
-
       var data2 = google.visualization.arrayToDataTable([
         ['Test', 'Pass', 'Fail', 'Other', { role: 'annotation' }],
 
@@ -97,16 +92,18 @@
     </div><!--end of loader-wrapper-->
 </div><!--end of loading-->
 
-
 <div class="container-fluid" id="page">
   <div class="row">
     <div class="col-lg-4 offset-lg-4 text-center">
       <br /><br>
       <h2><%= title %></h2>
+      <!--<h5><span class="badge badge-light">ID: <%=// testPassInfo.TestPassId %></span> <%=// testPassInfo.Description %> </h5>-->
+      <!--<h5><b><%= //testPassInfo.RunDate %></b><h5>-->
+
     </div><!-- end .col-lg-12 -->
   </div><!-- end .row -->
 
-
+<% if( title === "Dashboard") { %>
   <div class="row">
     <div class="col-sm-12 col-lg-8 offset-lg-1 col-xl-8 offset-xl-3">
 
@@ -116,7 +113,7 @@
         <select class="form-control form-control-md" name="testpassid" id="testpassid">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassID %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
             <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
           
@@ -128,6 +125,8 @@
         </div><!-- end .form-group -->
     </div><!-- end .col-lg-12 -->
   </div><!-- end .row -->
+
+  <% } %>
 
   <br />
 
