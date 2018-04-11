@@ -136,6 +136,7 @@ function EvaluateTestPassIdAndGetResults(testPassId) {
   }
 }
 
+
 // Render the page 
 function renderPage(renderPageData, req, res) {
 
@@ -292,7 +293,8 @@ exports.postResults = function(req, res, next) {
         // Process Output strings to return correct values
         for (var i = 0; i < resultCompilation.length; i++) {
           resultCompilation[i].Output = String(resultCompilation[i].Output);
-          results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+          results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
+          //results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
 
         }
         //res.redirect('/result');
@@ -303,6 +305,7 @@ exports.postResults = function(req, res, next) {
     }
   }
 };
+
 
 // Inititally Supportes only a feature 
 // and a language Combination.
@@ -400,7 +403,8 @@ exports.getResultByIdLanguageCustom = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
+            //results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -413,7 +417,8 @@ exports.getResultByIdLanguageCustom = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
+            //testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
           }
 
 
@@ -480,6 +485,7 @@ exports.getResultByLanguage = function(req, res) {
   let localUrlData = processLocalPageUrls(reqUrl);
   let paginationData = paginationProcess1of2(page, rowsToReturn);
 
+
   EvaluateTestPassIdAndGetResults(testPassId).then(testPassId => {
 
     getResults(testPassId);
@@ -506,7 +512,7 @@ exports.getResultByLanguage = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -519,7 +525,7 @@ exports.getResultByLanguage = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);
@@ -569,6 +575,27 @@ exports.getResultByLanguage = function(req, res) {
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
 
@@ -608,7 +635,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -621,7 +648,7 @@ exports.getResultByIdAndLanguage = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);
@@ -714,7 +741,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
 
           }
 
@@ -728,7 +755,7 @@ exports.getResultByLangFeatureAndTestResult = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);
@@ -819,7 +846,7 @@ exports.getResultByTemplateCustom = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -832,7 +859,7 @@ exports.getResultByTemplateCustom = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);
@@ -922,7 +949,7 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -935,7 +962,7 @@ exports.getResultByTemplateCustomAndTestResult = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);
@@ -1024,7 +1051,7 @@ exports.getResultByLangAndTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -1037,7 +1064,7 @@ exports.getResultByLangAndTestResult = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);
@@ -1125,7 +1152,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
           // Convert Result back to string
           for (let i = results.length - 1; i >= 0; i--) {
             results[i].Output = String(results[i].Output);
-            results[i].RunDate = dateFormat(results[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            results[i].RunDate = dateFormat(results[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, results);
@@ -1138,7 +1165,7 @@ exports.getResultByIdLanguageCustomTestResult = function(req, res) {
 
           for (let i = testPassData.length - 1; i >= 0; i--) {
 
-            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "dddd, mmmm dS, yyyy, h:MM:ss TT"); // + " PST";
+            testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
           }
 
           cb(null, testPassData);

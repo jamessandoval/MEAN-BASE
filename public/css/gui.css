@@ -416,6 +416,16 @@ input[type=password]:focus {
 input[type=checkbox] {
   margin-bottom: 15px;
 }
+<<<<<<< HEAD
+input[type=submit].addOwner {
+    margin-top: 27px;
+}
+input[type=submit].addNotes {
+  margin-top: 15px;
+}
+button[type=submit].login {
+    margin-top: 20px;
+=======
 
 input[type=submit] {
   margin-top: 15px;
@@ -423,6 +433,7 @@ input[type=submit] {
 
 button[type=submit] {
   margin-top: 20px;
+>>>>>>> 6298e8f5f1346289e56e51abf6e7660707ba27f1
 }
 
 

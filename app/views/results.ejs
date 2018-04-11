@@ -151,6 +151,7 @@
                       </a>
                     </td>
                     <td>
+                    <form name="submitOwners" action="/something" method="get">
                       <% if  (results[i].Owner) { %>
                         <%= results[i].Owner %>
                         <%} else { %>
@@ -165,6 +166,7 @@
                         
                     </td>
                     <td>
+                    <form name="SubmitNotes" action="" method="get">
                       <% if (results[i].Notes){ %>
                         <textarea name="note" rows="3" cols="50"><%= results[i].Notes %></textarea> 
                         <%} %>
@@ -244,6 +246,7 @@
           <% } %>
         </ul>
       </nav>
+      
     </div><!-- end .col-lg-2 .offset-lg-6 -->
     <!-- pagination Ends here -->
   </div><!-- end .container -->

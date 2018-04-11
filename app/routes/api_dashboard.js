@@ -7,7 +7,7 @@ const dateFormat = require('dateformat');
 
 // Create a new 'render' controller method
 exports.getOverview = function(req, res) {
-
+  
   let feature = "ALL";
   let language = "ALL";
   let lang = [];
