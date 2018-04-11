@@ -14,6 +14,8 @@ exports.getOverview = function(req, res) {
   let testPassData = null;
   let testPassId = null;
   let testPassInfo = null;
+  let reliability = null;
+  let note = null;
 
   let overall = {
     pass: 0,
@@ -25,6 +27,9 @@ exports.getOverview = function(req, res) {
 
   // 1st Get latest test Pass id
   // If test Pass Id not passed as query string, get latest default
+  //  testpassid = query string
+  //  testPassId = results from database
+  //  TestPassId = table column
 
   if (!req.query.testpassid) {
 
@@ -33,14 +38,12 @@ exports.getOverview = function(req, res) {
       testPassId = testPassId[0][0].TestPassId;
 
       GetResultOverview(testPassId);
-
     });
 
   } else {
 
-    testPassId = req.query.testpassid;
+    testPassId = parseInt(req.query.testpassid); //YAY - I found it!  This was a string before adding parseInt!  WOOT
     GetResultOverview(testPassId);
-
   }
 
 
@@ -55,20 +58,23 @@ exports.getOverview = function(req, res) {
       //console.log('The value is - ' + lang[0].Language);
 
       // Select Run Dates from Status
-      db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
         testPassData = results;
 
         for (let i = testPassData.length - 1; i >= 0; i--) {
-
           testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
 
           if (testPassData[i].TestPassId === testPassId) {
             testPassInfo = testPassData[i];
+            reliability = testPassData[i].Reliable;
+            note = testPassData[i].Note;
           }
+        
         }
+        
 
         // select count(*) from results where result = 'PASS';
         db.sequelize.query(`select count(*) from Result where Result = 'PASS' and TestPassID = ${testPassId};`).then(results => {
@@ -113,8 +119,9 @@ exports.getOverview = function(req, res) {
                 user: req.user.firstname,
                 testPassData: testPassData,
                 testPassId: testPassId,
-                testPassInfo: testPassInfo
-
+                testPassInfo: testPassInfo,
+                reliability: reliability,
+                note: note
               });
 
               return null;
@@ -164,6 +171,7 @@ exports.getOverview = function(req, res) {
 exports.getResultMetaByCustom = function(req, res) {
 
   let custom = req.params.custom;
+  let reliability = null;
 
   // Modify search query on ec2 to obtain correct result.
   custom = custom.replace(/ /g, "%");
@@ -177,6 +185,7 @@ exports.getResultMetaByCustom = function(req, res) {
   let testPassData = null;
   let testPassId = null;
   let testPassInfo = null;
+  let note = null;
 
   let resultsTotal = [];
 
@@ -203,7 +212,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
   } else {
 
-    testPassId = req.query.testpassid;
+    testPassId = parseInt(req.query.testpassid);
     getResultsTotal(0, testPassId);
 
 
@@ -226,7 +235,7 @@ exports.getResultMetaByCustom = function(req, res) {
 
       overall.pass += pass;
 
-      db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -239,6 +248,8 @@ exports.getResultMetaByCustom = function(req, res) {
 
         if (testPassData[i].TestPassId === testPassId) {
           testPassInfo = testPassData[i];
+          reliability = testPassData[i].Reliable;
+          note = testPassData[i].Note;
         }
 
         // New value = pass
@@ -300,8 +311,9 @@ exports.getResultMetaByCustom = function(req, res) {
                 user: req.user.firstname,
                 testPassData: testPassData,
                 testPassId: testPassId,
-                testPassInfo: testPassInfo
-
+                testPassInfo: testPassInfo,
+                reliability: reliability,
+                note: note
               });
 
             } else {
@@ -351,6 +363,8 @@ exports.getResultMetaByLocale = function(req, res) {
   let testPassData = null;
   let testPassId = null;
   let testPassInfo = null;
+  let reliability = null;
+  let note = null;
 
   let resultsTotal = [];
 
@@ -377,7 +391,7 @@ exports.getResultMetaByLocale = function(req, res) {
 
   } else {
 
-    testPassId = req.query.testpassid;
+    testPassId = parseInt(req.query.testpassid);
     getResultsTotal(0, testPassId);
 
 
@@ -403,7 +417,7 @@ exports.getResultMetaByLocale = function(req, res) {
       overall.pass += pass;
 
 
-      db.sequelize.query('select TestPassId, RunDate, Description from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
@@ -415,6 +429,8 @@ exports.getResultMetaByLocale = function(req, res) {
 
           if (testPassData[i].TestPassId === testPassId) {
             testPassInfo = testPassData[i];
+            reliability = testPassData[i].Reliable;
+            note = testPassData[i].Note;
           }
         }
 
@@ -472,8 +488,9 @@ exports.getResultMetaByLocale = function(req, res) {
                 user: req.user.firstname,
                 testPassData: testPassData,
                 testPassId: testPassId,
-                testPassInfo: testPassInfo
-
+                testPassInfo: testPassInfo,
+                reliability: reliability,
+                note: note
               });
 
             } else {

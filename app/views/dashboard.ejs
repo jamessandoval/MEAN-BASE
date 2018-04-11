@@ -7,6 +7,7 @@
     var passes = <%= overall.pass %>;
     var fails = <%= overall.fail %>;
     var others = <%= overall.skip %>;
+ 
     
     // Draw the chart and set the chart values
     function drawCharts() {
@@ -32,7 +33,11 @@
 
         'title': myTitle,
         'titleTextStyle': { fontSize: 25, bold: true, color: '#070d18' },
+        <% if(testPassInfo.Reliable !== 0){ %>
         'colors': ['#109618', '#DC3912', '#2569ff'],
+        <% } else { %>
+        'colors': ['grey', 'black', 'silver'],
+        <% } %>
         'backgroundColor': '',
         'is3D': true,
         'chartArea': { width: '350', height: '80%' },
@@ -132,7 +137,21 @@
 
   <div class="row text-center">
     <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
-      <h3><%= language %></h3>
+
+
+      <!-------- title -------->
+      <% if(testPassId == null){ %>
+      <h3><%= language %></h3> 
+      <% } else { console.log(testPassInfo);%>
+        <h3><%= testPassInfo.Description %></h3> 
+      <% } %>
+      
+      <!--------- Note (if unreliable) -------->
+      <% if(testPassInfo.Reliable == 0){ %>
+        <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
+      <% } %>
+
+
       <!-- Module for Specific Language -->
 
       <% if(language != "ALL"){ %>
