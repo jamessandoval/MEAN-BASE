@@ -51,7 +51,6 @@
 
 
 
-
 /*@media (min-width: 1200px) {
     .homePgBodyText {
         text-align: center !important;
@@ -372,10 +371,6 @@ button[type=submit]:hover.login {
   }
 }
 
-
-
-
-
 /*end progress bar*/
 
 
@@ -416,7 +411,7 @@ input[type=password]:focus {
 input[type=checkbox] {
   margin-bottom: 15px;
 }
-<<<<<<< HEAD
+/*--------------------------------------------ask Aron about this section - accepted both changes    */
 input[type=submit].addOwner {
     margin-top: 27px;
 }
@@ -425,15 +420,13 @@ input[type=submit].addNotes {
 }
 button[type=submit].login {
     margin-top: 20px;
-=======
-
+}
 input[type=submit] {
   margin-top: 15px;
 }
 
 button[type=submit] {
   margin-top: 20px;
->>>>>>> 6298e8f5f1346289e56e51abf6e7660707ba27f1
 }
 
 
@@ -551,27 +544,36 @@ button[type=submit] {
 }
 
 
-
-/* Tool Tip section (Results page)*/
-.popup {
-    position: relative;
-    display: inline-block;
+/* this is the tooltip section  - tooltip is found on the results table for showing the urls on hover */
+.tooltipx {
+  position: relative;
+  display: inline-block;
 }
 
-  .popup .tooltiptext {
-    padding:4px;
-    position:absolute;
-    visibility: hidden;
-    border-radius:3px;
-    bottom: 100%;
-    right:1%;
-    margin-left: -60px;
-    background-color:white;
-    border: 1px solid silver;
-    white-space:nowrap;
+.tooltipx .tooltiptextx {
+  visibility: hidden;
+  background-color: #fff;
+  color: #555;
+  border: silver 2px solid;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  bottom: 125%;
+  margin-left: -110px;
 }
+.tooltipx .tooltiptextx::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+}
+.tooltipx:hover .tooltiptextx {
+  visibility: visible;
+}
+/* end of tooltip section */
 
-.popup:hover .tooltiptext {
-    visibility: visible;
-}
 

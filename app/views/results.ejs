@@ -145,10 +145,9 @@
                       } %> 
                       <%=mystring%>
                     </td>
-                    <td>
-                      <a href="<%= results[i].URLs %>" target="_blank" class="popup">
-                        Link <span class="tooltiptext"><%= results[i].URLs %></span>
-                      </a>
+                    <td><!-- this is the tooltip section for the url link -->
+                      <a href="<%= results[i].URLs %>" target="_blank" class="tooltipx"> Link 
+                        <span class="tooltiptextx"><%= results[i].URLs %></span></a>
                     </td>
                     <td>
                     <form name="submitOwners" action="/something" method="get">
@@ -189,7 +188,7 @@
                                     <p><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  |  <%= results[i].RunDate %></p>
                                     <p>Scenario: <%= r %></p>
                                     <p>Message: <%=mystring%></p>
-                                    <p>URL: <%= results[i].URLs %></p>
+                                    <a href="<%= results[i].URLs %>" target="_blank">URL: <%= results[i].URLs %></a>
                                     <% if (results[i].Notes){ %>
                                       <div class="form-group">
                                         <label for="usr">Add a Note:</label>
