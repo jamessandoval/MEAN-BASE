@@ -22,33 +22,55 @@ rootPath = rootPath + 'temp_directory';
 exports.getExport = function(req, res) {
 
   db.Result.findAll().then(results => {
+    db.TestPass.findAll().then(dateTimes =>{
 
-    var features = [];
-    var languages = [];
+        var features = [];
+        var languages = [];
+        var dates =[];
+        var datesIds = [];
 
-    // Needed To convert the blob object into a string 
-    // Otherwise it returns a buffer array object.
-    for (var i = 0; i < results.length; i++) {
-      results[i].Output = String(results[i].Output);
+        // Needed To convert the blob object into a string 
+        // Otherwise it returns a buffer array object.
+        for (var i = 0; i < results.length; i++) {
+          results[i].Output = String(results[i].Output);
 
-      // Save each unique template
-      if (!features.includes(results[i].Template)) {
-        features.push(results[i].Template);
-      }
+          // Save each unique template
+          if (!features.includes(results[i].Template)) {
+            features.push(results[i].Template);
+          }
 
-      // Save Each unique Language
-      if (!languages.includes(results[i].Language)) {
-        languages.push(results[i].Language);
-      }
-    }
+          // Save Each unique Language
+          if (!languages.includes(results[i].Language)) {
+            languages.push(results[i].Language);
+          }
 
-    res.render('export', {
-      title: 'Export Results',
-      features: features,
-      languages: languages,
-      user: req.user.firstname
+        }
 
-    });
+        // getting each unique date
+        for (var i = 0; i < dateTimes.length; i++) {
+          dateTimes[i].Output = String(dateTimes[i].Output);
+          dates.push(dateTimes[i].RunDate);
+          datesIds.push(dateTimes[i].TestPassId);
+        }
+
+        res.render('export', {
+          title: 'Export Results',
+          features: features,
+          languages: languages,
+          user: req.user.firstname,
+          dates: dates,
+          dateIds: datesIds
+        });
+
+        return null;
+
+      }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+      });
+
+      return null;
+
   }).catch(function(err) {
     console.log('error: ' + err);
     return err;
@@ -73,7 +95,12 @@ exports.getExportFromResults = function(req, res, next) {
   let langArray = [];
   let fArray = [];
   let testPass = req.query.testpassid;
-  let loopedQuery='SELECT * from Result where TestPassId = ' + testPass + " AND ";
+  if(testPass != "All"){
+    let loopedQuery='SELECT * from Result where TestPassId = ' + testPass + " AND ";
+  } else {
+    let loopedQuery='SELECT * from Result where ';
+    testPass = "*";
+  }
   let results = null;
 
  
