@@ -146,18 +146,11 @@ function exportAll() {
 function exportSelections() {
 
   let template = '';
-<<<<<<< HEAD
   let language = ''; 
   let testresult=""; 
   let query = ""; 
   let thehref="";
   let testdate="";
-=======
-  let language = '';
-  let testresult = "";
-  let query = "";
-  let thehref = "";
->>>>>>> cd06ddec8d54909cbc57d4558707e8c829cc6c84
 
   let TchildCount = document.getElementById("pageChildren").children.length;
   let LchildCount = document.getElementById("langChildren").children.length;
@@ -173,37 +166,24 @@ function exportSelections() {
 
 
   language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
-<<<<<<< HEAD
   language = language.slice(0,-1);
   if (language == "LAll"){
     language = "All"
   }
-=======
-  language = language.slice(0, -1);
->>>>>>> cd06ddec8d54909cbc57d4558707e8c829cc6c84
 
   for (var y = 1; y < LchildCount; y++) { // if additional languages were chosen, we add a comma and the language for each one selected
     let l = document.getElementById("langChildren").children[y].id;
     l = l.slice(0, -1);
     language = language + "," + l;
   }
-<<<<<<< HEAD
   
   testdate = document.getElementById("dateChild").children[0].id;
   testdate = testdate.slice(0, -1);
-=======
-
->>>>>>> cd06ddec8d54909cbc57d4558707e8c829cc6c84
+  console.log(testdate +"---------------------------------------------------");
 
   //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
   // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
 
-<<<<<<< HEAD
   thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
   document.getElementById("myhref").href=thehref;
 }
-=======
-  thehref = "/export?feature=" + template + "&language=" + language + "&testresult=" + testresult + "&query=" + query;
-  document.getElementById("myhref").href = thehref;
-}
->>>>>>> cd06ddec8d54909cbc57d4558707e8c829cc6c84
