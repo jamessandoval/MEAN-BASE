@@ -3,12 +3,12 @@
 
 function displayChecked(checkedID) {
   
-  var checkBox = document.getElementById(checkedID);  // Get the checkbox
-  var parent = document.getElementById(checkedID).parentNode;
+  var checkBox = document.getElementById(checkedID);  // Get the selected item
+  var parent = document.getElementById(checkedID).parentNode; 
   var parentId=checkBox.parentNode.id;
   var text = parent.textContent; // Get the checkbox's text
-  var paragraph = document.createElement("p");
-  var content = document.createTextNode(text);
+  var paragraph = document.createElement("p");  //create a paragraph
+  var content = document.createTextNode(text);   //create text (for the new paragraph)
 
   if(checkBox.className == "FX double"){
   	var placement = document.getElementById("pageChildren");
@@ -33,8 +33,8 @@ function displayChecked(checkedID) {
 
   
   if (checkBox.checked == true){  // If the checkbox is checked, create a paragraph element and input the checkbox's text
-	if (parentId =="dates" && document.getElementById("dateChildren").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
-		document.getElementById("dateChildren").innerHTML="";
+	if (parentId =="dates" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
+		document.getElementById("dateChild").innerHTML="";
 	}
 	paragraph.appendChild(content);
 	paragraph.setAttribute('id',checkedID+'x');
