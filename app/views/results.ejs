@@ -75,6 +75,7 @@
 
 
     <div class="table-responsive">
+      
       <table class="table table-hover table-bordered">
           <thead class="thead-light">
             <tr>
@@ -96,6 +97,7 @@
           <!-- ###                                                               -->
           <% if(results){ %>
             <% for(var i=0; i < results.length; i++) { %>
+              <form name="<%= results[i].TestCaseId %>" action="/something" method="get">
                   <tr>
                     <td> <%= results[i].RunDate %>
                     </td>
@@ -150,22 +152,20 @@
                         <span class="tooltiptextx"><%= results[i].URLs %></span></a>
                     </td>
                     <td>
-                    <form name="submitOwners" action="/something" method="get">
                       <% if  (results[i].Owner) { %>
                         <%= results[i].Owner %>
                         <%} else { %>
-                        <select name="users" style="margin-bottom:5px;">
+                        <select name="users" style="margin-bottom:5px;" id="owner" onchange="getSelectVal(this);">
                           <% if (users){ %>
                             <option value="none" selected>None</option>
                             <% for (var x=0; x < users.length; x++){%>
-                            <option value="<% users[x].firstname %>"><%= users[x].firstname %></option>
+                            <option value="<%= users[x].firstname %>"><%= users[x].firstname %></option>
                           <% }} %>
                         </select>
                         <% } %>
                         
                     </td>
                     <td>
-                    <form name="SubmitNotes" action="" method="get">
                       <% if (results[i].Notes){ %>
                         <textarea name="note" rows="3" cols="50"><%= results[i].Notes %></textarea> 
                         <%} %>
@@ -173,50 +173,83 @@
                     
 
                     <!-- start of modal -->
-                      <div class="modal fade bd-example-modal-lg<%= i %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLongTitle">Add To Notes</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <div class = "row">
-                                <div class="col-md-12">
-                                    <p><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  |  <%= results[i].RunDate %></p>
-                                    <p>Scenario: <%= r %></p>
-                                    <p>Message: <%=mystring%></p>
-                                    <a href="<%= results[i].URLs %>" target="_blank">URL: <%= results[i].URLs %></a>
-                                    <% if (results[i].Notes){ %>
-                                      <div class="form-group">
-                                        <label for="usr">Add a Note:</label>
-                                        <textarea class="form-control" rows="5" id="notes"></textarea>
-                                      </div>
-                                      <%} else {%>
-                                        <div class="">
-                                          <label for="usr">Add a Note:</label>
-                                          <textarea class="form-control" rows="5" id="notes"></textarea>
-                                        </div>
-                                      <% } %> 
-                                </div>
+                    <div class="modal fade bd-example-modal-lg<%= i %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">
+                      <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add To Notes</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class = "row">
+                              <div class="col-md-12">
+                                <p id="<%= results[i].TestCaseId %>"><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  | <%= results[i].RunDate %></p>
+                                <p>Scenario: <%= r %></p>
+                                <p>Message: <%=mystring%></p>
+                                <p>URL: <%= results[i].URLs %></p>
+                                <% if (results[i].Notes){ %>
+                                  <div class="form-group">
+                                    <label for="usr">Add a Note:</label>
+                                    <textarea class="form-control notes" name="message" rows="5"></textarea>
+                                  </div>
+                                  <%} else {%>
+                                    <div class="">
+                                      <label for="usr">Add a Note:</label>
+                                      <textarea class="form-control notes" name="message" rows="5"></textarea>
+                                    </div>
+                                  <% } %> 
                               </div>
                             </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Save changes</button>
-                            </div> <!-- end footer-->
-                          </div><!-- end modal-content-->
-                        </div><!-- end modal-dialog -->
-                      </div> <!-- end modal-->
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <!--button type="button" class="btn btn-primary" onclick="saveChanges('<%= i %>')">Save changes</button-->
+                          </div> <!-- end footer-->
+                        </div><!-- end modal-content-->
+                      </div><!-- end modal-dialog -->
+                    </div> <!-- end modal-->
                     <!-- end modal section -->   
                   </td>            
                   </tr>
+
+                  <script>
+                  
+                  function getSelectVal(sel) {
+                    alert(sel.value);
+                    
+                  } // end getSelectVal()
+
+
+                  $( document ).ready(function() {
+                    /*$(".bd-example-modal-lg<%= i %>").click(function() {
+                      var $testCaseId = $("#<%= results[i].TestCaseId %>").html();
+                      //var $owner = $("#owner :selected").text();
+                      //var $notes = $("textarea[name='message']").val();
+                      $("#tempDisplay").html($testCaseId + "<br />" + $owner + "<br />" + $notes);
+
+                    }) // end $(".bd-example-modal-lg<%= i %>").click()*/
+                    
+                  }); // end $( document ).ready()
+
+                  </script>
+
+                  <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
+                  <input type="hidden" name="Id" value="<%= results[i].Id %>" />
+                  <input type="hidden" name="RunDate" value="<%= results[i].RunDate %>" />
+                  <input type="hidden" name="testpassid" value="<%= results[i].TestPassId %>" />
+                  <input type="hidden" name="Template" value="<%= results[i].Template %>" />
+                  <input type="hidden" name="Language" value="<%= results[i].Language %>" />
+
+            </form><!-- end form -->
             <% }} %>
       </table>
+      
     </div><!-- end .table-responsive -->
   </div><!-- end .row -->
+
 
   <!-- pagination Begins here -->
   <div class="col-lg-2 offset-lg-10 text-center">
@@ -245,10 +278,24 @@
           <% } %>
         </ul>
       </nav>
-      
     </div><!-- end .col-lg-2 .offset-lg-6 -->
     <!-- pagination Ends here -->
+    <p id="tempDisplay"></p>
   </div><!-- end .container -->
+
+
+  <!--script>
+    function saveChanges() {
+
+      var resultRowID = document.getElementById("resultRowID").innerHTML;
+      var x = document.getElementById("owner");
+      var owner = x.options[x.selectedIndex].text;
+      var notes = document.getElementById('notes').value;
+
+      document.getElementById('tempDisplay').innerHTML = resultRowID + '<br />' + owner + '<br />' + notes;
+
+    } // end saveChanges()
+  </script-->
 
   <br /><br /><br /><br />
   <%- include('footer') %>

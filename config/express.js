@@ -19,7 +19,7 @@ const config = require('./config'),
 
 //  Main Site Routes
 const api_results = require('../app/routes/api_results');
-const api_resultsDB = require('../app/routes/api_resultsDB');
+const api_DB_writer = require('../app/routes/api_DB_writer');
 const api_file_data = require('../app/routes/api_file_data');
 const api_tests = require('../app/routes/api_tests');
 const api_export = require('../app/routes/api_export');
@@ -163,7 +163,7 @@ module.exports = function() {
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
 
-  app.get('/something', isLoggedIn, api_resultsDB.addOwnerToDB);
+  app.get('/something', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
 
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
