@@ -1,4 +1,11 @@
 <%- include('header') %>
+
+<script>
+function displayInfo(data){
+  document.getElementById("testData").innerHTML = (data);
+}
+</script>
+
 <div id="loading" style="display: none;">
     <div id="loader-wrapper">
       <div id="loader"></div>
@@ -33,15 +40,22 @@
       <div class="button-group">
         <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Test Date</button>
         <ul class="dropdown-menu btn-block width-set">
-          <% for(var i=0; i < dates.length; i++) {%>
-          <li class="dropdown-item">
-           <a href="#" id="dateParent-<%=[i]%>">
-           <input id="<%= dateIds[i] %>" class="date double" onclick="displayChecked(this.id)" type="radio" name="date" />&nbsp; <%= dates[i] %></a>
-          </li>
-          <% }%>
+          <% for(var i=0; i < dates.length; i++) {
+            if (statusEndTime[i] != null){ %>
+              <li class="dropdown-item">
+              <a href="#" id="dateParent-<%=[i]%>">
+              <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id); displayInfo(this.value);" type="radio" name="date" />&nbsp; <%= dates[i] %></a>
+              </li>
+          <% }} %>
         </ul>
       </div>
-      <% } %>
+      <% } 
+      
+      
+      
+      
+      %>
+      <p id="testData"></p>
     </div>
   </div>
 
@@ -53,10 +67,13 @@
       <div class="button-group">
         <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
         <ul class="dropdown-menu btn-block width-set">
-          <!-- <li class="dropdown-item">
-            <a href="#" id="Lang">
-              <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
-          </li> -->
+
+          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
+                <li class="dropdown-item" style="display:none;"> 
+                  <a href="#" id="Lang">
+                    <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+                </li>
+
           <% for(var i=0; i < languages.length; i++) { %>
             <li class="width-set dropdown-item">
               <a href="#" data-value="optionA" tabIndex="-1">
@@ -76,10 +93,13 @@
       <div class="button-group">
         <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
         <ul class="dropdown-menu btn-block width-set">
-          <!-- <li class="dropdown-item">
-            <a href="#">
-              <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
-          </li> -->
+
+          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
+                <li class="dropdown-item" style="display:none;">   
+                  <a href="#">
+                    <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+                </li>
+                
           <% for(var i=0; i < features.length; i++) { %>
           <li class="dropdown-item">
             <a href="#" id="Fx">

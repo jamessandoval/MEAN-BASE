@@ -23,11 +23,15 @@ exports.getExport = function(req, res) {
 
   db.Result.findAll().then(results => {
     db.TestPass.findAll().then(dateTimes =>{
+      db.Status.findAll().then(statuses => {
 
         var features = [];
         var languages = [];
         var dates =[];
         var datesIds = [];
+        var statusId= [];
+        var statusEndTime = [];
+        var testDescription = [];
 
         // Needed To convert the blob object into a string 
         // Otherwise it returns a buffer array object.
@@ -46,11 +50,21 @@ exports.getExport = function(req, res) {
 
         }
 
-        // getting each unique date
+        // getting each date from TestPass table
         for (var i = 0; i < dateTimes.length; i++) {
           dateTimes[i].Output = String(dateTimes[i].Output);
           dates.push(dateTimes[i].RunDate);
           datesIds.push(dateTimes[i].TestPassId);
+          testDescription.push(dateTimes[i].Description);
+          console.log(testDescription[i] + "----------------------------description");
+        }
+
+        // getting EndTimes from Status table
+        for (var x = 0; x < statuses.length; x++) {
+          statuses[x].Output = String(statuses[x].Output);
+          statusId.push(statuses[x].TestPassId);
+          statusEndTime.push(statuses[x].EndTime);
+          // console.log(statuses[x].EndTime + "----------------------------------------");
         }
 
         res.render('export', {
@@ -59,7 +73,11 @@ exports.getExport = function(req, res) {
           languages: languages,
           user: req.user.firstname,
           dates: dates,
-          dateIds: datesIds
+          dateIds: datesIds,
+          statusId: statusId,
+          statusEndTime: statusEndTime,
+          dateTimes: dateTimes,
+          testDescription: testDescription
         });
 
         return null;
@@ -70,6 +88,13 @@ exports.getExport = function(req, res) {
       });
 
       return null;
+
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    });
+
+    return null;
 
   }).catch(function(err) {
     console.log('error: ' + err);
