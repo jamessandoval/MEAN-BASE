@@ -181,6 +181,24 @@
 		</div>
 	</div>
 
+<!-------  Temporary Add Status Section------------------ -->
+
+<br><br>
+  <div class="row text-center">
+    <div class="col-lg-4"></div>
+      <div class="col-lg-4">
+        <ul class="list-group" id="status">
+         <li class="list-group-item">Temporary Status Goes here...</li>
+        </ul>
+        </div>
+        <div class="col-lg-4"></div>
+      </div>
+    </div>
+  </div>
+
+
+<!-------  Temporary Add Status Section------------------ -->
+
 
 <!--  ------------------------------------------------------Option Display Section ---------------------------- -->
    
@@ -215,5 +233,18 @@
 	
 </div><!-- end .container-fluid -->
 <br><br>
+
+      <script>
+
+            let socket = io.connect('http://localhost:3000');
+
+            socket.on('message', function(msg) {
+              console.log(msg);
+              $('#status').append($('<li>').text(msg));
+            });
+
+            socket.emit('message', 'hi mr serveer');
+
+      </script>
 
 <%- include('footer') %>

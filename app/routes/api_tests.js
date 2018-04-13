@@ -26,8 +26,7 @@ function broadcastData(req, res, dataString) {
 
     console.log('Connection to client established');
 
-    client.emit('message', dataString);
-    client.emit('message', "hello frank");
+    //client.emit('message', "hello frank");
 
     // Success!  Now listen to messages to be received
     client.on('connection', function(event) {
@@ -38,6 +37,8 @@ function broadcastData(req, res, dataString) {
       console.log('Server has disconnected');
     });
   });
+
+  io.sockets.emit('message', dataString);
 }
 
 
