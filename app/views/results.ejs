@@ -97,7 +97,7 @@
           <!-- ###                                                               -->
           <% if(results){ %>
             <% for(var i=0; i < results.length; i++) { %>
-              <form name="<%= results[i].TestCaseId %>" action="/something" method="get">
+              <form name="<%= results[i].TestCaseId %>" action="/something1" method="get">
                   <tr>
                     <td> <%= results[i].RunDate %>
                     </td>
@@ -218,26 +218,44 @@
                   <script>
                   
                   function getSelectVal(sel) {
-                    alert(sel.value);
+                    //alert(sel.value);
+                    //var id = "<%= results[i].Id %>";
+                    //var users = sel.value;
                     
+                    //var x = $(sel).attr("name");
+                    //var x = $(sel).closest("input[type=hidden]").attr("name", "Id").val();
+                    var x = $(sel).closest("form").find("input[type=hidden]").attr("name", "Id").val();
+
+                    //alert(x);
+                    console.log(x);
+
+
+
+                    /*$.ajax({
+                      url : "/something2",
+                      type : "GET",
+                      data: {"Id": id, "users": users},
+                      success : function() {
+                        
+                        //console.log(id + ' - ' +users);
+
+                      } // end success : function(data)
+
+                    }); // end .ajax()*/
+
                   } // end getSelectVal()
 
 
                   $( document ).ready(function() {
-                    /*$(".bd-example-modal-lg<%= i %>").click(function() {
-                      var $testCaseId = $("#<%= results[i].TestCaseId %>").html();
-                      //var $owner = $("#owner :selected").text();
-                      //var $notes = $("textarea[name='message']").val();
-                      $("#tempDisplay").html($testCaseId + "<br />" + $owner + "<br />" + $notes);
 
-                    }) // end $(".bd-example-modal-lg<%= i %>").click()*/
-                    
+                    // add jquery script here
+
                   }); // end $( document ).ready()
 
                   </script>
 
                   <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
-                  <input type="hidden" name="Id" value="<%= results[i].Id %>" />
+                  <input type="hidden" name="Id" value="Hello" />
                   <input type="hidden" name="RunDate" value="<%= results[i].RunDate %>" />
                   <input type="hidden" name="testpassid" value="<%= results[i].TestPassId %>" />
                   <input type="hidden" name="Template" value="<%= results[i].Template %>" />
