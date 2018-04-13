@@ -7,26 +7,26 @@ const Sequelize = require('sequelize');
 const async = require('async');
 const util = require('util');
 const dateFormat = require('dateformat');
+
 const spawn = require('child_process').spawn;
 // Read Excel File Data
 const fs = require('fs');
+var mkdirp = require('mkdirp');
 const path = require('path');
-
-
 //### NEED to find out correct path
-var rootPath = path.normalize(__dirname + '../../../');
-var rootPath = rootPath + '/behat_projects/master_tests';
+let rootPath = path.normalize(__dirname + '../../../');
+rootPath = rootPath + '/behat_projects/master_tests';
+let behat_path = rootPath;
 
 function broadcastData(req, res, dataString) {
 
   const io = req.app.get('socketio');
 
   io.on('connection', function(client) {
-  	
+
     console.log('Connection to client established');
 
-    client.emit('message', dataString);
-    client.emit('message', "hello frank");
+    //client.emit('message', "hello frank");
 
     // Success!  Now listen to messages to be received
     client.on('connection', function(event) {
@@ -38,6 +38,7 @@ function broadcastData(req, res, dataString) {
     });
   });
 
+  io.sockets.emit('message', dataString);
 }
 
 
@@ -129,43 +130,81 @@ exports.getProcesses = function(req, res) {
 
 }
 
+exports.postTest = function(req, res, next) {
+
+  let now = new Date();
+  let jsonTestparams = JSON.stringify(req.body);
+
+  // Get time down to millisecond, preventing duplication.
+
+  let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
+
+  let directory = behat_path + "/tmp/" + currentTime;
+
+  fs.mkdir(directory, function(err) {
+    if (err) {
+      console.log('failed to create directory', err);
+    } else {
+      fs.writeFile(directory + "/temp.json", jsonTestparams, function(err) {
+        if (err) {
+          console.log('error writing file', err);
+        } else {
+
+          let jsonPath = directory + "/temp.json";
+
+          console.log(jsonPath);
+
+          console.log('writing file succeeded');
+
+          req.jsonpath = jsonPath;
+
+          next();
+        }
+      });
+    }
+  });
+
+}
 
 exports.startProcess = function(req, res) {
 
-    /* Expiremental Spawn Process Behavior */
-    let options = {
-      cwd: rootPath
+  let jsonPath = req.jsonpath;
+
+  console.log(jsonPath);
+
+  // Expiremental Spawn Process Behavior 
+  let options = {
+    cwd: rootPath
+  }
+
+  let spawn = require('child_process').spawn,
+    script = spawn('perl', ['start.pl', 'json', jsonPath], options);
+
+  console.log("The pid is " + script.pid);
+
+  // get output 
+  script.stdout.on('data', (data) => {
+    //script.stdin.write(data);
+    let dataString = String(data)
+    console.log(dataString);
+    broadcastData(req, res, dataString);
+
+  });
+
+  script.stderr.on('data', (data) => {
+    console.log(`ps stderr: ${data}`);
+  });
+
+  script.on('close', (code) => {
+    if (code !== 0) {
+      console.log(`start Script process exited with code ${code}`);
     }
+    script.stdin.end();
+  });
 
-    let spawn = require('child_process').spawn,
-      script = spawn('perl', ['start.pl', 'f1', 'en-us', 1], options);
-
-      console.log("The pid is " + script.pid);
-
-    // get output 
-    script.stdout.on('data', (data) => {
-      //script.stdin.write(data);
-    	let dataString = String(data)
-    	console.log(dataString);
-        broadcastData(req, res, dataString);
-
-    });
-
-    script.stderr.on('data', (data) => {
-      console.log(`ps stderr: ${data}`);
-    });
-
-    script.on('close', (code) => {
-      if (code !== 0) {
-        console.log(`start Script process exited with code ${code}`);
-      }
-      script.stdin.end();
-    });
-
-    console.log("end of function");
-
-    /* Expiremental Spawn Process Behavior */
+  //* Expiremental Spawn Process Behavior 
 
   res.send("start process complete.");
 
 }
+

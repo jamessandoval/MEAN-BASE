@@ -22,33 +22,55 @@ rootPath = rootPath + 'temp_directory';
 exports.getExport = function(req, res) {
 
   db.Result.findAll().then(results => {
+    db.TestPass.findAll().then(dateTimes =>{
 
-    var features = [];
-    var languages = [];
+        var features = [];
+        var languages = [];
+        var dates =[];
+        var datesIds = [];
 
-    // Needed To convert the blob object into a string 
-    // Otherwise it returns a buffer array object.
-    for (var i = 0; i < results.length; i++) {
-      results[i].Output = String(results[i].Output);
+        // Needed To convert the blob object into a string 
+        // Otherwise it returns a buffer array object.
+        for (var i = 0; i < results.length; i++) {
+          results[i].Output = String(results[i].Output);
 
-      // Save each unique template
-      if (!features.includes(results[i].Template)) {
-        features.push(results[i].Template);
-      }
+          // Save each unique template
+          if (!features.includes(results[i].Template)) {
+            features.push(results[i].Template);
+          }
 
-      // Save Each unique Language
-      if (!languages.includes(results[i].Language)) {
-        languages.push(results[i].Language);
-      }
-    }
+          // Save Each unique Language
+          if (!languages.includes(results[i].Language)) {
+            languages.push(results[i].Language);
+          }
 
-    res.render('export', {
-      title: 'Export Results',
-      features: features,
-      languages: languages,
-      user: req.user.firstname
+        }
 
-    });
+        // getting each unique date
+        for (var i = 0; i < dateTimes.length; i++) {
+          dateTimes[i].Output = String(dateTimes[i].Output);
+          dates.push(dateTimes[i].RunDate);
+          datesIds.push(dateTimes[i].TestPassId);
+        }
+
+        res.render('export', {
+          title: 'Export Results',
+          features: features,
+          languages: languages,
+          user: req.user.firstname,
+          dates: dates,
+          dateIds: datesIds
+        });
+
+        return null;
+
+      }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+      });
+
+      return null;
+
   }).catch(function(err) {
     console.log('error: ' + err);
     return err;
@@ -72,8 +94,15 @@ exports.getExportFromResults = function(req, res, next) {
   let query = req.query.query;
   let langArray = [];
   let fArray = [];
-  let loopedQuery='SELECT * from Result where ';
+  let testPass = req.query.testpassid;
+  if(testPass != "All"){
+    let loopedQuery='SELECT * from Result where TestPassId = ' + testPass + " AND ";
+  } else {
+    let loopedQuery='SELECT * from Result;';
+  }
   let results = null;
+
+ 
 
 
   //---------------------------------------------------------start of multiple choice query builder ------------------>
@@ -140,7 +169,7 @@ exports.getExportFromResults = function(req, res, next) {
 
   }else if (feature ==="All" && language ==="All"){
  
-      db.sequelize.query(`SELECT * from Result;`).then(results => {
+      db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}';`).then(results => {
 
         results = results[0];
         // Needed To convert the blob object into a string 
@@ -162,7 +191,7 @@ exports.getExportFromResults = function(req, res, next) {
 
   }else if (feature === "All" && testresult === "") {
 
-    db.sequelize.query(`SELECT * from Result where Language = '${language}';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Language = '${language}';`).then(results => {
 
       results = results[0];
 
@@ -186,7 +215,7 @@ exports.getExportFromResults = function(req, res, next) {
     ///results/locale/:locale/testresult/:testresult'
   } else if (feature === "All" && testresult !== "") {
 
-    db.sequelize.query(`SELECT * from Result where Language = '${language}' and Result = '${testresult}';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Language = '${language}' and Result = '${testresult}';`).then(results => {
 
       results = results[0];
 
@@ -211,7 +240,7 @@ exports.getExportFromResults = function(req, res, next) {
     //results/feature/:template/query/:custom
   } else if (feature !== "All" && language === "All" && testresult === "" && query !== "") {
 
-    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Output like '%${query}%';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Template = '${feature}' and Output like '%${query}%';`).then(results => {
 
       results = results[0];
 
@@ -237,7 +266,7 @@ exports.getExportFromResults = function(req, res, next) {
     //results/feature/:template/query/:custom/testresult/:testresult
   } else if (feature !== "All" && language === "All" && testresult !== "" && query !== "") {
 
-    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Result = '${testresult}'and Output like '%${query}%';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Result = '${testresult}'and Output like '%${query}%';`).then(results => {
 
       results = results[0];
 
@@ -262,7 +291,7 @@ exports.getExportFromResults = function(req, res, next) {
 
   } else if (feature !== "All" && language !== "All" && testresult === "" && query === "") {  // if only one selection was made for language and one for feature
    
-    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and language = '${language}';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and language = '${language}';`).then(results => {
 
       results = results[0];
 
@@ -287,7 +316,7 @@ exports.getExportFromResults = function(req, res, next) {
 
   }else if (feature !== "All" && language !== "All" && testresult !== "" && query === "") {
 
-    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Result = '${testresult}' and language = '${language}';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Result = '${testresult}' and language = '${language}';`).then(results => {
 
       results = results[0];
 
@@ -314,7 +343,7 @@ exports.getExportFromResults = function(req, res, next) {
 
     console.log("I am executing.\n\n\n");
 
-    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Language = '${language}' and Output like '%${query}%';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Language = '${language}' and Output like '%${query}%';`).then(results => {
 
       results = results[0];
 
@@ -341,7 +370,7 @@ exports.getExportFromResults = function(req, res, next) {
 
     console.log("I am executing.\n\n\n");
 
-    db.sequelize.query(`SELECT * from Result where Template = '${feature}' and Language = '${language}' and Output like '%${query}%' and Result = '${testresult}';`).then(results => {
+    db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' and Template = '${feature}' and Language = '${language}' and Output like '%${query}%' and Result = '${testresult}';`).then(results => {
 
       results = results[0];
 
@@ -408,14 +437,14 @@ exports.export_to_excel = function(req, res) {
     });
 
   worksheet.columns = [
-    { header: 'Scenario Id:', key: 'ScenarioNumber', width: 20 },
-    { header: 'Test Pass Id:', key: 'TestRunId', width: 32 },
+    { header: 'Test Case Id:', key: 'TestCaseId', width: 12 },
+    { header: 'Test Pass Id:', key: 'TestRunId', width: 12 },
     { header: 'Run Date/Time:', key: 'RunDate', width: 10 },
     { header: 'Template:', key: 'Template', width: 10 },
     { header: 'Language:', key: 'Language', width: 10 },
     { header: 'Result:', key: 'Result', width: 10 },
     { header: 'URL:', key: 'URLs', width: 50 },
-    { header: 'Output:', key: 'Output', width: 100 }
+    { header: 'Scenario:', key: 'Output', width: 100 }
   ];
   
 
@@ -429,8 +458,8 @@ exports.export_to_excel = function(req, res) {
     if (j < results.length) {
 
       worksheet.addRow({
-        id: results[j].ScenarioNumber,
-        TestRunId: results[j].TestRunId,
+        TestCaseId: results[j].TestCaseId,
+        TestRunId: results[j].TestPassId,
         RunDate: results[j].RunDate,
         Template: results[j].Template,
         Language: results[j].Language,

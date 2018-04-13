@@ -147,10 +147,9 @@
                       } %> 
                       <%=mystring%>
                     </td>
-                    <td>
-                      <a href="<%= results[i].URLs %>" target="_blank" class="popup">
-                        Link <span class="tooltiptext"><%= results[i].URLs %></span>
-                      </a>
+                    <td><!-- this is the tooltip section for the url link -->
+                      <a href="<%= results[i].URLs %>" target="_blank" class="tooltipx"> Link 
+                        <span class="tooltiptextx"><%= results[i].URLs %></span></a>
                     </td>
                     <td>
                       <% if  (results[i].Owner) { %>
