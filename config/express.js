@@ -21,7 +21,7 @@ const config = require('./config'),
 const api_results = require('../app/routes/api_results');
 const api_resultsDB = require('../app/routes/api_resultsDB');
 const api_file_data = require('../app/routes/api_file_data');
-const api_test_status = require('../app/routes/api_test_status');
+const api_tests = require('../app/routes/api_tests');
 const api_export = require('../app/routes/api_export');
 const language = require('../app/routes/language');
 const main = require('../app/routes/main');
@@ -33,8 +33,6 @@ const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
 
-
-
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
 
@@ -45,7 +43,6 @@ module.exports = function() {
   var app = express();
 
   // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
-
 
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));
@@ -204,7 +201,6 @@ module.exports = function() {
 
   // Test Information Routes
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
-  app.post('/run-test', isLoggedIn, api_file_data.runTest);
 
   // Test Runner Routes
   app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
@@ -212,10 +208,11 @@ module.exports = function() {
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
 
+  app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
+  app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);
+  app.get('/startprocess', isLoggedIn, api_tests.startProcess);
 
-  app.get('/test-status', isLoggedIn, api_test_status.getTestStatus);
-  app.get('/getprocesses', isLoggedIn, api_test_status.getProcesses);
-  app.get('/startprocess', isLoggedIn, api_test_status.startProcess);
+  app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);

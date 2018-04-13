@@ -27,7 +27,7 @@
       <div class="button-group">
         <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
         <ul class="dropdown-menu btn-block width-set">
-		  <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
+		  <% var allLangs=['All','en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
 		  'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
 		  'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];
 		  for(var i=0; i < allLangs.length; i++) { %>
@@ -155,6 +155,11 @@
 			<div class="button-group">
 				<button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" data-toggle="dropdown">Test Cases <span class="caret"></span></button>
 				<ul class="dropdown-menu btn-block width-set">
+          <li class="width-set dropdown-item">
+            <a href="#" data-value="optionA" tabIndex="-1" id="case">
+            <input id="0" class="case double" onclick="displayChecked(this.id)" type="checkbox" checked />&nbsp;Default</a>
+          </li> 
+
 					<% for(var i=0; i < scenarios.length; i++) { %>
 					<li class="width-set dropdown-item">
 						<a href="#" data-value="optionA" tabIndex="-1" id="case">

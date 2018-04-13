@@ -98,8 +98,7 @@ exports.getExportFromResults = function(req, res, next) {
   if(testPass != "All"){
     let loopedQuery='SELECT * from Result where TestPassId = ' + testPass + " AND ";
   } else {
-    let loopedQuery='SELECT * from Result where ';
-    testPass = "*";
+    let loopedQuery='SELECT * from Result;';
   }
   let results = null;
 
