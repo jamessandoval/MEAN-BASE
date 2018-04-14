@@ -45,3 +45,57 @@ exports.editTestCases = function(req, res) {  //getResultByTemplateCustom
   
 };
 
+
+
+
+  exports.postGherkin = function(req, res) {
+
+    let jsonObject = JSON.stringify(req.body);
+    console.log(jsonObject);
+  
+    db.sequelize.query(`SELECT * FROM TestCase;`).then(gherkinData => {  // TestCase table has: TestCaseId, HashValue, TestCaseDescription, Live, Gherkin
+        db.sequelize.query('SELECT * FROM Template;').then(whereUsed => { //Template has: Id, TestCaseId - f1 - 1,2,3,4,test casese, etc
+    
+
+    
+
+    // let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
+  
+    // let directory = behat_path + "/tmp/" + currentTime;
+  
+    // fs.mkdir(directory, function(err) {
+    //   if (err) {
+    //     console.log('failed to create directory', err);
+    //   } else {
+    //     fs.writeFile(directory + "/temp.json", jsonTestparams, function(err) {
+    //       if (err) {
+    //         console.log('error writing file', err);
+    //       } else {
+  
+    //         let jsonPath = directory + "/temp.json";
+  
+    //         console.log(jsonPath);
+  
+    //         console.log('writing file succeeded');
+  
+    //         req.jsonpath = jsonPath;
+  
+    //         res.send("We did it!  We used POST and got a reponse!");
+    //       }
+    //     });
+    //   }
+    // });
+
+        }).catch(function(err) {
+            console.log('error: ' + err);
+            return err;
+        })
+        return null;
+
+    }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+    })
+
+    res.send("We did it!  We used POST and got a reponse!");
+  }

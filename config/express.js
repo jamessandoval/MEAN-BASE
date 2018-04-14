@@ -215,6 +215,7 @@ module.exports = function() {
   app.get('/startprocess', isLoggedIn, api_tests.startProcess);
 
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
+  app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);
