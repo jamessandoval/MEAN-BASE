@@ -3,12 +3,14 @@
 
 function displayChecked(checkedID) {
   
-  var checkBox = document.getElementById(checkedID);  // Get the checkbox
-  var parent = document.getElementById(checkedID).parentNode;
+  var checkBox = document.getElementById(checkedID);  // Get the selected item
+  var parent = document.getElementById(checkedID).parentNode; 
   var parentId=checkBox.parentNode.id;
   var text = parent.textContent; // Get the checkbox's text
-  var paragraph = document.createElement("p");
-  var content = document.createTextNode(text);
+  var paragraph = document.createElement("p");  //create a paragraph
+  var content = document.createTextNode(text);   //create text (for the new paragraph)
+
+  console.log();
 
   if(checkBox.className == "FX double"){
   	var placement = document.getElementById("pageChildren");
@@ -22,7 +24,7 @@ function displayChecked(checkedID) {
 		placement.removeChild(placement.firstChild);
 	}
   }
-  else{
+  else if (checkBox.className == "lang double") {
   	var placement = document.getElementById("langChildren");
   }
 
@@ -33,8 +35,8 @@ function displayChecked(checkedID) {
 
   
   if (checkBox.checked == true){  // If the checkbox is checked, create a paragraph element and input the checkbox's text
-	if (parentId =="dates" && document.getElementById("dateChildren").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
-		document.getElementById("dateChildren").innerHTML="";
+	if (parentId =="dates" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
+		document.getElementById("dateChild").innerHTML="";
 	}
 	paragraph.appendChild(content);
 	paragraph.setAttribute('id',checkedID+'x');
@@ -83,7 +85,9 @@ function displayChecked(checkedID) {
 		}	
 
 		else if (checkedID != "All" && checkedID != "LAll"){  //If I'm un-checking anything but the "all" boxes
-			if (allBox.checked == true && parentId == "Fx"){ //If the "all" box HAD been checked
+		console.log("I'm not unchecking an All option");
+			if (allBox.checked == true && parentId == "Fx"){ //If the "all" box HAD been checked for the Feature Page section
+			console.log("I've unchecked something when ALL HAD been chosen");
 				allBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
 				var allChild = document.getElementById('Allx');
 				allChild.parentNode.removeChild(allChild);
@@ -108,6 +112,7 @@ function displayChecked(checkedID) {
 					}
 				}
 			} else if (LallBox.checked == true && parentId == "lang"){ //If the "all" box HAD been checked
+			console.log("I've unchecked something in the Lang section when LAll HAD been checked");
 				LallBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
 				var allChild = document.getElementById('LAllx');
 				allChild.parentNode.removeChild(allChild);
@@ -134,9 +139,11 @@ function displayChecked(checkedID) {
 			}
 
 			else {  // if something other than "all" was un-checked, but "all" had not been checked, just remove the one item from pages selected
+			console.log("I've unchecked something when ALL had NOT been selected" );
 				var child = document.getElementById(checkedID+'x');
 				child.parentNode.removeChild(child);
 			}
+			console.log("the end");
 		}  //end else if
     }  //end else
 } //end function displayChecked
