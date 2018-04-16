@@ -60,7 +60,7 @@ function runTest() {
   console.log(finalObject);
 
   $.ajax({
-    url: 'http://localhost:3000/run-test',
+    url: '/run-test',
     type: 'POST',
     data: testParamsJson,
     contentType: "application/json",
