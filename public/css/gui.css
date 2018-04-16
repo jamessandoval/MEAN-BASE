@@ -577,3 +577,23 @@ button[type=submit] {
 /* end of tooltip section */
 
 
+/* Test Runner CSS */
+
+.dot-light-on {
+  height: .5em;
+  width: .5em;
+  background-color: #33d329;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-light-off {
+  height: .5em;
+  width: .5em;
+  background-color: #cb0d16;
+  border-radius: 50%;
+  display: inline-block;
+
+
+}
+

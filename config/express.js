@@ -15,6 +15,7 @@ const config = require('./config'),
   cookieParser = require('cookie-parser'),
   db = require('./sequelize'),
   Sequelize = require('sequelize'),
+  cors = require('cors'),
   SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 //  Main Site Routes
@@ -41,6 +42,10 @@ module.exports = function() {
 
   // Create a new Express application instance
   var app = express();
+
+  // Enable cors requests
+  // https://github.com/expressjs/cors
+  app.use(cors());
 
   // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 
@@ -163,8 +168,10 @@ module.exports = function() {
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
 
-  app.get('/something', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
+  app.get('/something1', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
+  app.get('/something2', isLoggedIn, api_DB_writer.addOwnerToResultTable_DB);
 
+  
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
 

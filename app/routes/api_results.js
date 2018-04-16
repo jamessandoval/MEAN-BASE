@@ -334,7 +334,6 @@ exports.export_to_excel = function(req, res, next) {
     { header: 'Output:', key: 'Output', width: 100 }
   ];
 
-  console.log("the size of results is " + results.length);
   processItems(0);
 
   function processItems(j) {

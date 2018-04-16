@@ -20,7 +20,9 @@ function runTest() {
 
   */
 
-  var obj = { "name": "F2", "locale": "en-us", "numberOfUrls": 3, "testCases": [0] };
+  var obj = { "name": "all", "locale": "all", "numberOfUrls": 0, "testCases": [0] };
+
+  
   arrayOfObjects.push(obj);
 
   /*
@@ -58,7 +60,7 @@ function runTest() {
   console.log(finalObject);
 
   $.ajax({
-    url: 'http://localhost:3000/run-test',
+    url: '/run-test',
     type: 'POST',
     data: testParamsJson,
     contentType: "application/json",
@@ -70,7 +72,6 @@ function runTest() {
       console.log("I am great success.");
     }
   })
-
 };
 
 function exportLanguageSet() {
@@ -191,11 +192,10 @@ function exportAll() {
 function exportSelections(){
 
   let template = '';
-  let language = ''; 
-  let testresult=""; 
-  let query = ""; 
-  let thehref="";
-  let testdate="";
+  let language = '';
+  let testresult = "";
+  let query = "";
+  let thehref = "";
 
   let TchildCount= document.getElementById("pageChildren").children.length;
   let LchildCount= document.getElementById("langChildren").children.length;
@@ -211,10 +211,7 @@ function exportSelections(){
   
   
   language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
-  language = language.slice(0,-1);
-  if (language == "LAll"){
-    language = "All"
-  }
+  language = language.slice(0, -1);
 
   for (var y=1; y < LchildCount; y++){  // if additional languages were chosen, we add a comma and the language for each one selected
     let l = document.getElementById("langChildren").children[y].id; 
@@ -227,6 +224,7 @@ function exportSelections(){
 
   //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
   // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
+
 
   //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
   thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
