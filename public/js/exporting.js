@@ -36,7 +36,7 @@ function editTc(){
     var content3=document.getElementById("tcSelection").value;
     content3= content3.replace(content2,''); //this gets rid of the Scenario so that content3 only contains Gherkin 
     content3=content3.replace("@javascript",''); //this gets rid of the '@javascript' that is in some of these Gherkin strings
-    content3=content3.replace(/\n/,''); 
+    // content3=content3.replace(/\n/,''); 
     placement3.innerHTML=content3;
     // getLive(content1);
 
@@ -149,7 +149,7 @@ function exportGherkin() {
       },
       success: function(data) {
         console.log(data);
-        console.log("I am great success.");
+        console.log("I met success.");
       }
     })
   
