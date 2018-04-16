@@ -20,7 +20,7 @@ function runTest() {
 
   */
 
-  var obj = { "name": "F2", "locale": "en-us", "numberOfUrls": 3, "testCases": [0] };
+  var obj = { "name": "all", "locale": "all", "numberOfUrls": 0, "testCases": [0] };
 
   
   arrayOfObjects.push(obj);

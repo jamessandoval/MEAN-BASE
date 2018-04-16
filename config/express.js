@@ -15,6 +15,7 @@ const config = require('./config'),
   cookieParser = require('cookie-parser'),
   db = require('./sequelize'),
   Sequelize = require('sequelize'),
+  cors = require('cors'),
   SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 //  Main Site Routes
@@ -41,6 +42,10 @@ module.exports = function() {
 
   // Create a new Express application instance
   var app = express();
+
+  // Enable cors requests
+  // https://github.com/expressjs/cors
+  app.use(cors());
 
   // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 
