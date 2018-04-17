@@ -215,44 +215,7 @@
                   </td>            
                   </tr>
 
-                  <script>
-                  
-                  function getSelectVal(sel) {
-                    //alert(sel.value);
-                    //var id = "<%= results[i].Id %>";
-                    //var users = sel.value;
-                    
-                    //var x = $(sel).attr("name");
-                    //var x = $(sel).closest("input[type=hidden]").attr("name", "Id").val();
-                    var x = $(sel).closest("form").find("input[type=hidden]").attr("name", "Id").val();
 
-                    //alert(x);
-                    console.log(x);
-
-
-
-                    /*$.ajax({
-                      url : "/something2",
-                      type : "GET",
-                      data: {"Id": id, "users": users},
-                      success : function() {
-                        
-                        //console.log(id + ' - ' +users);
-
-                      } // end success : function(data)
-
-                    }); // end .ajax()*/
-
-                  } // end getSelectVal()
-
-
-                  $( document ).ready(function() {
-
-                    // add jquery script here
-
-                  }); // end $( document ).ready()
-
-                  </script>
 
                   <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
                   <input type="hidden" name="Id" value="Hello" />

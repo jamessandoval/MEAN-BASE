@@ -174,7 +174,8 @@ exports.startProcess = function(req, res) {
 
   // Expiremental Spawn Process Behavior 
   let options = {
-    cwd: rootPath
+    cwd: rootPath,
+    detached: true
   }
 
   let spawn = require('child_process').spawn,
@@ -204,7 +205,8 @@ exports.startProcess = function(req, res) {
 
   //* Expiremental Spawn Process Behavior 
 
-  res.send("start process complete.");
+  res.sendStatus(200);
+  //res.send("start process complete.");
 
 }
 
