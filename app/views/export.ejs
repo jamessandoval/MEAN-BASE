@@ -49,14 +49,10 @@ function displayInfo(data){
           <% }} %>
         </ul>
       </div>
-      <% } 
-      
-      
-      
-      
-      %>
+      <% } %>
       <p id="testData"></p>
     </div>
+  </div>
   </div>
 
 
@@ -68,15 +64,15 @@ function displayInfo(data){
         <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
         <ul class="dropdown-menu btn-block width-set">
 
-          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
+          <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
                 <li class="dropdown-item" style="display:none;"> 
                   <a href="#" id="Lang">
                     <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
                 </li>
 
           <% for(var i=0; i < languages.length; i++) { %>
-            <li class="width-set dropdown-item">
-              <a href="#" data-value="optionA" tabIndex="-1">
+            <li class="width-set dropdown-item" >
+              <a href="#" data-value="optionA" tabIndex="-1" class="locale">
               <input id="<%= languages[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></a>
             </li>
             <% }%>
@@ -102,7 +98,7 @@ function displayInfo(data){
                 
           <% for(var i=0; i < features.length; i++) { %>
           <li class="dropdown-item">
-            <a href="#" id="Fx">
+            <a href="#" class="Fx">
               <input id="<%= features[i] %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
               <% 
                 var thePage="";

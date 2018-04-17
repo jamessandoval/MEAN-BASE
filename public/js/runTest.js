@@ -219,7 +219,7 @@ function exportSelections(){
     language =language + "," + l;
   }
   
-  testdate = document.getElementById("dateChild").children[0].id;
+  var testdate = document.getElementById("dateChild").children[0].id;
   testdate = testdate.slice(0, -1);
 
   //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 

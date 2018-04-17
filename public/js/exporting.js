@@ -74,7 +74,7 @@ function classSwitch(thisOne){
 
 }
 
-function createTc(){
+function createTc(){   // need to add to this code for when the button is clicked after the "Edit Selected Test Case" button was clicked - and we need to clear everything
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
     // document.getElementById("theID").innerHTML = "";

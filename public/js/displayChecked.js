@@ -5,13 +5,19 @@ function displayChecked(checkedID) {
   
   var checkBox = document.getElementById(checkedID);  // Get the selected item
   var parent = document.getElementById(checkedID).parentNode; 
-  var parentId=checkBox.parentNode.id;
+  var parentClass=checkBox.parentNode.className;
   var text = parent.textContent; // Get the checkbox's text
   var paragraph = document.createElement("p");  //create a paragraph
   var content = document.createTextNode(text);   //create text (for the new paragraph)
 
-  console.log();
+  var checkboxes = new Array();
+  var allBox = document.getElementById("All");
+  var LallBox = document.getElementById("LAll");
+  checkboxes = document.getElementsByTagName('input');
 
+  console.log(parentClass);
+
+  //determine where on the page the checked item should be listed
   if(checkBox.className == "FX double"){
   	var placement = document.getElementById("pageChildren");
   }
@@ -28,72 +34,81 @@ function displayChecked(checkedID) {
   	var placement = document.getElementById("langChildren");
   }
 
-  var checkboxes = new Array();
-  var allBox = document.getElementById("All");
-  var LallBox = document.getElementById("LAll");
-  checkboxes = document.getElementsByTagName('input');
-
-  
-  if (checkBox.checked == true){  // If the checkbox is checked, create a paragraph element and input the checkbox's text
-	if (parentId =="dates" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
+  // If the checkbox is checked, create a paragraph element and input the checkbox's text
+  if (checkBox.checked == true){ 
+	if (parentClass =="dates" && document.getElementById("dateChild").hasChildNodes()){//if a radio button for the date was selected, remove any other dates from the display section
 		document.getElementById("dateChild").innerHTML="";
 	}
 	paragraph.appendChild(content);
 	paragraph.setAttribute('id',checkedID+'x');
 	placement.appendChild(paragraph);
 
-	if (checkedID == "All"){
+
+	// if the TEMPLATE ALL button was clicked, remove anything else from the paragraph section and check every feature box
+	if (checkedID == "All"){			
 		while (placement.firstChild){
 			placement.removeChild(placement.firstChild);
 		}
 		placement.appendChild(paragraph);
 		for(var i=0; i<checkboxes.length; i++){
-			if(checkboxes[i].parentNode.id == "Fx"){
+			if(checkboxes[i].parentNode.className == "Fx"){
 				checkboxes[i].checked = true;
 			}
 		}		
 	} else{}
-	if (checkedID == "LAll"){
+
+
+	// if the LANGUAGE ALL button was clicked, remove anything else from the paragraph section and check every language box
+	if (checkedID == "LAll"){             
 		while (placement.firstChild){
 			placement.removeChild(placement.firstChild);
 		}
 		placement.appendChild(paragraph);
 		for(var i=0; i<checkboxes.length; i++){
-			if(checkboxes[i].parentNode.id == "Lang"){
+			if(checkboxes[i].parentNode.className == "locale"){
 				checkboxes[i].checked = true;
 			}
-		}		
+		}	
 	} else{}
+
 	
   } else { // If you are un-checking the box, you will remove the child paragraph element that had been created.
-		if (checkedID == "All"){  //If I'm un-checking the "all" box, uncheck ALL the boxes
+
+		//If I'm un-checking the PAGE "all" box, uncheck ALL the boxes
+		if (checkedID == "All"){  
 			for(var i=0; i<checkboxes.length; i++){
-				if (checkboxes[i].parentNode.id == "Fx"){
+				if (checkboxes[i].parentNode.className == "Fx"){
 					checkboxes[i].checked = false;  // un-check all the boxes 
 				}
 			}
 			var child = document.getElementById(checkedID+'x'); 
 			child.parentNode.removeChild(child); // and remove "all" under pages selected
-		}	else if (checkedID == "LAll"){  //If I'm un-checking the "all" box, uncheck ALL the boxes
-				for(var i=0; i<checkboxes.length; i++){
-					if (checkboxes[i].parentNode.id == "Lang"){
-						checkboxes[i].checked = false;  // un-check all the boxes 
-					}
+
+		//If I'm un-checking the LANGUAGE "all" box, uncheck ALL the boxes
+		}else if (checkedID == "LAll"){  
+			for(var i=0; i<checkboxes.length; i++){
+				if (checkboxes[i].parentNode.className == "locale"){
+					checkboxes[i].checked = false;  // un-check all the boxes 
 				}
-				var child = document.getElementById(checkedID+'x'); 
-				child.parentNode.removeChild(child); // and remove "all" under pages selected
+			}
+			var child = document.getElementById(checkedID+'x'); 
+			child.parentNode.removeChild(child); // and remove "all" under pages selected
 		}	
 
-		else if (checkedID != "All" && checkedID != "LAll"){  //If I'm un-checking anything but the "all" boxes
+		//If I'm un-checking anything other than the "all" boxes
+		else if (checkedID != "All" && checkedID != "LAll"){ 
 		console.log("I'm not unchecking an All option");
-			if (allBox.checked == true && parentId == "Fx"){ //If the "all" box HAD been checked for the Feature Page section
+
+			//If the "all" box HAD been checked for the Feature Page section
+			if (allBox.checked == true && parentClass == "Fx"){ 
 			console.log("I've unchecked something when ALL HAD been chosen");
 				allBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
 				var allChild = document.getElementById('Allx');
 				allChild.parentNode.removeChild(allChild);
 				var eliminator = checkedID;  //note which page you were un-selecting
 				
-				for(var i=1; i<checkboxes.length-1; i++){
+				//goes through ALL the F[i] possibilities, and if there was a checkbox for it, but it isn't the ALL or Eliminator (unchecked box) then display a paragraph for that F[i]
+				for(var i=1; i<26; i++){  
 					var ID = 'F'+i;
 					if(document.getElementById(ID)){
 						var checkBox = document.getElementById(ID);  
@@ -111,27 +126,26 @@ function displayChecked(checkedID) {
 						}
 					}
 				}
-			} else if (LallBox.checked == true && parentId == "lang"){ //If the "all" box HAD been checked
+
+			//If the "all" box HAD been checked for the Language section
+			} else if (LallBox.checked == true && parentClass == "locale"){ 
 			console.log("I've unchecked something in the Lang section when LAll HAD been checked");
 				LallBox.checked = false;  // un-check the "all" box and remove it from the pages selected section
 				var allChild = document.getElementById('LAllx');
 				allChild.parentNode.removeChild(allChild);
 				var eliminator = checkedID;  //note which page you were un-selecting
 				
+				//goes through all the language possibilities, and if there was a checkbox for it, but it wasn't the ALL or Eliminator, add a paragraph for it
 				for(var i=1; i<checkboxes.length-1; i++){
-					var ID = 'L'+i;
-					if(document.getElementById(ID)){
-						var checkBox = document.getElementById(ID);  
-						console.log(ID);
-						var parent = document.getElementById(ID).parentNode;
-						var text = parent.textContent;
-						var paragraph = document.createElement("p");
-						var content = document.createTextNode(text);
-						var placement = document.getElementById("langChildren");
+					if(checkboxes[i].checked && checkboxes[i].parentNode.className == "locale"){
+						 var text = checkboxes[i].id;
+						 var paragraph = document.createElement("p");
+						 var content = document.createTextNode(text);
+						 var placement = document.getElementById("langChildren");
 
 						if (ID != eliminator){
 							paragraph.appendChild(content);
-							paragraph.setAttribute('id',"L"+i+'x');
+							paragraph.setAttribute('id',checkboxes[i].id+'x');
 							placement.appendChild(paragraph);
 						}
 					}
