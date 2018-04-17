@@ -394,10 +394,7 @@ exports.getResultMetaByLocale = function(req, res) {
     testPassId = parseInt(req.query.testpassid);
     getResultsTotal(0, testPassId);
 
-
-
   }
-
 
 
   function getResultsTotal(i, testPassId) {
