@@ -364,6 +364,17 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
 exports.getOverview = function(req, res) {
 
+	      res.render('dropdownTestRunner', {
+          title: 'Run Tests',
+          user: req.user.firstname
+
+        });
+	}
+
+
+/*
+exports.getOverview = function(req, res) {
+
   checkEnvironmentSettings().then(environmentStatus => {
 
     getTestProcessesFromDB().then(results => {
@@ -387,8 +398,10 @@ exports.getOverview = function(req, res) {
           testPass: testPassTableResults
 
         });
-
       });
     });
   })
 };
+
+*/
+

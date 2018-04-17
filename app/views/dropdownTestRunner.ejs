@@ -22,20 +22,20 @@
       <div class="col-lg-4"></div>
       <div class="col-lg-2">
         <h6>Selenium Driver Running: 
-          <% if(driverStatus.selenium === "on") { %>
+          <% // if(driverStatus.selenium === "on") { %>
           <span class="dot-light-on"></span>
-          <%} else {%>
+          <% //} else {%>
             <span class="dot-light-off"></span>  
-          <% } %>
+          <% // } %>
         </h6>
       </div>
       <div class="col-lg-2">
         <h6>Phantom JS Driver Running:
-          <% if(driverStatus.selenium === "on") { %>
+          <% // if(driverStatus.selenium === "on") { %>
          <span class="dot-light-on"></span></h6>
-        <%} else {%>
+        <% //} else {%>
           <span class="dot-light-off"></span>
-          <% } %>
+          <% // } %>
       </div>
       <div class="col-lg-4"></div>
     </div>
@@ -74,7 +74,7 @@
                 <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All
               </a>
             </li>
-            <% for(var i=1; i < 26; i++) { var featurePage="F" + [i]; %>
+            <%  for(var i=1; i < 26; i++) { var featurePage="F" + [i]; %>
               <li class="dropdown-item">
                 <a href="#" id="Fx">
               <input id="<%= featurePage %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
