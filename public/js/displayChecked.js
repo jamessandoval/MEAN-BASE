@@ -152,7 +152,8 @@ function displayChecked(checkedID) {
 				}
 			}
 
-			else {  // if something other than "all" was un-checked, but "all" had not been checked, just remove the one item from pages selected
+			// if something other than "all" was un-checked, but "all" had not been checked, just remove the one item from pages selected
+			else {  
 			console.log("I've unchecked something when ALL had NOT been selected" );
 				var child = document.getElementById(checkedID+'x');
 				child.parentNode.removeChild(child);

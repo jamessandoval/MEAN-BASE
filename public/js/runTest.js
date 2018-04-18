@@ -5,56 +5,43 @@ function runTest() {
 
   console.log("test is running.");
 
-  var arrayOfObjects = new Array();
+  let arrayOfObjects = new Array();
+  let featureCheckboxes = document.getElementsByClassName('FX');
+  let langCheckboxes = document.getElementsByClassName('lang');
+  let checkedLangs =[];
+  let checkedFeats = [];
 
-  var checkboxes1 = document.getElementsByClassName('FX');
-
-  //console.log(checkboxes1.length);
-
-  var checkboxes2 = document.getElementsByClassName('lang');
-
-  //console.log(checkboxes2[0].id);
-
-  /*
-  // Default check for testing ::
-
-  */
-
-  var obj = { "name": "all", "locale": "en-us", "numberOfUrls": 0, "testCases": [0] };
-
-  
-  arrayOfObjects.push(obj);
-
-  /*
-
-  for (var i = 0; i < checkboxes1.length; i++) {
-
-    if (checkboxes1[i].checked == true) {
-      var theId = checkboxes1[i].id;
-
-      for (var x = 0; x < checkboxes2.length; x++) {
-
-        if (checkboxes2[x].checked == true) {
-          var theLocale = checkboxes2[x].id;
-
-          // Default for testing purposes
-
-          var obj = { "name": "F2", "locale": "en-us", "numberOfUrls": 3, "testCases": [0]};
-
-          //var obj = { "name": theId, "locale": theLocale, "numberOfUrls": 3, "testCases": [0]};
-          //console.log(obj);
-          arrayOfObjects.push(obj);
-        }
-      }
+  for(var q = 0; q<langCheckboxes.length; q++){
+    if (langCheckboxes[q].checked == true){
+      checkedLangs.push(langCheckboxes[q].id);
     }
   }
+  //console.log(checkedLangs);
 
-  */
+  for(var x=0; x<featureCheckboxes.length; x++){
+    if(featureCheckboxes[x].checked == true){
+      checkedFeats.push(featureCheckboxes[x].id);
+    }
+  }
+  //console.log(checkedFeats);
 
+  //We will move to Phase2 after we build in Test Case Selection, and URL selection
+  let Phase1 = {
+  "languages": checkedLangs,
+  "features": checkedFeats
+  }; 
 
-  //console.log(arrayOfObjects);
+// var Phase2 = {
+//   "languages": "xx",
+//   "features": "xx",
+//   "TestCaseSelections":["F1":"all", "F2":"all", "F3":"1"],
+//   "NumOfUrls":["F1":"all", "F2":"all", "F3":"1"],
+//   "Urls":"xx",
+//   }; 
+  
+  arrayOfObjects.push(Phase1);
 
-  let finalObject = { "features": arrayOfObjects };
+  let finalObject = { "testPassData": Phase1 };
   let testParamsJson = JSON.stringify(finalObject);
 
   console.log(finalObject);
