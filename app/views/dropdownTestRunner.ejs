@@ -47,10 +47,11 @@
           <br> Next, choose which specific pages, and the test cases you want to run.</p>
       </div>
     </div>
-    <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
+    
     <div class="row exportTool">
       <div class="col-lg-3"></div>
       <div class="col-lg-3">
+        <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
         <div class="button-group">
           <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
           <ul class="dropdown-menu btn-block width-set">
@@ -64,24 +65,26 @@
       <%
       for(var i=0; i < allLangs.length; i++) { %>
               <li class="width-set dropdown-item">
-                <a href="#" data-value="optionA" tabIndex="-1" >
+                <a href="#" data-value="optionA" tabIndex="-1" class="locale">
               <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= allLangs[i] %></a>
               </li>
-              <% } %>
+              <% console.log(allLangs[i]);} %>
           </ul>
         </div>
         <!-- End Button group -->
+
+        <!--  ------------------------------------------------------ Feature Page Drop Down Options ---------------------------- -->
         <div class="button-group">
           <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
           <ul class="dropdown-menu btn-block width-set">
             <li class="dropdown-item">
               <a href="#">
-                <input id="all" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All
+                <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All
               </a>
             </li>
             <%  for(var i=1; i < 26; i++) { var featurePage="F" + [i]; %>
               <li class="dropdown-item">
-                <a href="#" id="Fx">
+                <a href="#" class="Fx">
               <input id="<%= featurePage %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
               <% 
                 var thePage="";
