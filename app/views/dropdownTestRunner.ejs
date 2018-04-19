@@ -70,7 +70,7 @@
                 <a href="#" data-value="optionA" tabIndex="-1" class="locale">
               <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= allLangs[i] %></a>
               </li>
-              <% console.log(allLangs[i]);} %>
+              <% } %>
           </ul>
         </div>
         <!-- End Button group -->
@@ -273,7 +273,7 @@
   let socket = io.connect('http://localhost:3000');
 
   socket.on('message', function(msg) {
-    console.log(msg);
+    //console.log(msg);
     $('#status').append($('<li>').text(msg));
   });
 
@@ -289,7 +289,7 @@
       }
     }
 
-    console.log(checkedLangs);
+    //console.log(checkedLangs);
     
     var Phase1 = '{"testPassData":[' +
       '"languages": "xx",' +
@@ -304,7 +304,7 @@
     //   '"Urls":"xx"' +
     //   '}]}'; 
 
-      console.log(Phase1);
+      //console.log(Phase1);
   }  //end of function runTest()
   </script>
 

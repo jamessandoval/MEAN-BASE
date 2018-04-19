@@ -26,9 +26,9 @@ function runTest() {
   //console.log(checkedFeats);
 
   //We will move to Phase2 after we build in Test Case Selection, and URL selection
-  let Phase1 = {
-  "languages": checkedLangs,
-  "features": checkedFeats
+  let phase1 = {
+  "features": checkedFeats,
+  "languages": checkedLangs
   }; 
 
 // var Phase2 = {
@@ -39,12 +39,10 @@ function runTest() {
 //   "Urls":"xx",
 //   }; 
   
-  arrayOfObjects.push(Phase1);
 
-  let finalObject = { "testPassData": Phase1 };
-  let testParamsJson = JSON.stringify(finalObject);
+  let testParamsJson = JSON.stringify(phase1);
 
-  console.log(finalObject);
+  console.log(testParamsJson);
 
   $.ajax({
     url: '/run-test',

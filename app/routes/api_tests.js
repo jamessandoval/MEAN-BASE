@@ -135,6 +135,9 @@ exports.postTest = function(req, res, next) {
   let now = new Date();
   let jsonTestparams = JSON.stringify(req.body);
 
+
+  console.log("This is the json object you are reading:\n");
+
   // Get time down to millisecond, preventing duplication.
 
   let currentTime = dateFormat(now, "ddddmmmmdSyyyyhMMsslTT");
