@@ -91,7 +91,7 @@ module.exports = function() {
   // **** Persistent Sessions ******
   // ***  This will be important when using socket.io *** 
 
-  app.use(cookieParser());
+  app.use(cookieParser('buffalo-bill-1999'));
 
   var sessionConnect = new Sequelize(
     "test",
@@ -116,6 +116,14 @@ module.exports = function() {
   }));
 
   dbSessionStore.sync();
+
+  // Configure Flash Messages 
+  app.use(flash());
+
+  app.use(function(req, res, next) {
+    res.locals.message = req.flash('message');
+    next();
+  });
 
   // Configure the Passport middleware
   app.use(passport.initialize());
@@ -163,7 +171,7 @@ module.exports = function() {
   // Results Pages 
   // locale - ok
   // locale - testresult - o
-  
+
   app.get('/results/locale/:locale', isLoggedIn, api_results.getResultByLanguage);
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
@@ -171,7 +179,7 @@ module.exports = function() {
   app.get('/something1', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
   app.get('/something2', isLoggedIn, api_DB_writer.addOwnerToResultTable_DB);
 
-  
+
   // TODO:: 
   //app.get('/results/feature/:template', api_results.getResultByLanguage);
 
@@ -249,11 +257,12 @@ module.exports = function() {
   app.set('view engine', 'ejs');
 
   // Configure the flash messages middleware
-  app.use(flash());
+
 
   //
   // Error Handling -> 404, 500, & All Errors
   // 
+
   app.use(function(req, res, next) {
     var err = new Error('404 PAGE NOT FOUND');
     err.status = 404;

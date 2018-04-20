@@ -8,6 +8,7 @@ const streamify = require('stream-array');
 const os = require('os');
 const async = require('async');
 const dateFormat = require('dateformat');
+const util = require('util');
 
 // Read Excel File Data
 const fs = require('fs');
@@ -332,7 +333,7 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
   let statusObject = {
     id: null,
     status: null,
-    runDate : null
+    runDate: null
   }
 
   // Loop through testPassTableResults
@@ -404,7 +405,7 @@ exports.getOverview = function(req, res) {
       checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
         for (var i = statusResults.length - 1; i >= 0; i--) {
-          console.log(statusResults[i]);
+          //console.log(statusResults[i]);
         }
 
         // { id: 65, status: 'success' }
@@ -436,6 +437,10 @@ exports.getOverview = function(req, res) {
           Note: 'PID: 15827' }
 
         */
+
+        //req.flash('message', 'test flash!');
+
+        //console.log(req.flash('message'));  // [ 'test flash!' ]
 
         res.render('dropdownTestRunner', {
           title: 'Run Tests',
