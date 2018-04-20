@@ -1,64 +1,78 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+function getTimeStamp(){
+
+  let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth()+1; //January is 0!
+  let yyyy = today.getFullYear();
+
+  let hr = today.getHours();
+  let min = today.getMinutes();
+  let sec = today.getSeconds();
+ 
+  if(dd<10) {
+      dd = '0'+dd
+  } 
+
+  if(mm<10) {
+      mm = '0'+mm
+  } 
+
+  let timestamp = mm + '-' + dd + '-' + yyyy + ' ' + hr + ':' + min + ':' + sec;
+
+  return timestamp;
+
+
+}
+
+
+
 function runTest() {
 
-  console.log("test is running.");
 
-  var arrayOfObjects = new Array();
+  let arrayOfObjects = new Array();
+  let featureCheckboxes = document.getElementsByClassName('FX');
+  let langCheckboxes = document.getElementsByClassName('lang');
+  let checkedLangs =[];
+  let checkedFeats = [];
 
-  var checkboxes1 = document.getElementsByClassName('FX');
-
-  //console.log(checkboxes1.length);
-
-  var checkboxes2 = document.getElementsByClassName('lang');
-
-  //console.log(checkboxes2[0].id);
-
-  /*
-  // Default check for testing ::
-
-  */
-
-  var obj = { "name": "F2", "locale": "en-us", "numberOfUrls": 3, "testCases": [0] };
-  arrayOfObjects.push(obj);
-
-  /*
-
-  for (var i = 0; i < checkboxes1.length; i++) {
-
-    if (checkboxes1[i].checked == true) {
-      var theId = checkboxes1[i].id;
-
-      for (var x = 0; x < checkboxes2.length; x++) {
-
-        if (checkboxes2[x].checked == true) {
-          var theLocale = checkboxes2[x].id;
-
-          // Default for testing purposes
-
-          var obj = { "name": "F2", "locale": "en-us", "numberOfUrls": 3, "testCases": [0]};
-
-          //var obj = { "name": theId, "locale": theLocale, "numberOfUrls": 3, "testCases": [0]};
-          //console.log(obj);
-          arrayOfObjects.push(obj);
-        }
-      }
+  for(var q = 0; q<langCheckboxes.length; q++){
+    if (langCheckboxes[q].checked == true){
+      checkedLangs.push(langCheckboxes[q].id);
     }
   }
+  //console.log(checkedLangs);
 
-  */
+  for(var x=0; x<featureCheckboxes.length; x++){
+    if(featureCheckboxes[x].checked == true){
+      checkedFeats.push(featureCheckboxes[x].id);
+    }
+  }
+  //console.log(checkedFeats);
 
+  //We will move to Phase2 after we build in Test Case Selection, and URL selection
+  let phase1 = {
+  "features": checkedFeats,
+  "languages": checkedLangs
+  }; 
 
-  //console.log(arrayOfObjects);
+// var Phase2 = {
+//   "languages": "xx",
+//   "features": "xx",
+//   "TestCaseSelections":["F1":"all", "F2":"all", "F3":"1"],
+//   "NumOfUrls":["F1":"all", "F2":"all", "F3":"1"],
+//   "Urls":"xx",
+//   }; 
+  
 
-  let finalObject = { "features": arrayOfObjects };
-  let testParamsJson = JSON.stringify(finalObject);
+  let testParamsJson = JSON.stringify(phase1);
 
-  console.log(finalObject);
+  console.log(testParamsJson);
 
   $.ajax({
-    url: 'http://localhost:3000/run-test',
+    url: '/run-test',
     type: 'POST',
     data: testParamsJson,
     contentType: "application/json",
@@ -70,7 +84,6 @@ function runTest() {
       console.log("I am great success.");
     }
   })
-
 };
 
 function exportLanguageSet() {
@@ -191,11 +204,10 @@ function exportAll() {
 function exportSelections(){
 
   let template = '';
-  let language = ''; 
-  let testresult=""; 
-  let query = ""; 
-  let thehref="";
-  let testdate="";
+  let language = '';
+  let testresult = "";
+  let query = "";
+  let thehref = "";
 
   let TchildCount= document.getElementById("pageChildren").children.length;
   let LchildCount= document.getElementById("langChildren").children.length;
@@ -211,10 +223,7 @@ function exportSelections(){
   
   
   language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
-  language = language.slice(0,-1);
-  if (language == "LAll"){
-    language = "All"
-  }
+  language = language.slice(0, -1);
 
   for (var y=1; y < LchildCount; y++){  // if additional languages were chosen, we add a comma and the language for each one selected
     let l = document.getElementById("langChildren").children[y].id; 
@@ -222,11 +231,12 @@ function exportSelections(){
     language =language + "," + l;
   }
   
-  testdate = document.getElementById("dateChild").children[0].id;
+  var testdate = document.getElementById("dateChild").children[0].id;
   testdate = testdate.slice(0, -1);
 
   //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
   // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
+
 
   //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
   thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;

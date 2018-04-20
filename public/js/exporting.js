@@ -36,7 +36,7 @@ function editTc(){
     var content3=document.getElementById("tcSelection").value;
     content3= content3.replace(content2,''); //this gets rid of the Scenario so that content3 only contains Gherkin 
     content3=content3.replace("@javascript",''); //this gets rid of the '@javascript' that is in some of these Gherkin strings
-    content3=content3.replace(/\n/,''); 
+    // content3=content3.replace(/\n/,''); 
     placement3.innerHTML=content3;
     // getLive(content1);
 
@@ -74,10 +74,26 @@ function classSwitch(thisOne){
 
 }
 
-function createTc(){
+function createTc(){   // need to add to this code for when the button is clicked after the "Edit Selected Test Case" button was clicked - and we need to clear everything
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
+    // document.getElementById("theID").innerHTML = "";
+    // document.getElementById("theScenario").value = "";
+    // document.getElementById("theGherkin").value = "";
+    // var newPages = document.getElementsByClassName("x");        
+    // for (var x=0; x<newPages.length; x++){
+    //     newPages[x].setAttribute("class", "btn btn-light locale-button x");
+    // }
+    // var currentPages = document.getElementsByClassName("btn btn-warning locale-button x");        
+    // for (var y=0; y<currentPages.length; y++){
+    //     currentPages[y].setAttribute("class", "btn btn-light locale-button x");
+    // }
+    // var removePages = document.getElementsByClassName("btn locale-button btn-danger x");        
+    // for (var r=0; r<removePages.length; r++){
+    //     removePages[r].setAttribute("class", "btn btn-light locale-button x");
+    // }
 }
+
 
 function filterFunction() {
     var input, filter, ul, li, a, i;
@@ -93,7 +109,6 @@ function filterFunction() {
         }
     }
 }
-
 
 
 function exportGherkin() {
@@ -139,6 +154,7 @@ function exportGherkin() {
   
     // console.log(finalObject + "-----------this is the final object ------------");
   
+    // This function sends the data from the Test Case Editor page, through the express.js page to the postGherkin() function on test_case_editor.js where the database is accessed and updated
     $.ajax({
       url: 'http://localhost:3000/post-gherkin',
       type: 'POST',
@@ -149,7 +165,7 @@ function exportGherkin() {
       },
       success: function(data) {
         console.log(data);
-        console.log("I am great success.");
+        console.log("I met success.");
       }
     })
   
