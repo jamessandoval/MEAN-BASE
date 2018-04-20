@@ -3,7 +3,6 @@
   <br>
   <br>
   <br>
-  <h1>Message goes here</h1>
       <!--end of loading-->
       <div class="container-fluid" id="page">
         <div class="row">
@@ -202,7 +201,7 @@
                 <ul class="list-group" id="status">
                 </ul>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-5">
             <table class="fixed_headers-3 table">
               <tr>
                 <thead>
@@ -213,7 +212,8 @@
                     </th>
                     <th>Running:
                     </th>
-                    <th><small>More Info</small></th>
+                    <th>More Info:</th>
+                    <th>Stop Test:</th>
                   </tr>
                 </thead>
                 <tbody id="test-status-table">
@@ -236,6 +236,9 @@
                         <td>
                           <button type="button" class="btn btn-sm btn-primary">Info</button>
                         </td>
+                          <td>
+                          <button type="button" class="btn btn-sm btn-danger">Stop</button>
+                        </td>
                       </tr>
                       <% } %>
                         <% } else { %>
@@ -249,7 +252,6 @@
             </table>
             <!-- end test status column -->
           </div>
-          <div class="col-lg-1"></div>
           <!-- end test status column -->
         </div>
       </div>
@@ -298,12 +300,13 @@
         let $cell2 = `<td>${timestamp}</td>`;
         let $cell3 = '<td><span class="dot-light-on"></span></td>';
         let $cell4 = '<td><button type="button" class="btn btn-sm btn-primary">Info</button></td>';
+        let $cell5 = '<td><button type="button" class="btn btn-sm btn-danger">Stop</button></td>';
 
         let $newRow = $('#test-status-table').append($(`<tr id="${id}">`));
 
         $newRow = $(`#${id}`);
 
-        let $newRowItem = $($newRow).prepend($cell1 + $cell2 + $cell3 + $cell4);
+        let $newRowItem = $($newRow).prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5);
 
       });
 
