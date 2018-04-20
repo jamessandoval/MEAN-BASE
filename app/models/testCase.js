@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(20000),
       allowNull: true
     },
-    isFunctionalTest {
+    isFunctionalTest: {
       type: "BOOLEAN",
       allowNull: true
 
