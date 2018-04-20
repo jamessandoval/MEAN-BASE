@@ -21,21 +21,21 @@
     <div class="row text-center">
       <div class="col-lg-4"></div>
       <div class="col-lg-2">
-        <h6>Selenium Driver Running: 
-          <% // if(driverStatus.selenium === "on") { %>
+        <h6>Selenium:&nbsp;
+          <% if(driverStatus.selenium === "on") { %>
           <span class="dot-light-on"></span>
-          <% //} else {%>
+          <% } else {%>
             <span class="dot-light-off"></span>  
-          <% // } %>
+          <% } %>
         </h6>
       </div>
       <div class="col-lg-2">
-        <h6>Phantom JS Driver Running:
-          <% // if(driverStatus.selenium === "on") { %>
+        <h6>PhantomJS:&nbsp;
+          <% if(driverStatus.selenium === "on") { %>
          <span class="dot-light-on"></span></h6>
-        <% //} else {%>
+        <% } else {%>
           <span class="dot-light-off"></span>
-          <% // } %>
+          <% } %>
       </div>
       <div class="col-lg-4"></div>
     </div>
@@ -47,7 +47,6 @@
           <br> Next, choose which specific pages, and the test cases you want to run.</p>
       </div>
     </div>
-    
     <div class="row exportTool">
       <div class="col-lg-3"></div>
       <div class="col-lg-3">
@@ -58,23 +57,21 @@
             <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
       'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
       'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];%>
-
               <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none; if wanted-->
               <li class="width-set dropdown-item" style="display:none;">
                 <a href="#" data-value="optionA" tabIndex="-1" id="Lang">
-              <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;All</a>
+                  <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;All</a>
               </li>
-      <%
+              <%
       for(var i=0; i < allLangs.length; i++) { %>
-              <li class="width-set dropdown-item">
-                <a href="#" data-value="optionA" tabIndex="-1" class="locale">
+                <li class="width-set dropdown-item">
+                  <a href="#" data-value="optionA" tabIndex="-1" class="locale">
               <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= allLangs[i] %></a>
-              </li>
-              <% } %>
+                </li>
+                <% } %>
           </ul>
         </div>
         <!-- End Button group -->
-
         <!--  ------------------------------------------------------ Feature Page Drop Down Options ---------------------------- -->
         <div class="button-group">
           <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
@@ -179,7 +176,8 @@
         <!--  ----NOTE: when we bring in the Scenarios we need to filter down to the common scenarios across feature pages and make sure the ID works (no spaces)------ -->
         <%  var scenarios = [1,3,7,9];
       if(scenarios){ %>
-          <div class="button-group" style="display:none;">  <!-- TEST CASE options are not currently working and should have style="display:none;" removed when put into use -->
+          <div class="button-group" style="display:none;">
+            <!-- TEST CASE options are not currently working and should have style="display:none;" removed when put into use -->
             <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" data-toggle="dropdown">Test Cases <span class="caret"></span></button>
             <ul class="dropdown-menu btn-block width-set">
               <li class="width-set dropdown-item">
@@ -198,13 +196,14 @@
             <!-- end .button-group -->
             <div class="button-group">
               <button type="button" id="runTest" class="btn btn-warning" onclick="runTest()">Run Test</button>
-              &nbsp;<button type="button" class="btn btn-secondary">Schedule Test</button>
+              &nbsp;
+              <button type="button" class="btn btn-secondary">Schedule Test</button>
             </div>
             <!-- ## Temporary Add Status Section ## -->
             <ul class="list-group" id="status">
             </ul>
       </div>
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <table class="fixed_headers-3 table">
           <tr>
             <thead>
@@ -213,24 +212,52 @@
                 </th>
                 <th>Start Time:
                 </th>
-                <th>Progress:
+                <th>Running:
                 </th>
                 <th><small>More Info</small></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody  id="test-status-table">
+              <% if (liveStatus){ %>
+
+              <% for(let i = 0; i < liveStatus.length;i++){ %>
+
               <tr>
-                <td>7</td>
-                <td>04-07-2019 12:09:21</td>
-                <td class="text-center">
-                    <span class="dot-light-on"></span>
+                
+                <td><%= liveStatus[i].id %></td>
+                <td><%= liveStatus[i].runDate %></td>
+                <td>
+                  <% if(liveStatus[i].status === "success"){%>
+
+                  <span class="dot-light-on"></span>
+                  
+                  <% }else {%>
+
+                  <span class="dot-light-off"></span>
+
+                  <% } %>
                 </td>
-                <td >
-                  <button type="button" class="btn btn-sm btn-primary">Info</button>
+
+                <td><button type="button" class="btn btn-sm btn-primary">Info</button></td>
+              </tr>
+
+              <% } %>
+
+              <% } else { %>
+
+              <tr id="no-tests-running">
+                <td colspan = "4" rowspan="5">
+                  <h4 class="display-4">No Tests Currently Running</h4>
                 </td>
               </tr>
+
+              <% } %>
             </tbody>
         </table>
+        <!-- end test status column -->
+      </div>
+            <div class="col-lg-1"></div>
+
         <!-- end test status column -->
       </div>
     </div>
@@ -239,7 +266,7 @@
   <!--  ##    Option Display Section ### -->
   <div class="row exportTool topSpace">
     <div class="col-lg-12 topSpace">
-      <h1>Test Selection:</h1>
+      <h1>Test Parameters:</h1>
     </div>
     <!-- end .col-lg-12 -->
   </div>
@@ -267,46 +294,27 @@
   <!-- end .container-fluid -->
   <br>
   <br>
-
-
   <script>
   let socket = io.connect('http://localhost:3000');
 
   socket.on('message', function(msg) {
-    //console.log(msg);
-    $('#status').append($('<li>').text(msg));
+
+    let timestamp = getTimeStamp()
+    let id = msg.replace("id:","");
+
+    let $cell1 = `<td>${id}</td>`;
+    let $cell2 = `<td>${timestamp}</td>`;
+    let $cell3 = '<td><span class="dot-light-on"></span></td>';
+    let $cell4 = '<td><button type="button" class="btn btn-sm btn-primary">Info</button></td>'; 
+
+    let $newRow = $('#test-status-table').append($(`<tr id="${id}">`));
+
+    $newRow = $(`#${id}`);
+
+    let $newRowItem = $($newRow).prepend($cell1 + $cell2 + $cell3 + $cell4);
+
   });
 
-  socket.emit('message', 'hi mr serveer');
 
-  function runTest(){ //when we click "Run Test", create a JSON object based on selected Feature Pages and Languages
-    var langArray=document.getElementsByClassName("lang double");
-    var checkedLangs =[];
-
-    for(var q = 0; q<langArray.length; q++){
-      if (langArray[q].checked = true){
-        checkedLangs.push(langArray[q]);
-      }
-    }
-
-    //console.log(checkedLangs);
-    
-    var Phase1 = '{"testPassData":[' +
-      '"languages": "xx",' +
-      '"features": "xx",' +
-      '}]}'; 
-    
-    // var Phase2 = '{"testPassData":[' +
-    //   '"languages": "xx",' +
-    //   '"features": "xx",' +
-    //   '"TestCaseSelections":["F1":"all", "F2":"all", "F3":"1"],' +
-    //   '"NumOfUrls":"xx",' +
-    //   '"Urls":"xx"' +
-    //   '}]}'; 
-
-      //console.log(Phase1);
-  }  //end of function runTest()
   </script>
-
-
   <%- include('footer') %>

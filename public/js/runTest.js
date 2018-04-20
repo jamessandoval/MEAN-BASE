@@ -1,9 +1,36 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+function getTimeStamp(){
+
+  let today = new Date();
+  let dd = today.getDate();
+  let mm = today.getMonth()+1; //January is 0!
+  let yyyy = today.getFullYear();
+
+  let hr = today.getHours();
+  let min = today.getMinutes();
+  let sec = today.getSeconds();
+ 
+  if(dd<10) {
+      dd = '0'+dd
+  } 
+
+  if(mm<10) {
+      mm = '0'+mm
+  } 
+
+  let timestamp = mm + '-' + dd + '-' + yyyy + ' ' + hr + ':' + min + ':' + sec;
+
+  return timestamp;
+
+
+}
+
+
+
 function runTest() {
 
-  console.log("test is running.");
 
   let arrayOfObjects = new Array();
   let featureCheckboxes = document.getElementsByClassName('FX');

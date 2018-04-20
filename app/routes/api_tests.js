@@ -38,7 +38,23 @@ function broadcastData(req, res, dataString) {
     });
   });
 
-  io.sockets.emit('message', dataString);
+  let testId = "";
+
+  if(dataString.search(/The test pass/) !== -1){
+
+    testId = dataString.match(/'([^']+)'/)[1]
+
+    //console.log("This should only be for the test pass id");
+    //console.log(dataString);
+    //io.sockets.emit('message', dataString);
+  }
+
+  if (testId){
+
+    io.sockets.emit('message', testId);
+    console.log(testId);
+  }
+
 }
 
 
@@ -190,7 +206,7 @@ exports.startProcess = function(req, res) {
   script.stdout.on('data', (data) => {
     //script.stdin.write(data);
     let dataString = String(data)
-    console.log(dataString);
+    //console.log(dataString);
     broadcastData(req, res, dataString);
 
   });
