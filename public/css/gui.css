@@ -137,7 +137,7 @@ body {
 
 .legend {
   display: inline-block;
-  float: left;
+  /*float: left;*/
   width: 1.5em;
   height: 1.5em;
   border-radius:5px;
@@ -204,10 +204,6 @@ body {
 .dropdown-menu {
   height: 200px;
   overflow: auto;
-}
-
-a button {
-  /* color:black; */
 }
 
 .AtTenPerc {
@@ -577,3 +573,66 @@ button[type=submit] {
 /* end of tooltip section */
 
 
+
+/* non-responsive table for Result page */
+
+.RunDate {
+  width: 130px;
+  min-width: 130px;
+}
+.TestPassId {
+  width: 90px;
+  min-width: 90px;
+}
+.Template {
+  width: 100px;
+  min-width: 100px;
+}
+.Language {
+  width: 100px;
+  min-width: 90px;
+}
+.Scenario {
+  width: 275px;
+  min-width: 275px;
+}
+.TestCaseId {
+  width: 90px;
+  min-width: 90px;
+}
+.Result {
+  width: 100px;
+  min-width: 100px;
+}
+.Message {
+  width: 275px;
+  min-width: 275px;
+}
+.URL {
+  width: 60px;
+  min-width: 60px;
+}
+.Owner {
+  width: 90px;
+  min-width: 90px;
+}
+.Notes {
+  width: 400px;
+  min-width: 400px;
+}
+
+/*used for div table headers*/
+.tableHeader {
+  width: 100%;
+  font-weight: bold;
+  border: 1px solid #dee2e6
+}
+
+.notesMsg {
+  max-height: 100px;
+  white-space: pre-wrap;
+  overflow: auto;
+}
+.editBtn {
+  margin-top: 15px;
+}

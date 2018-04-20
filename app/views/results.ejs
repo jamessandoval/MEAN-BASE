@@ -13,7 +13,7 @@
     <div class="col-lg-4 offset-lg-4 text-center">
         <h3><%= template %> - <%= language %></h3>
         <div>
-          <a href="/export?feature=<%= template %>&language=<%= language %>&testresult=<%= testresult %>&query=<%= %>&testpassid=<%= testPassId %>"<button class='btn btn-secondary btn-sm'>Export</button></a>
+          <a class="btn btn-secondary btn-sm" href="/export?feature=<%= template %>&language=<%= language %>&testresult=<%= testresult %>&query=<%= %>&testpassid=<%= testPassId %>">Export</a>
         </div>
         <br />
         <div>
@@ -56,7 +56,7 @@
             </li>
           <% }%>
             <li class="page-item active page-number">
-              <span class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></span>
+              <a class="page-link" href="<%= currentUrl %><%= i %>"><%= page %> of <%= pages %></a>
             </li>
           <% if(page >= pages){ %>
             <li class="page-item disabled">
@@ -74,198 +74,204 @@
   </div><!-- end .row -->
 
 
-    <div class="table-responsive">
-      
-      <table class="table table-hover table-bordered">
-          <thead class="thead-light">
-            <tr>
-              <th>Run  Date: <small>(PST)</small></th>
-              <th>Pass ID:</th>
-              <th>Template: </th>
-              <th>Language:</th>
-              <th>Scenario: </th>
-              <th class="text-center">Case ID:</th>
-              <th class="text-left">Result:</th>
-              <th>Message: </th>
-              <th class="text-left">URL:</th>
-              <th>Owner:</th>
-              <th>Notes:</th>
-            </tr>
-          </thead>
-          <!-- ###                                                               -->
-          <!-- ###         ALL RESULTS LOADED IN FIRST TAB HERE                  -->
-          <!-- ###                                                               -->
-          <% if(results){ %>
-            <% for(var i=0; i < results.length; i++) { %>
-              <form name="<%= results[i].TestCaseId %>" action="/something1" method="get">
-                  <tr>
-                    <td> <%= results[i].RunDate %>
-                    </td>
-                    <td>
-                      <!-- Titled Test Pass ID -->
-                      <%= results[i].TestPassId %>
-                    </td>
-                    <td>
-                      <%= results[i].Template %>
-                    </td>
-                    <td>
-                      <%= results[i].Language %>
-                    </td>
-                    <td>
-                      <% if(results[i].Output.includes("Result:")){
-                        var q = results[i].Output;
-                        var r = q.split("Result:")[0];
-                          r = r.replace("Scenario:",'');
-                      }else{
-                        var r = results[i].Output;
-                          r = r.replace("Scenario:",'');
-                      } %> 
-                      <a href="/results/feature/<%= template %>/locale/<%= language %>/query/<%= r %>?testpassid=<%= testPassId %>"><%=r%></a>
-                    </td>
-                    
-                    <td>
-                      <!-- Titled 'Case ID' -->
-                      <%= results[i].TestCaseId %> 
-                    </td>
-                    <td>
-                      <%if (results[i].Result === "PASS") { %>
-                        <a href="<%= pfsUrl %>PASS?testpassid=<%= testPassId %>" class="btn btn-success">PASS</a>
-                        <% }else if(results[i].Result === "FAIL"){ %>
-                          <a href="<%= pfsUrl %>FAIL?testpassid=<%= testPassId %>" class="btn btn-danger">FAIL</a>
-                          <% }else{%>
-                            <a href="<%= pfsUrl %>SKIP?testpassid=<%= testPassId %>" class="btn btn-primary">SKIP</a>
-                            <% } %>
-                    </td>
-                    <td>
-                      <!-- Titled 'Message' and includes fail errors and skip messages ID -->
-                      <% if(results[i].Output.includes("Result:")){
-                        var y = results[i].Output;
-                        var x = y.substring(y.indexOf("Result:"));
-                        var mystring = x.replace("Result:",'');
-                      }else{
-                        var mystring = '';
-                      } %> 
-                      <%=mystring%>
-                    </td>
-                    <td><!-- this is the tooltip section for the url link -->
-                      <a href="<%= results[i].URLs %>" target="_blank" class="tooltipx"> Link 
-                        <span class="tooltiptextx"><%= results[i].URLs %></span></a>
-                    </td>
-                    <td>
-                      <% if  (results[i].Owner) { %>
-                        <%= results[i].Owner %>
-                        <%} else { %>
-                        <select name="users" style="margin-bottom:5px;" id="owner" onchange="getSelectVal(this);">
-                          <% if (users){ %>
-                            <option value="none" selected>None</option>
-                            <% for (var x=0; x < users.length; x++){%>
-                            <option value="<%= users[x].firstname %>"><%= users[x].firstname %></option>
-                          <% }} %>
-                        </select>
-                        <% } %>
-                        
-                    </td>
-                    <td>
-                      <% if (results[i].Notes){ %>
-                        <textarea name="note" rows="3" cols="50"><%= results[i].Notes %></textarea> 
-                        <%} %>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg<%= i %>" data-whatever="<%= i %>">Edit</button>
-                    
-
-                    <!-- start of modal -->
-                    <div class="modal fade bd-example-modal-lg<%= i %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">
-                      <div class="modal-dialog modal-dialog-centered modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add To Notes</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class = "row">
-                              <div class="col-md-12">
-                                <p id="<%= results[i].TestCaseId %>"><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  | <%= results[i].RunDate %></p>
-                                <p>Scenario: <%= r %></p>
-                                <p>Message: <%=mystring%></p>
-                                <p>URL: <%= results[i].URLs %></p>
-                                <% if (results[i].Notes){ %>
-                                  <div class="form-group">
-                                    <label for="usr">Add a Note:</label>
-                                    <textarea class="form-control notes" name="message" rows="5"></textarea>
-                                  </div>
-                                  <%} else {%>
-                                    <div class="">
-                                      <label for="usr">Add a Note:</label>
-                                      <textarea class="form-control notes" name="message" rows="5"></textarea>
-                                    </div>
-                                  <% } %> 
-                              </div>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                            <!--button type="button" class="btn btn-primary" onclick="saveChanges('<%= i %>')">Save changes</button-->
-                          </div> <!-- end footer-->
-                        </div><!-- end modal-content-->
-                      </div><!-- end modal-dialog -->
-                    </div> <!-- end modal-->
-                    <!-- end modal section -->   
-                  </td>            
-                  </tr>
-
-                  <script>
-                  
-                  function getSelectVal(sel) {
-                    //alert(sel.value);
-                    //var id = "<%= results[i].Id %>";
-                    //var users = sel.value;
-                    
-                    //var x = $(sel).attr("name");
-                    //var x = $(sel).closest("input[type=hidden]").attr("name", "Id").val();
-                    var x = $(sel).closest("form").find("input[type=hidden]").attr("name", "Id").val();
-
-                    //alert(x);
-                    console.log(x);
-
-
-
-                    /*$.ajax({
-                      url : "/something2",
-                      type : "GET",
-                      data: {"Id": id, "users": users},
-                      success : function() {
-                        
-                        //console.log(id + ' - ' +users);
-
-                      } // end success : function(data)
-
-                    }); // end .ajax()*/
-
-                  } // end getSelectVal()
-
-
-                  $( document ).ready(function() {
-
-                    // add jquery script here
-
-                  }); // end $( document ).ready()
-
-                  </script>
-
-                  <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
-                  <input type="hidden" name="Id" value="Hello" />
-                  <input type="hidden" name="RunDate" value="<%= results[i].RunDate %>" />
-                  <input type="hidden" name="testpassid" value="<%= results[i].TestPassId %>" />
-                  <input type="hidden" name="Template" value="<%= results[i].Template %>" />
-                  <input type="hidden" name="Language" value="<%= results[i].Language %>" />
-
-            </form><!-- end form -->
-            <% }} %>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+      <table name="table-1" class="table table-hover table-bordered">
+        <thead class="thead-light">
+          <tr>
+            <th class="RunDate">Run  Date: <small>(PST)</small></th>
+            <th class="TestPassId">Pass ID:</th>
+            <th class="Template">Template: </th>
+            <th class="Language">Lang:</th>
+            <th class="Scenario">Scenario: </th>
+            <th class="TestCaseId text-center">Case ID:</th>
+            <th class="Result text-left">Result:</th>
+            <th class="Message">Message: </th>
+            <th class="text-left URL">URL:</th>
+            <th class="Owner">Owner:</th>
+            <th class="Notes">Notes:</th>
+          </tr>
+        </thead>
       </table>
       
-    </div><!-- end .table-responsive -->
+    <% if(results){ %>
+      <% for(var i=0; i < results.length; i++) { %>
+      <form name="<%= results[i].TestCaseId %>" action="/addNotesToResultsPage" method="get">
+      <table name="table-2" class="table table-hover table-bordered">
+        <tr>
+          <td class="RunDate"><%= results[i].RunDate %></td>
+          <td class="TestPassId"><%= results[i].TestPassId %></td>
+          <td class="Template"><%= results[i].Template %></td>
+          <td class="Language"><%= results[i].Language %></td>
+
+          <td class="Scenario">
+            <% if(results[i].Output.includes("Result:")){
+            var q = results[i].Output;
+            var r = q.split("Result:")[0];
+              r = r.replace("Scenario:",'');
+            }else{
+              var r = results[i].Output;
+              r = r.replace("Scenario:",'');
+            } %> 
+          <a href="/results/feature/<%= template %>/locale/<%= language %>/query/<%= r %>?testpassid=<%= testPassId %>"><%=r%></a>
+        </td>
+
+          <td class="TestCaseId">
+          <!-- Titled 'Case ID' -->
+          <%= results[i].TestCaseId %>
+          </td>
+
+          <td class="Result">
+          <%if (results[i].Result === "PASS") { %>
+            <a href="<%= pfsUrl %>PASS?testpassid=<%= testPassId %>" class="btn btn-success">PASS</a>
+            <% }else if(results[i].Result === "FAIL"){ %>
+            <a href="<%= pfsUrl %>FAIL?testpassid=<%= testPassId %>" class="btn btn-danger">FAIL</a>
+            <% }else{%>
+            <a href="<%= pfsUrl %>SKIP?testpassid=<%= testPassId %>" class="btn btn-primary">SKIP</a>
+          <% } %>
+          </td>
+
+          <td class="Message">
+          <!-- Titled 'Message' and includes fail errors and skip messages ID -->
+          <% if(results[i].Output.includes("Result:")){
+            var y = results[i].Output;
+            var x = y.substring(y.indexOf("Result:"));
+            var mystring = x.replace("Result:",'');
+          }else{
+            var mystring = '';
+          } %> 
+          <%=mystring%>
+          </td>
+
+          <td class="URL">
+          <!-- this is the tooltip section for the url link -->
+          <a href="<%= results[i].URLs %>" target="_blank" class="tooltipx"> Link 
+          <span class="tooltiptextx"><%= results[i].URLs %></span></a>
+          </td>
+
+
+
+          <td class="Owner">
+            <% if  (results[i].Owner) { %>
+              <select name="users" style="margin-bottom:5px;" id="users" onchange="getSelectVal(this);">
+                  <% for (var x=0; x < users.length; x++) {%>
+                    <% if(results[i].Owner === users[x].firstname) {%>
+                      <option value="<%= users[x].firstname %>" selected><%= users[x].firstname %></option>
+                      <%} else {%>
+                  <option value="<%= users[x].firstname %>"><%= users[x].firstname %></option>
+                <% }} %>
+              </select>
+
+              <%} else { %>
+              <select name="users" style="margin-bottom:5px;" id="users" onchange="getSelectVal(this);">
+                <% if (users) { %>
+                  <option value="none" selected>None</option>
+                  <% for (var x=0; x < users.length; x++) {%>
+                  <option value="<%= users[x].firstname %>"><%= users[x].firstname %></option>
+                <%}} %>
+              </select>
+            <%} %>
+          </td>
+
+
+
+          <td class="Notes">
+          <% if (results[i].Notes){ %>
+            <div class="notesMsg"><%= results[i].Notes %></div>
+            <!--textarea name="note" rows="3" cols="50"><%= results[i].Notes %></textarea--> 
+          <%} %>
+          <button type="button" class="btn btn-primary editBtn" data-toggle="modal" data-target=".bd-example-modal-lg<%= i %>" data-whatever="<%= i %>">Edit</button>
+          
+          <!-- start of modal -->
+          <div class="modal fade bd-example-modal-lg<%= i %>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myModal">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Add To Notes</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class = "row">
+                    <div class="col-md-12">
+                      <p id="<%= results[i].TestCaseId %>"><%= template %>  |  <%= language %>  |  Test Case ID: <%= results[i].TestCaseId %>  | <%= results[i].RunDate %></p>
+                      <p>Scenario: <%= r %></p>
+                      <p>Message: <%=mystring%></p>
+                      <p>URL: <%= results[i].URLs %></p>
+                      <% if (results[i].Notes){ %>
+                        <div class="form-group">
+                          <label for="usr">Add a Note:</label>
+                          <textarea class="form-control notes" name="message" rows="5"></textarea>
+                        </div>
+                        <%} else {%>
+                          <div class="">
+                            <label for="usr">Add a Note:</label>
+                            <textarea class="form-control notes" name="message" rows="5"></textarea>
+                          </div>
+                        <% } %> 
+                    </div><!-- end .col-md-12 -->
+                  </div><!-- end .row -->
+                </div><!-- end modal-body-->
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <!--button type="button" class="btn btn-primary" onclick="saveChanges('<%= i %>')">Save changes</button-->
+                </div> <!-- end modal-footer-->
+
+              </div><!-- end modal-content-->
+            </div><!-- end modal-dialog -->
+          </div> <!-- end modal-->
+          <!-- end modal section -->
+          </td>
+        </tr>
+      </table>
+
+      <!-- DO NOT DELETE: hidden fields used to pass values on submit via GET -->
+      <input type="hidden" name="Id" value="<%= results[i].Id %>" />
+      <input type="hidden" name="RunDate" value="<%= results[i].RunDate %>" />
+      <input type="hidden" name="testpassid" value="<%= results[i].TestPassId %>" />
+      <input type="hidden" name="Template" value="<%= results[i].Template %>" />
+      <input type="hidden" name="Language" value="<%= results[i].Language %>" />
+
+      <script>        
+        function getSelectVal(sel) {
+          //var id = $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val();
+          //var users = sel.value;
+
+          $.ajax({
+            url : "/addOwnerToResultsPage",
+            type : "GET",
+            dataType:"html",
+            //data: {"Id": id, "users": users},
+            data: {
+              Id: $(sel).closest("form").find("input[type=hidden]").prop("name", "Id").val(),
+              users: sel.value
+
+            },
+            success : function() {
+              console.log('success');
+              location.reload(true);  //Refresh page
+
+            }, // end success : function()
+            error : function() {
+              console.log('error');
+
+            } // end error : function()
+
+          }); // end .ajax()
+
+        } // end getSelectVal()
+
+      </script>
+      </form><!-- end form -->
+
+      <% }} %>
+
+      </div><!-- end .table-responsive -->
+    </div><!-- end .col-12 -->
   </div><!-- end .row -->
 
 
@@ -298,22 +304,8 @@
       </nav>
     </div><!-- end .col-lg-2 .offset-lg-6 -->
     <!-- pagination Ends here -->
-    <p id="tempDisplay"></p>
+
   </div><!-- end .container -->
-
-
-  <!--script>
-    function saveChanges() {
-
-      var resultRowID = document.getElementById("resultRowID").innerHTML;
-      var x = document.getElementById("owner");
-      var owner = x.options[x.selectedIndex].text;
-      var notes = document.getElementById('notes').value;
-
-      document.getElementById('tempDisplay').innerHTML = resultRowID + '<br />' + owner + '<br />' + notes;
-
-    } // end saveChanges()
-  </script-->
 
   <br /><br /><br /><br />
   <%- include('footer') %>

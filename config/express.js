@@ -163,8 +163,8 @@ module.exports = function() {
 
   app.get('/results/locale/:locale/testresult/:testresult', isLoggedIn, api_results.getResultByLangAndTestResult);
 
-  app.get('/something1', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
-  app.get('/something2', isLoggedIn, api_DB_writer.addOwnerToResultTable_DB);
+  app.get('/addNotesToResultsPage', isLoggedIn, api_DB_writer.addNotesToResultTable_DB);
+  app.get('/addOwnerToResultsPage', isLoggedIn, api_DB_writer.addOwnerToResultTable_DB);
 
   
   // TODO:: 

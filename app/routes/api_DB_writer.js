@@ -7,6 +7,7 @@ const Sequelize = require('sequelize');
 const async = require('async');
 const util = require('util');
 const dateFormat = require('dateformat');
+var datetime = require('node-datetime');
 
 
 // Add Notes to result table in database
@@ -29,7 +30,10 @@ exports.addNotesToResultTable_DB = function(req, res) {
   let id = req.query.Id;
   let notes = req.query.message;
 
+  // used to escape single quotes and apostrophe's
+  notes = notes.replace(/'/g, '"');
 
+  
   var db = mysql.createConnection({
     host: "localhost",
     port: "3306",
@@ -39,45 +43,47 @@ exports.addNotesToResultTable_DB = function(req, res) {
     database: "test"
   });
 
-
   // This script is used for testing variables
   /*db.connect(function(err) {
     if (err) throw err;
     //console.log("Connected! - " + id);
-    res.end('working - ' + id + ' - ' + notes);
+    //var sql = "SELECT * FROM result WHERE Id = '"+id+"'";
+
+    res.end('working - ' + id + ' - ' + notes + ' --- ' + sql);
 
   });*/
 
 
+  // Add Notes to result table in database
   db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    //var sql = "UPDATE result SET Notes = CONCAT('"+oldValue+"', '"+newValue+"') WHERE Id = '"+id+"'";
-    var sql = "UPDATE result SET Notes = '"+notes+"' WHERE Id = '"+id+"'";
-    db.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("1 record Notes inserted");
 
-    });
-    //connection.end(); // not being used at the moment
-  });
+    db.query("SELECT Notes FROM result WHERE Id = '"+id+"'", function (err, row) {
+      if (err) throw err;
+      //console.log(row);
+
+      if (row[0].Notes) {
+        var sql = "UPDATE result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"') WHERE Id = '"+id+"'";
+      }
+      else {
+        var sql = "UPDATE result SET Notes = '"+notes+"' WHERE Id = '"+id+"'";
+        
+      } //end if/else
+
+      db.query(sql, function (err, result) {
+        if (err) throw err;
+        console.log("1 record Notes inserted");
+
+      }); //end db.query(sql, function (err, result)
+
+    }); // end db.query("SELECT Notes FROM result WHERE Id = '"+id+"'", function (err, row)
+
+  }); // end db.connect(function(err)
+
     res.redirect('back'); // used to redirect page back on submit
-  
-  
-  /*db.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-    var sql = "INSERT INTO result (TestCaseId, TestPassId, Template, Language, Result, URLs, Output, RunDate, Owner, Notes) VALUES ('"+testcaseid+"', '"+testpassid+"', '"+template+"', '"+language+"', '"+result+"', '"+urls+"', '"+output+"', '"+rundate+"', '"+owner+"', '"+notes+"')";
-
-    db.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("1 record inserted");
-
-    });
-  });*/
 
 }; // end exports.addOwnerToDB = function(req, res)
-
 
 
 // Add Owner to result table in database
@@ -96,7 +102,6 @@ exports.addOwnerToResultTable_DB = function(req, res) {
     database: "test"
   });
 
-
   db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -105,11 +110,10 @@ exports.addOwnerToResultTable_DB = function(req, res) {
     db.query(sql, function (err, result) {
       if (err) throw err;
       console.log("1 record Owner inserted");
+      res.redirect(req.get('referer')); // resfresh the get url and throws ajax error - However its currently needed for multiple changes
 
-    });
-    //connection.end(); // not being used at the moment
-  });
-    //res.redirect('back'); // used to redirect page back on submit
+    }); // end db.query(sql, function (err, result)
 
+  }); // end db.connect(function(err)
+  
 }; // end exports.addOwnerToResultTable_DB = function(req, res)
-

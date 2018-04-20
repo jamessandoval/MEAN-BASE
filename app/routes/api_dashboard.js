@@ -5,6 +5,7 @@ const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 const dateFormat = require('dateformat');
 
+
 // Create a new 'render' controller method
 exports.getOverview = function(req, res) {
   
