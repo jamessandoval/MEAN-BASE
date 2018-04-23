@@ -21,12 +21,12 @@
       ]);
       // Optional; add a title and set the width and height of the chart
       // Options can be variables such as title: $Title
-
+      var myTitle = '';
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
       } else {
         var legendLocation = 'none';
-        var myTitle = '';
+        
       };
 
       var options = {
@@ -40,7 +40,7 @@
         <% } %>
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '350', height: '80%' },
+        'chartArea': { width: '90%', height: '90%' },
         'legend': legendLocation,
         'slices': {
           0: { offset: 0.0 },
@@ -65,7 +65,6 @@
 
       ]);
 
-
       var options2 = {
 
         'title': '<%= language %>',
@@ -75,7 +74,7 @@
         'colors': ['#109618', '#DC3912', '#2569ff'],
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '350', height: '80%' },
+        'chartArea': { width: '90%', height: '90%' },
         'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
         'hAxis': {
           'minValue': 0,

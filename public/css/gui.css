@@ -180,10 +180,10 @@ body {
   margin: auto;
 }
 
-#pieChart {
+/* #pieChart {
   width: 90%;
   height: 350px;
-}
+} */
 
 
 
@@ -195,11 +195,11 @@ body {
   margin-bottom: 10px;
 }*/
 
-#barGraph {
+/* #barGraph {
   width: 90%;
   height: 500px;
   margin-bottom: 10px;
-}
+} */
 
 .dropdown-menu {
   height: 200px;

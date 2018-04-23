@@ -279,33 +279,6 @@
 
   socket.emit('message', 'hi mr serveer');
 
-  function runTest(){ //when we click "Run Test", create a JSON object based on selected Feature Pages and Languages
-    var langArray=document.getElementsByClassName("lang double");
-    var checkedLangs =[];
-
-    for(var q = 0; q<langArray.length; q++){
-      if (langArray[q].checked = true){
-        checkedLangs.push(langArray[q]);
-      }
-    }
-
-    console.log(checkedLangs);
-    
-    var Phase1 = '{"testPassData":[' +
-      '"languages": "xx",' +
-      '"features": "xx",' +
-      '}]}'; 
-    
-    // var Phase2 = '{"testPassData":[' +
-    //   '"languages": "xx",' +
-    //   '"features": "xx",' +
-    //   '"TestCaseSelections":["F1":"all", "F2":"all", "F3":"1"],' +
-    //   '"NumOfUrls":"xx",' +
-    //   '"Urls":"xx"' +
-    //   '}]}'; 
-
-      console.log(Phase1);
-  }  //end of function runTest()
   </script>
 
 
