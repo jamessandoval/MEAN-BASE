@@ -10,6 +10,10 @@
   .homePgBodyText {
     text-align: center !important;
   }
+  .dashboardDropdown {
+    width: 100% !important;
+    max-width: 40% !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -27,6 +31,10 @@
     padding-left: 30px;
     float: right;
     text-decoration: underline;
+  }
+  .dashboardDropdown {
+    width: 100% !important;
+    max-width: 50% !important;
   }
 }
 
@@ -173,6 +181,10 @@ body {
   text-align: left;
 }
 
+.dashboardDropdown {
+  width: 100%;
+}
+
 #pieChart {
   width: 90%;
   height: 350px;
@@ -259,6 +271,10 @@ button[type=submit]:hover.login {
 .homePgBodyText {
   text-align: left;
   padding-bottom: 25px;
+}
+
+.exportTool {
+  text-align: center;
 }
 
 .exportToolBtn {
