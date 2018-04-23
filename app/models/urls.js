@@ -17,6 +17,10 @@ module.exports = function(sequelize, DataTypes) {
       type: "BLOB",
       allowNull: true
     },
+    Rank: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true
+    },
     Live: {
       type: "BOOLEAN",
       allowNull: true,

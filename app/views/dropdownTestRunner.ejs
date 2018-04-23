@@ -296,6 +296,9 @@
         let timestamp = getTimeStamp()
         let id = msg.replace("id:", "");
 
+<<<<<<< HEAD
+  </script>
+=======
         let $cell1 = `<td>${id}</td>`;
         let $cell2 = `<td>${timestamp}</td>`;
         let $cell3 = '<td><span class="dot-light-on"></span></td>';
@@ -307,6 +310,7 @@
         $newRow = $(`#${id}`);
 
         let $newRowItem = $($newRow).prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5);
+>>>>>>> 5c8c338b7484d592f3f1323541b223a72f75a107
 
       });
 

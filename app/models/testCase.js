@@ -23,6 +23,11 @@ module.exports = function(sequelize, DataTypes) {
     Gherkin: {
       type: DataTypes.STRING(20000),
       allowNull: true
+    },
+    isFunctionalTest: {
+      type: "BOOLEAN",
+      allowNull: true
+
     }
   }, {
     tableName: 'TestCase'
