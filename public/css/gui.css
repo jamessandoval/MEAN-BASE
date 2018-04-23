@@ -1,3 +1,4 @@
+
 @media (min-width: 576px) {
   .exportTool {
     text-align: center !important;
@@ -33,9 +34,6 @@
   .loginAndSignupTxtAlign {
     text-align: center !important;
   }
-  /*.homePgBodyText {
-        text-align: center !important;
-    }*/
 }
 
 ::-webkit-scrollbar {
@@ -47,15 +45,6 @@
   background-color: rgba(0, 0, 0, .5);
   /*-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);*/
 }
-
-
-
-
-/*@media (min-width: 1200px) {
-    .homePgBodyText {
-        text-align: center !important;
-    }
-}*/
 
 body {
   margin-bottom: 0;
@@ -237,13 +226,10 @@ body {
   border: 1px solid #E5AB01;
 }
 
-
 .date-submit-btn {
 
   margin-left: .7em;
 }
-
-
 
 button[type=submit].login {
   background-color: #ffc20e;
@@ -281,12 +267,7 @@ button[type=submit]:hover.login {
 }
 
 
-
-
-
-
 /*progressbar*/
-
 .progressbar {
   position: relative;
   display: block;
@@ -337,11 +318,6 @@ button[type=submit]:hover.login {
   vertical-align: bottom;
 }
 
-
-
-
-
-
 /*
 .vault {
     background:url("/img/v.png") 0 0;
@@ -360,12 +336,10 @@ button[type=submit]:hover.login {
     background-position: 0 -64px;
   }
 }
-
 /*end progress bar*/
 
 
 /* login and signup pages */
-
 .loginAndSignupForm {
   max-width: 450px;
   min-width: 290px;
@@ -401,33 +375,14 @@ input[type=password]:focus {
 input[type=checkbox] {
   margin-bottom: 15px;
 }
-/*--------------------------------------------ask Aron about this section - accepted both changes    */
-input[type=submit].addOwner {
-    margin-top: 27px;
-}
-input[type=submit].addNotes {
-  margin-top: 15px;
-}
-button[type=submit].login {
-    margin-top: 20px;
-}
-input[type=submit] {
-  margin-top: 15px;
-}
 
-button[type=submit] {
+button[type=submit].login {
   margin-top: 20px;
 }
-
-
-
-
-
 /* end login and signup pages */
 
 
 /*loading animation section */
-
 #loader-wrapper {
   position: fixed;
   top: 0;
@@ -524,14 +479,7 @@ button[type=submit] {
     /* Firefox 16+, IE 10+, Opera */
   }
 }
-
-
-
 /*end of loading animation section */
-
-.redeye {
-  max-width: 410px;
-}
 
 
 /* this is the tooltip section  - tooltip is found on the results table for showing the urls on hover */
@@ -551,6 +499,7 @@ button[type=submit] {
   bottom: 125%;
   margin-left: -110px;
 }
+
 .tooltipx .tooltiptextx::after {
   content: "";
   position: absolute;
@@ -561,15 +510,15 @@ button[type=submit] {
   border-style: solid;
   border-color: #fff transparent transparent transparent;
 }
+
 .tooltipx:hover .tooltiptextx {
   visibility: visible;
 }
 /* end of tooltip section */
 
 
-
-/* non-responsive table for Result page */
-
+/* results.ejs page */
+/* non-responsive table for result.ejs page */
 .RunDate {
   width: 130px;
   min-width: 130px;
@@ -614,13 +563,7 @@ button[type=submit] {
   width: 400px;
   min-width: 400px;
 }
-
-/*used for div table headers*/
-.tableHeader {
-  width: 100%;
-  font-weight: bold;
-  border: 1px solid #dee2e6
-}
+/* end non-responsive table for result page */
 
 .notesMsg {
   max-height: 100px;
@@ -630,8 +573,10 @@ button[type=submit] {
 .editBtn {
   margin-top: 15px;
 }
-/* Test Runner CSS */
+/* end results.ejs page */
 
+
+/* Test Runner CSS */
 .dot-light-on {
   height: .5em;
   width: .5em;
@@ -646,7 +591,13 @@ button[type=submit] {
   background-color: #cb0d16;
   border-radius: 50%;
   display: inline-block;
-
-
 }
+/* end Test Runner CSS */
+
+
+/* cylon eye on 404 page */
+.redeye {
+  max-width: 410px;
+}
+/* end cylon eye on 404 page */
 

@@ -6,6 +6,7 @@ const Op = Sequelize.Op;
 const Excel = require('exceljs');
 const streamify = require('stream-array');
 const os = require('os');
+const dateFormat = require('dateformat');
 
 // Read Excel File Data
 const fs = require('fs');
@@ -53,7 +54,8 @@ exports.getExport = function(req, res) {
         // getting each date from TestPass table
         for (var i = 0; i < dateTimes.length; i++) {
           dateTimes[i].Output = String(dateTimes[i].Output);
-          dates.push(dateTimes[i].RunDate);
+          //dates.push(dateTimes[i].RunDate);
+          dates.push(dateTimes[i].RunDate = dateFormat(dateTimes[i].RunDate, "mm-dd-yy h:MM:ss TT")); // + " PST";
           datesIds.push(dateTimes[i].TestPassId);
           testDescription.push(dateTimes[i].Description);
           console.log(testDescription[i] + "----------------------------description");
