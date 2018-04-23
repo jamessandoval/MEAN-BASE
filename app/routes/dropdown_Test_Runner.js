@@ -8,6 +8,7 @@ const streamify = require('stream-array');
 const os = require('os');
 const async = require('async');
 const dateFormat = require('dateformat');
+const util = require('util');
 
 // Read Excel File Data
 const fs = require('fs');
@@ -74,7 +75,7 @@ function checkProcessByName(processName, nameToMatch) {
         }
       }
       if (matchFlag) {
-        //console.log("We really have a match");	
+        //console.log("We really have a match");  
         resolve("success");
       } else {
         reject("fail");
@@ -128,7 +129,7 @@ function checkProcessByPID(pid) {
       }
 
       if (matchFlag) {
-        //console.log("We really have a match");	
+        //console.log("We really have a match");  
         resolve("success");
 
       } else {
@@ -216,7 +217,7 @@ function checkEnvironmentSettings() {
     };
 
     // Check to see if Selenium is Running
-    // Start Selenium if not running 	
+    // Start Selenium if not running  
 
     checkProcessByName(keyword1, process1).then(response => {
 
@@ -325,6 +326,16 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
   let statusResults = [];
 
+  // TestPassId: 
+  // RunDate
+  // PID
+
+  let statusObject = {
+    id: null,
+    status: null,
+    runDate: null
+  }
+
   // Loop through testPassTableResults
   return new Promise(function(resolve, reject) {
 
@@ -336,12 +347,19 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
         //console.log("This is successful");
 
-        statusResults.push(success);
+        statusObject.id = item.TestPassId;
+        statusObject.status = success;
+        statusObject.runDate = item.RunDate;
+
+        statusResults.push(statusObject);
         callback();
 
       }).catch(function(fail) {
 
         //console.log("This is not successful");
+        statusObject.id = item.TestPassId;
+        statusObject.status = fail;
+        statusObject.runDate = item.RunDate;
 
         statusResults.push(fail);
         callback();
@@ -349,7 +367,7 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
       })
 
     }, function(err) {
-      // if any of the file processing produced an error, err would equal that error
+
       if (err) {
 
         reject("error checking pids");
@@ -362,17 +380,19 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
   })
 }
 
+/*
+
 exports.getOverview = function(req, res) {
 
-	      res.render('dropdownTestRunner', {
+        res.render('dropdownTestRunner', {
           title: 'Run Tests',
           user: req.user.firstname
 
         });
-	}
+  }
 
+*/
 
-/*
 exports.getOverview = function(req, res) {
 
   checkEnvironmentSettings().then(environmentStatus => {
@@ -384,16 +404,49 @@ exports.getOverview = function(req, res) {
 
       checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
-        console.log("The size of status Results is " + statusResults.length);
-
         for (var i = statusResults.length - 1; i >= 0; i--) {
-        	console.log(statusResults[i]);
+          //console.log(statusResults[i]);
         }
+
+        // { id: 65, status: 'success' }
+
+        for (var i = statusTableResults.length - 1; i >= 0; i--) {
+          //console.log(statusTableResults[i]);
+        }
+
+        // TestPassId: 65,
+        // RunDate: '04-19-18 4:35:14 PM',
+        // StartTime: '04-19-18 4:35:14 PM',
+        // EndTime: '01-02-70 12:00:00 AM' }
+
+
+        for (var i = testPassTableResults.length - 1; i >= 0; i--) {
+          //console.log(testPassTableResults[i]);
+        }
+
+        /*
+
+          TestPassId: 40,
+          Template: 'F1',
+          Language: 'en-us',
+          TestCases: 'F1 - all',
+          RunDate: '04-19-18 3:44:55 PM',
+          UrlIds: buffer string,
+          Description: buffer string,
+          Reliable: null,
+          Note: 'PID: 15827' }
+
+        */
+
+        //req.flash('message', 'test flash!');
+
+        //console.log(req.flash('message'));  // [ 'test flash!' ]
 
         res.render('dropdownTestRunner', {
           title: 'Run Tests',
           driverStatus: environmentStatus,
           user: req.user.firstname,
+          liveStatus: statusResults,
           status: statusTableResults,
           testPass: testPassTableResults
 
@@ -402,6 +455,3 @@ exports.getOverview = function(req, res) {
     });
   })
 };
-
-*/
-
