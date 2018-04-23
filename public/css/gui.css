@@ -45,7 +45,7 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, .5);
-  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  /*-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);*/
 }
 
 
@@ -180,20 +180,14 @@ body {
   margin: auto;
 }
 
+.dashboardTitle {
+  text-align: left;
+}
+
 #pieChart {
   width: 90%;
   height: 350px;
 }
-
-
-
-
-
-/*.pieChart {
-  width: 90%;
-  height: 500px;
-  margin-bottom: 10px;
-}*/
 
 #barGraph {
   width: 90%;

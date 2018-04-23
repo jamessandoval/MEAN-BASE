@@ -24,6 +24,7 @@
 
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+        
       } else {
         var legendLocation = 'none';
         var myTitle = '';
@@ -86,6 +87,7 @@
       // Display the chart inside the <div> element with id="pieChart"
       var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
       chart2.draw(data2, options2);
+
     } //end of Draw Charts function 
 
   </script>
@@ -138,18 +140,20 @@
   <div class="row text-center">
     <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
 
-
-      <!-------- title -------->
-      <% if(testPassId == null){ %>
-      <h3><%= language %></h3> 
-      <% } else { console.log(testPassInfo);%>
-        <h3><%= testPassInfo.Description %></h3> 
-      <% } %>
       
-      <!--------- Note (if unreliable) -------->
-      <% if(testPassInfo.Reliable == 0){ %>
-        <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
-      <% } %>
+      <!-- title -->
+      <div class="dashboardTitle">
+        <% if(testPassId == null){ %>
+        <h3><%= language %></h3> 
+        <% } else { console.log(testPassInfo);%>
+          <h3><%= testPassInfo.Description %></h3> 
+        <% } %>
+        
+        <!-- Note (if unreliable) -->
+        <% if(testPassInfo.Reliable == 0){ %>
+          <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
+        <% } %>
+      </div>
 
 
       <!-- Module for Specific Language -->
