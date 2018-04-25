@@ -651,6 +651,16 @@ button[type=submit].login {
 /* end Test Runner CSS */
 
 
+/* test_case_editor.ejs page */
+#gherkin {
+  white-space: pre-wrap;
+}
+.createTc {
+  margin-bottom: 25px;
+}
+/* end test_case_editor.ejs page */
+
+
 /* cylon eye on 404 page */
 .redeye {
   max-width: 410px;
