@@ -34,6 +34,7 @@ const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
 
+
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
 
@@ -229,6 +230,7 @@ module.exports = function() {
 
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
   app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
+  app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin)
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);
