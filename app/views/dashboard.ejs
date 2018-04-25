@@ -116,10 +116,10 @@
       <form action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
 
-        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid">
+        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="dropdownToolTip(this)">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %><%= testPassData[i].Description %>">
             <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
           
@@ -145,7 +145,7 @@
         <% if(testPassId == null){ %>
         <h3><%= language %></h3> 
         <% } else { console.log(testPassInfo);%>
-          <h3><%= testPassInfo.Description %></h3> 
+          <h3><%= testPassInfo.Description %></h3>
         <% } %>
         
         <!-- Note (if unreliable) -->
@@ -178,13 +178,35 @@
         <div id="pieChart"></div>
         <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
-    
-    <div class="col-lg-4 col-xl-4">
+
+
+
+    <script>
+      function dropdownToolTip(sel) {
+        var toolTipVal = sel.value;
+        var toolTipSlicedVal = toolTipVal.slice(1);
+        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedVal;
+
+        /*var elemToolTip = document.getElementById('testpassid');
+        var toolTipText = elemToolTip.options[elemToolTip.selectedIndex].text;
+        var toolTipSlicedText = toolTipText.slice(34);
+        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedText;*/
+
+      } // end dropdownToolTip()
+    </script>
+    <div class="col-sm-4" id="toolTipContainer">
+      <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
+      <div id="dropdownToolTip"></div>
+    </div>
+
+
+
+    <div class="col-lg-4 col-xl-4" id="barGraphCont">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
 
         <!-- used to hide dashboard dropdown tool tip on results by language page -->
-        <script>document.getElementById('dropdownTip').style.display="none";</script>
+        <script>document.getElementById('toolTipContainer').style.display="none";</script>
 
         <div id="barGraph" class="pieChart">BarGraph</div>
         <%  } %>

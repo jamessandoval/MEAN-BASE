@@ -42,6 +42,27 @@
   .loginAndSignupTxtAlign {
     text-align: center !important;
   }
+  #toolTipContainer {
+    padding-top: 100px !important;
+  }
+  #toolTipTitle {
+    display: block !important;
+  }
+  #dropdownToolTip {
+    width: 100%;
+    height: 300px;
+    display: block !important;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #FFF;
+    white-space: normal;
+    overflow: auto;
+    border: 0px solid #000;
+  }
+  #barGraphCont {
+    padding-top: 75px !important;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -185,9 +206,25 @@ body {
   width: 100%;
 }
 
+#toolTipContainer {
+  padding-top: 0px; /* padding-top 100px can be found under - @media (min-width: 992px) */
+}
+
+#toolTipTitle {
+  display: none; /* display block can be found under - @media (min-width: 992px) */
+}
+
+#dropdownToolTipCont {
+  display: none; /* full css can be found under - @media (min-width: 992px) */
+}
+
 #pieChart {
   width: 90%;
   height: 350px;
+}
+
+#barGraphCont {
+  padding-top: 0px; /* padding-top 75px can be found under - @media (min-width: 992px) */
 }
 
 #barGraph {
