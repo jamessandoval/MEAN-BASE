@@ -11,8 +11,7 @@
     text-align: center !important;
   }
   .dashboardDropdown {
-    width: 100% !important;
-    max-width: 40% !important;
+    width: 80% !important;
   }
 }
 
@@ -31,10 +30,6 @@
     padding-left: 30px;
     float: right;
     text-decoration: underline;
-  }
-  .dashboardDropdown {
-    width: 100% !important;
-    max-width: 50% !important;
   }
 }
 
@@ -62,6 +57,14 @@
   }
   #barGraphCont {
     padding-top: 75px !important;
+  }
+  .dashboardDropdown {
+    width: 80% !important;
+  }
+}
+@media (min-width: 1200px) {
+  .dashboardDropdown {
+    width: 70% !important;
   }
 }
 
@@ -202,7 +205,7 @@ body {
   text-align: left;
 }
 
-.dashboardDropdown {
+.form-group {
   width: 100%;
 }
 

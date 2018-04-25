@@ -111,7 +111,7 @@
 
 <% if( title === "Dashboard") { %>
   <div class="row">
-    <div class="col-sm-12 col-lg-8 offset-lg-1 col-xl-8 offset-xl-3">
+    <div class="col-sm-12 col-lg-8 offset-lg-3">
 
       <form action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
@@ -129,7 +129,8 @@
         <br />
         <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
         </div><!-- end .form-group -->
-    </div><!-- end .col-lg-12 -->
+      </form><!-- end form -->
+    </div><!-- end .col-sm-12 col-lg-8 offset-lg-3 -->
   </div><!-- end .row -->
 
   <% } %>
@@ -252,7 +253,7 @@
         <% }} %><!-- end for(var i=1; i < 25; i++) -->
       <% } %><!-- end if(resultsTotal) -->
       <!-- Results by Language button links : END -->
-    </div><!-- end .col-lg-4 -->
+    </div><!-- end .col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
 
