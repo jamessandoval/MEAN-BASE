@@ -24,6 +24,7 @@
       var myTitle = '';
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+        
       } else {
         var legendLocation = 'none';
         
@@ -85,6 +86,7 @@
       // Display the chart inside the <div> element with id="pieChart"
       var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
       chart2.draw(data2, options2);
+
     } //end of Draw Charts function 
 
   </script>
@@ -109,15 +111,15 @@
 
 <% if( title === "Dashboard") { %>
   <div class="row">
-    <div class="col-sm-12 col-lg-8 offset-lg-1 col-xl-8 offset-xl-3">
+    <div class="col-sm-12 col-lg-8 offset-lg-3">
 
       <form action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
 
-        <select class="form-control form-control-md" name="testpassid" id="testpassid">
+        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="dropdownToolTip(this)">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %><%= testPassData[i].Description %>">
             <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
           
@@ -127,7 +129,8 @@
         <br />
         <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
         </div><!-- end .form-group -->
-    </div><!-- end .col-lg-12 -->
+      </form><!-- end form -->
+    </div><!-- end .col-sm-12 col-lg-8 offset-lg-3 -->
   </div><!-- end .row -->
 
   <% } %>
@@ -137,18 +140,20 @@
   <div class="row text-center">
     <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
 
-
-      <!-------- title -------->
-      <% if(testPassId == null){ %>
-      <h3><%= language %></h3> 
-      <% } else { console.log(testPassInfo);%>
-        <h3><%= testPassInfo.Description %></h3> 
-      <% } %>
       
-      <!--------- Note (if unreliable) -------->
-      <% if(testPassInfo.Reliable == 0){ %>
-        <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
-      <% } %>
+      <!-- title -->
+      <div class="dashboardTitle">
+        <% if(testPassId == null){ %>
+        <h3><%= language %></h3> 
+        <% } else { console.log(testPassInfo);%>
+          <h3><%= testPassInfo.Description %></h3>
+        <% } %>
+        
+        <!-- Note (if unreliable) -->
+        <% if(testPassInfo.Reliable == 0){ %>
+          <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
+        <% } %>
+      </div>
 
 
       <!-- Module for Specific Language -->
@@ -175,9 +180,35 @@
         <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
 
-    <div class="col-lg-4 col-xl-4">
+
+
+    <script>
+      function dropdownToolTip(sel) {
+        var toolTipVal = sel.value;
+        var toolTipSlicedVal = toolTipVal.slice(1);
+        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedVal;
+
+        /*var elemToolTip = document.getElementById('testpassid');
+        var toolTipText = elemToolTip.options[elemToolTip.selectedIndex].text;
+        var toolTipSlicedText = toolTipText.slice(34);
+        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedText;*/
+
+      } // end dropdownToolTip()
+    </script>
+    <div class="col-sm-4" id="toolTipContainer">
+      <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
+      <div id="dropdownToolTip"></div>
+    </div>
+
+
+
+    <div class="col-lg-4 col-xl-4" id="barGraphCont">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
+
+        <!-- used to hide dashboard dropdown tool tip on results by language page -->
+        <script>document.getElementById('toolTipContainer').style.display="none";</script>
+
         <div id="barGraph" class="pieChart">BarGraph</div>
         <%  } %>
       <!-- Secondary Bar Graph Ends here -->
@@ -222,9 +253,9 @@
         <% }} %><!-- end for(var i=1; i < 25; i++) -->
       <% } %><!-- end if(resultsTotal) -->
       <!-- Results by Language button links : END -->
-    </div><!-- end .col-lg-4 -->
+    </div><!-- end .col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
 
-<br /><br /><br />
+
 <%- include('footer') %>

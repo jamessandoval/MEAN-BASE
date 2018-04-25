@@ -43,8 +43,9 @@ function displayInfo(data){
           <% for(var i=0; i < dates.length; i++) {
             if (statusEndTime[i] != null){ %>
               <li class="dropdown-item">
-              <a href="#" id="dateParent-<%=[i]%>">
-              <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id); displayInfo(this.value);" type="radio" name="date" />&nbsp; <%= dates[i] %></a>
+              <span id="dateParent-<%=[i]%>">
+                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id); displayInfo(this.value);" type="radio" name="date" />&nbsp; <%= dates[i] %></span>
+
               </li>
           <% }} %>
         </ul>
@@ -66,14 +67,14 @@ function displayInfo(data){
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
                 <li class="dropdown-item" style="display:none;"> 
-                  <a href="#" id="Lang">
-                    <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+                  <span id="Lang">
+                    <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</span>
                 </li>
 
           <% for(var i=0; i < languages.length; i++) { %>
             <li class="width-set dropdown-item" >
-              <a href="#" data-value="optionA" tabIndex="-1" class="locale">
-              <input id="<%= languages[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></a>
+              <span data-value="optionA" tabIndex="-1" class="locale">
+              <input id="<%= languages[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></span>
             </li>
             <% }%>
         </ul>
@@ -81,6 +82,7 @@ function displayInfo(data){
       <% }%>
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
+
 
 <!--  ------------------------------------------------------Feature/Scenario Drop Down Options ---------------------------- -->
   <div class="row exportTool">
@@ -92,13 +94,13 @@ function displayInfo(data){
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
                 <li class="dropdown-item" style="display:none;">   
-                  <a href="#">
-                    <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</a>
+                  <span>
+                    <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</span>
                 </li>
                 
           <% for(var i=0; i < features.length; i++) { %>
           <li class="dropdown-item">
-            <a href="#" class="Fx">
+            <span class="Fx">
               <input id="<%= features[i] %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
               <% 
                 var thePage="";
@@ -181,7 +183,7 @@ function displayInfo(data){
                   default:
                     thePage=features[i];
                 } %> <%=thePage%>
-            </a>
+            </span>
             </li>
             <% }%>
         </ul>
@@ -190,7 +192,7 @@ function displayInfo(data){
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
- 
+
 <!--  ------------------------------------------------------Run Reports buttons ---------------------------- -->
     <div class="row exportTool">
       <div class="col-lg-12">
@@ -202,23 +204,18 @@ function displayInfo(data){
           <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
 
 
-              <!--------------------------- taking out the comprehensive report for now------------------------->
+<!--------------------------- taking out the comprehensive report for now------------------------->
           <!-- <a href="/export?feature=All&language=All&testresult=&query=&testpassid=All">
             <button type="button" class="btn btn-md btn-danger exportToolBtn" id="exportAll"><b>Build Comprehensive Report</b></button> 
             </a>
             <p style="color:red">Warning! This takes a while!</p> -->
-
-
 
         </div>
       </div><!-- end .col-lg-12 -->
     </div><!-- end .row -->
 
 
-   
-    <!--  ------------------------------------------------------Display Section ---------------------------- -->
-
-   
+<!--  ------------------------------------------------------Display Section ---------------------------- -->
     <div class="col-lg-12 topSpace center">
       <h1>Export Data Selection:</h1>
     </div><!-- end .col-lg-12 -->
@@ -231,12 +228,12 @@ function displayInfo(data){
           <div id="dateChild"></div>
         </div>
           
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-4 col-lg-4 center">
           <h3>Languages</h3>
           <div id="langChildren"></div>
         </div><!-- end .col-md-5 .col-lg-6 -->
 
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-4 col-lg-4 center">
           <h3>Pages</h3>
           <div id="pageChildren"></div>
         </div><!-- end .col-md-5 .col-lg-6 -->
