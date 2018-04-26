@@ -95,7 +95,7 @@ function createTc(){   // need to add to this code for when the button is clicke
     var Scenario = document.getElementById("theScenario");
     Scenario.value = "Scenario:";
     var Gherkin = document.getElementById("theGherkin");
-    Gherkin.value = "When ";
+    Gherkin.value = "\nWhen ";
     var newPages = document.getElementsByClassName("x");        
     for (var x=0; x<newPages.length; x++){
         newPages[x].setAttribute("class", "btn btn-light locale-button x");
@@ -112,7 +112,7 @@ function createTc(){   // need to add to this code for when the button is clicke
     var newTestCase = { //  creating an object to feed into the database so that we can get an ID for the new TestCase
         "theID": "", 
         "theScenario": Scenario.value, 
-        "theGherkin": Gherkin.value, 
+        "theGherkin": "&nbsp"+Gherkin.value, 
         "newPages": null,
         "removals": null,
         "isItChecked": 1
@@ -175,7 +175,7 @@ function exportGherkin() {
     var isItChecked = 2;
     var newPagesArray=[];
     var removePagesArray = [];
-    var theCheckbox = document.getElementById('funcitonalCheckbox').checked;
+    var theCheckbox = document.getElementById('funcitonalCheckbox').checked;  //true or false for .checked
     if (theCheckbox){
         // console.log("this one was checked");
         isItChecked = 1;
@@ -225,7 +225,8 @@ function exportGherkin() {
       },
       success: function(data) {
         console.log(data);
-        console.log("I met success.");
+        if(alert("The Test database has been updated.")){}
+        else window.location.reload();
       }
     })
   
