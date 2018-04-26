@@ -57,10 +57,10 @@ exports.newGherkin = function (req, res) {
             if(req.body[0].theID == ""){  // if there wasn't an ID, create the new test case
                 db.sequelize.query("INSERT INTO TestCase (HashValue,TestCaseDescription,Live,Gherkin,IsFunctionalTest) VALUES ('" + gherkinData.length +"-new', '" + req.body[0].theScenario + "' , 1 , '" + CompleteGherkin + "', '" + req.body[0].isItChecked + "');" ).then(newTestCase =>{
                     console.log("this is the new test case id " + newTestCase[0]);
-                    
                     var newId = newTestCase[0];   
                     newId = JSON.stringify(newId);     
                     res.send(newId);
+
                 }).catch(function(err) {
                     console.log('error: ' + err);
                     return err;
@@ -79,15 +79,18 @@ exports.newGherkin = function (req, res) {
 
 
 exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
-
+    console.log("here I am");
     let jsonObject = JSON.stringify(req.body);
-    // console.log(jsonObject);
+    console.log(jsonObject);
 
     db.sequelize.query(`SELECT * FROM TestCase;`).then(gherkinData => {  // TestCase table has: TestCaseId, HashValue, TestCaseDescription, Live, Gherkin
         db.sequelize.query('SELECT * FROM Template;').then(whereUsed => { //Template has: Id, TestCaseId ->     f1 - 1,2,3,4,
-            var gherkinData = gherkinData[0];
+            gherkinData = gherkinData[0];
+            console.log("1");
             whereUsed = whereUsed[0];
-            var CompleteGherkin = (req.body[0].theScenario + req.body[0].theGherkin);
+            console.log("2");
+            let CompleteGherkin = (req.body[0].theScenario + req.body[0].theGherkin);
+            console.log("3");
 
             //****************TO BE WORKED ON - HAVE TO WRITE TO DATABASE AFTER CHECKING HASHTAG VALUE****************
             //     --------------------------------------------TEST TO SEE IF THE GHERKIN IS IN THE DATABASE ALREADY - INCOMPLETE
@@ -98,13 +101,13 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
             //     }
             // }
             
-
+            console.log("got this far");
             //if there already IS an ID, we are updating the TestCase table
             db.sequelize.query("UPDATE TestCase SET HashValue = '" + req.body[0].theID + "-update', TestCaseDescription = '" + req.body[0].theScenario + "', Live = 1, Gherkin = '" +CompleteGherkin +"', IsFunctionalTest = '"+req.body[0].isItChecked+ "' WHERE TestCaseId = '" + req.body[0].theID + "'; "  ).catch(function(err) {
                 console.log('error: ' + err);
                 return err;
             })
-  
+            
             // From the Textareas - we get these varibles pushed through a POST request -
                 // "theID": theCaseID, 
                 // "theScenario": newScenario, 
