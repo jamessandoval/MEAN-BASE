@@ -78,7 +78,7 @@
         <ul id="messages" class="list-group"></ul>
 
         <form action="">
-
+          
           <!--<input id="m" autocomplete="off" />-->
           <!--<button>Send</button>-->
 
@@ -100,8 +100,7 @@ socket.on('message', function(msg) {
   $('#messages').append($('<li>').text(msg));
 });
 
-
 socket.emit('message', 'hi mr serveer');*/
 </script>
 
-  <%- include('footer') %>
+<%- include('footer') %>
