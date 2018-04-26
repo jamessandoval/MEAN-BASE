@@ -5,18 +5,32 @@
 
 function showIt(ID){
     var p = document.getElementById("gherkin");
-    var text =document.getElementById("tcSelection").value;
-    p.innerHTML = text;
+    var gherk =document.getElementById("tcSelection").value;
+    p.innerHTML = gherk;
     
     var p2=document.getElementById("selectedID");
     var input =ID[ID.selectedIndex].id;
     p2.innerHTML = input;
+
+    var p3=document.getElementById("functionality");
+    var selection = document.getElementById("tcSelection");
+    var funct = selection.options[selection.selectedIndex].getAttribute("data-functional");
+    p3.innerHTML = funct;
 }
 
-function editTc(){
+function editTc(){ //this populates the boxes below the "Edit Selected Test Case" button with what the Gherkin currently is
 
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
+
+    var checkbox = document.getElementById("funcitonalCheckbox");
+    var checked = document.getElementById("functionality").innerHTML;
+    if(checked == "1"){
+        checkbox.checked = true;
+    } else {
+        checkbox.checked = false;
+    }
+
             
     var placement1= document.getElementById("theID");
     var ID=document.getElementById("selectedID").innerHTML; //grab the TestCaseID from the hidden paragraph above
@@ -74,24 +88,61 @@ function classSwitch(thisOne){
 
 }
 
-function createTc(){   // need to add to this code for when the button is clicked after the "Edit Selected Test Case" button was clicked - and we need to clear everything
+function createTc(){   // need to add to this code for when the button is clicked after the "Edit Selected Test Case" button had been clicked - and we need to clear everything
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
     // document.getElementById("theID").innerHTML = "";
-    // document.getElementById("theScenario").value = "";
-    // document.getElementById("theGherkin").value = "";
-    // var newPages = document.getElementsByClassName("x");        
-    // for (var x=0; x<newPages.length; x++){
-    //     newPages[x].setAttribute("class", "btn btn-light locale-button x");
-    // }
-    // var currentPages = document.getElementsByClassName("btn btn-warning locale-button x");        
-    // for (var y=0; y<currentPages.length; y++){
-    //     currentPages[y].setAttribute("class", "btn btn-light locale-button x");
-    // }
-    // var removePages = document.getElementsByClassName("btn locale-button btn-danger x");        
-    // for (var r=0; r<removePages.length; r++){
-    //     removePages[r].setAttribute("class", "btn btn-light locale-button x");
-    // }
+    var Scenario = document.getElementById("theScenario");
+    Scenario.value = "Scenario:";
+    var Gherkin = document.getElementById("theGherkin");
+    Gherkin.value = "When ";
+    var newPages = document.getElementsByClassName("x");        
+    for (var x=0; x<newPages.length; x++){
+        newPages[x].setAttribute("class", "btn btn-light locale-button x");
+    }
+    var currentPages = document.getElementsByClassName("btn btn-warning locale-button x");        
+    for (var y=0; y<currentPages.length; y++){
+        currentPages[y].setAttribute("class", "btn btn-light locale-button x");
+    }
+    var removePages = document.getElementsByClassName("btn locale-button btn-danger x");        
+    for (var r=0; r<removePages.length; r++){
+        removePages[r].setAttribute("class", "btn btn-light locale-button x");
+    }
+  
+    var newTestCase = { //  creating an object to feed into the database so that we can get an ID for the new TestCase
+        "theID": "", 
+        "theScenario": Scenario.value, 
+        "theGherkin": Gherkin.value, 
+        "newPages": null,
+        "removals": null,
+        "isItChecked": 1
+    };
+    var arrayOfObjects = new Array();
+    arrayOfObjects.push(newTestCase);
+    console.log(arrayOfObjects);
+    // console.log(objBunnyEars.newPages[1] + "-----------this is a page that was selected to be added to ----------");
+
+    let finalObject = JSON.stringify(arrayOfObjects);
+  
+    // console.log(finalObject + "-----------this is the final object ------------");
+  
+    // This function sends the data from the Test Case Editor page, through the express.js page to the newGherkin() function on test_case_editor.js where the database is accessed and updated
+    $.ajax({
+      url: 'http://localhost:3000/new-gherkin',
+      type: 'POST',
+      data: finalObject,
+      contentType: "application/json",
+      error: function(data) {
+        console.log(data + "------------ it didn't work -----------------");
+      },
+      success: function(data) {
+        console.log(data);
+        console.log("I sent a new test case to the database.");
+        document.getElementById("theID").innerHTML= (data);
+      }
+    })
+
+
 }
 
 
@@ -121,8 +172,16 @@ function exportGherkin() {
     // console.log(newScenario + "  ------   This is the Scenario ---");
     var newGherkin = document.getElementById("theGherkin").value;
     // console.log(newGherkin + "------  the Gherkin -----");
+    var isItChecked = 2;
     var newPagesArray=[];
     var removePagesArray = [];
+    var theCheckbox = document.getElementById('funcitonalCheckbox').checked;
+    if (theCheckbox){
+        // console.log("this one was checked");
+        isItChecked = 1;
+    }else{
+        // console.log("this was NOT checked");
+        isItChecked = 0;}
 
     var newPages = document.getElementsByClassName("btn locale-button x btn-success");        
     for (var x=0; x<newPages.length;x++){
@@ -137,13 +196,14 @@ function exportGherkin() {
         removePagesArray[q]=removePagesArray[q].replace(/^[^f]*/, '');
         removePagesArray[q]=removePagesArray[q].replace(/[^\d+]+$/, '');
     }
-
+    // console.log("is it checked = " + isItChecked);
     var objBunnyEars = { //  for James and Aron  :P
         "theID": theCaseID, 
         "theScenario": newScenario, 
         "theGherkin": newGherkin, 
         "newPages": newPagesArray,
-        "removals": removePagesArray
+        "removals": removePagesArray,
+        "isItChecked": isItChecked
     };
 
     arrayOfObjects.push(objBunnyEars);
