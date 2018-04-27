@@ -8,6 +8,7 @@ function filterFunction() {
     filter = input.value.toUpperCase();
     div = document.getElementById("tcSelection");
     a = div.getElementsByTagName("option");
+    
     for (i = 0; i < a.length; i++) {
         if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
             a[i].style.display = "";
