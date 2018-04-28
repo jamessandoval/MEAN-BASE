@@ -95,7 +95,7 @@ function createTc(){   // need to add to this code for when the button is clicke
     var Scenario = document.getElementById("theScenario");
     Scenario.value = "Scenario:";
     var Gherkin = document.getElementById("theGherkin");
-    Gherkin.value = "\nWhen ";
+    Gherkin.value = "When ";
     var newPages = document.getElementsByClassName("x");        
     for (var x=0; x<newPages.length; x++){
         newPages[x].setAttribute("class", "btn btn-light locale-button x");
@@ -139,11 +139,32 @@ function createTc(){   // need to add to this code for when the button is clicke
         console.log(data);
         console.log("I sent a new test case to the database.");
         document.getElementById("theID").innerHTML= (data);
+
       }
     })
 
+    //setTimeout(function() { cleanGherkin(); }, 5000);
 
-}
+} //end createTc()
+
+
+// cleanGherkin() function will remove empty "Scenario:" text in testCaseDescription found in the tescase database when the test_case_editor.ejs page loads. 
+function cleanGherkin() {
+
+  // The id var is only used to trigger the "exports.cleanGherkin_DB = function(req, res)" function in the api_DB_writer.js page.
+  var id = 1138;
+
+  $.ajax({
+    url: 'http://localhost:3000/clean-gherkin',
+    type: 'POST',
+    data: id,
+    success: function(data) {
+      console.log(data);
+      console.log("Gherkin cleaned");
+    }
+  })
+  
+} // end cleanGherkin()
 
 
 function filterFunction() {

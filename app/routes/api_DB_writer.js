@@ -117,3 +117,38 @@ exports.addOwnerToResultTable_DB = function(req, res) {
   }); // end db.connect(function(err)
   
 }; // end exports.addOwnerToResultTable_DB = function(req, res)
+
+
+
+
+
+
+// Removes empty Gherkin ids from testcase table in database
+exports.cleanGherkin_DB = function(req, res) {
+
+  // Gets the value from url string using get
+  let id = req.query.Id;
+
+  var db = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    dialect: 'mysql',
+    user: "flukeqa",
+    password: "H0lidayApples",
+    database: "test"
+  });
+
+  db.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    var sql = "DELETE FROM testcase WHERE testCaseDescription = 'Scenario:'";
+
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log('Deleted Row(s):', result.affectedRows);
+      
+    }); // end db.query(sql, function (err, result)
+
+  }); // end db.connect(function(err)
+  
+}; // end exports.cleanGherkin_DB = function(req, res)
