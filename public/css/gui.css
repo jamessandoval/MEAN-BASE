@@ -658,6 +658,9 @@ button[type=submit].login {
 .createTc {
   margin-bottom: 25px;
 }
+.textareaClass {
+  width: 100%;
+}
 /* end test_case_editor.ejs page */
 
 
