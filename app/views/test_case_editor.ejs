@@ -12,7 +12,7 @@
         <h1><%= title %></h1>
         </div><!-- end .col-lg-4 -->
     </div><!-- end .row -->
-        
+      
     <br />
 
     <div class="row">
@@ -29,8 +29,8 @@
         </div>
         <div class="col-sm-12 col-lg-4 col-xl-4">
             <h2>Behat Code:</h2>
-            <p id="selectedID" ></p>
-            <p id="functionality" ></p>
+            <p id="selectedID" style="display:none"></p>
+            <p id="functionality" style="display:none"></p>
             <p id="gherkin">Select a Scenario on the left to view the related Gherkin.  <br>Then you may edit the selected Gherkin by clicking below.</p>
         </div>
     </div>
@@ -38,11 +38,10 @@
     <br />
     <div class="row">
         <div class="col-lg-4 offset-lg-2 text-center">
-            <button class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button>
+            <button class="btn btn-warning width-set createTc" onclick='createTc()'>Create New Test Case</button> <!-- javascript functions for this page can be found on exporting.js  -->
         </div>
-
         <div class="col-lg-4 text-center">
-            <button class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button>
+            <button class="btn btn-warning width-set" onclick="editTc()">Edit Selected Test Case</button> <!-- javascript functions for this page can be found on exporting.js  -->
         </div>
     </div>
 

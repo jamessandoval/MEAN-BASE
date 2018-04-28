@@ -33,6 +33,7 @@ const authenticate = require('../app/routes/authentication');
 const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
+const runTestsModal = require('../app/routes/runTestsModal');
 
 
 // Angular App Routes
@@ -223,6 +224,9 @@ module.exports = function() {
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
+
+  // test runner modal - to be deleted later
+  app.get('/modal', isLoggedIn, runTestsModal.modal);
 
   app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);

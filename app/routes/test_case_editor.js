@@ -86,11 +86,8 @@ exports.postGherkin = function(req, res) {  // the user clicked on "Save Edits"
     db.sequelize.query(`SELECT * FROM TestCase;`).then(gherkinData => {  // TestCase table has: TestCaseId, HashValue, TestCaseDescription, Live, Gherkin
         db.sequelize.query('SELECT * FROM Template;').then(whereUsed => { //Template has: Id, TestCaseId ->     f1 - 1,2,3,4,
             gherkinData = gherkinData[0];
-            console.log("1");
             whereUsed = whereUsed[0];
-            console.log("2");
             let CompleteGherkin = (req.body[0].theScenario + req.body[0].theGherkin);
-            console.log("3");
 
             //****************TO BE WORKED ON - HAVE TO WRITE TO DATABASE AFTER CHECKING HASHTAG VALUE****************
             //     --------------------------------------------TEST TO SEE IF THE GHERKIN IS IN THE DATABASE ALREADY - INCOMPLETE
