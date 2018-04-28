@@ -670,3 +670,28 @@ button[type=submit].login {
 }
 /* end cylon eye on 404 page */
 
+
+
+/* Run Tests Modals page*/
+.columnized {   
+  display:inline-block;
+  width:25%;
+  margin:0;
+  padding:0;
+  margin-left:3px;
+  text-align:left;
+}
+.columnized input{
+  padding:2px;
+  margin:2px;
+}
+#theTestCases li input{
+  padding-bottom:0px;
+  margin-bottom:0px;
+}
+#theTestCases li{
+  border-bottom: 1px solid grey;
+  margin-right: 40px;
+  margin-bottom:10px;
+}
+/* END of Run Tests Modals section */
