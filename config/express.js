@@ -227,6 +227,7 @@ module.exports = function() {
 
   // test runner modal - to be deleted later
   app.get('/modal', isLoggedIn, runTestsModal.modal);
+  app.post('/getTestCases', isLoggedIn, runTestsModal.getTestCases)
 
   app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);

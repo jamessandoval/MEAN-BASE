@@ -88,7 +88,7 @@ function classSwitch(thisOne){
 
 }
 
-function createTc(){   // need to add to this code for when the button is clicked after the "Edit Selected Test Case" button had been clicked - and we need to clear everything
+function createTc(){   //unhide the 'hiddenRow' section and put into it the basics of "scenario" and "when" - we then feed this to the database so that I can get an ID to display
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
     // document.getElementById("theID").innerHTML = "";
