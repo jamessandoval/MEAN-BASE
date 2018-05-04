@@ -141,12 +141,19 @@ exports.cleanGherkin_DB = function(req, res) {
   db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
+    //var sql = "SELECT Gherkin FROM testcase WHERE testCaseId = 829";
+    //var sql = "SELECT Gherkin FROM testcase";
+    //var sql = "SELECT testCaseDescription FROM testcase";
     var sql = "DELETE FROM testcase WHERE testCaseDescription = 'Scenario:'";
 
     db.query(sql, function (err, result) {
       if (err) throw err;
-      console.log('Deleted Row(s):', result.affectedRows);
       
+      console.log('Deleted Row(s):', result.affectedRows);
+
+      //console.log(result);
+      //console.log("All empty Gherkin records have been removed");
+
     }); // end db.query(sql, function (err, result)
 
   }); // end db.connect(function(err)

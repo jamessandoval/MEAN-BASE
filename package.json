@@ -72,6 +72,7 @@
     "update": "^0.7.4",
     "util": "^0.10.3",
     "winston": "^2.4.1",
+    "xlsx": "^0.12.11",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

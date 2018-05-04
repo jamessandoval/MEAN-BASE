@@ -51,8 +51,12 @@
       };
 
       // Display the chart inside the <div> element with id="pieChart"
-      var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-      chart.draw(data, options);
+      var chart1 = new google.visualization.PieChart(document.getElementById('pieChart-1'));
+      chart1.draw(data, options);
+
+      var chart3 = new google.visualization.PieChart(document.getElementById('pieChart-2'));
+      chart3.draw(data, options);
+      
 
       /////////////////////////////////// Bar Chart /////////////////////
       var data2 = google.visualization.arrayToDataTable([
@@ -83,7 +87,7 @@
         }
       };
 
-      // Display the chart inside the <div> element with id="pieChart"
+      // Display the chart inside the <div> element with id="barGraph"
       var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
       chart2.draw(data2, options2);
 
@@ -102,7 +106,7 @@
   <div class="row">
     <div class="col-lg-4 offset-lg-4 text-center">
       <br /><br>
-      <h2><%= title %></h2>
+      <h2 id="h2Title"><%= title %></h2>
       <!--<h5><span class="badge badge-light">ID: <%=// testPassInfo.TestPassId %></span> <%=// testPassInfo.Description %> </h5>-->
       <!--<h5><b><%= //testPassInfo.RunDate %></b><h5>-->
 
@@ -138,10 +142,9 @@
   <br />
 
   <div class="row text-center">
-    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
+    <div class="col-sm-12 col-lg-8 offset-lg-3">
 
-      
-      <!-- title -->
+      <!-- Title BEGIN -->
       <div class="dashboardTitle">
         <% if(testPassId == null){ %>
         <h3><%= language %></h3> 
@@ -154,10 +157,16 @@
           <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
         <% } %>
       </div>
+    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
+  </div><!-- end .row -->
+  <!-- Title END -->
 
+
+  <!-- Dashboard-1 BEGIN -->
+  <div class="row text-center" id="dashboard-1">
+    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-3">
 
       <!-- Module for Specific Language -->
-
       <% if(language != "ALL"){ %>
       <!--<h5>Drill-Down Links:</h5>-->
       <div class="drill-down">
@@ -176,11 +185,9 @@
       </div><!-- end .drill-down -->
       <%}%>
         <!-- legend module here -->
-        <div id="pieChart"></div>
+        <div id="pieChart-1"></div>
         <!-- legend module here -->
-    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
-
-
+    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
 
     <script>
       function dropdownToolTip(sel) {
@@ -195,27 +202,54 @@
 
       } // end dropdownToolTip()
     </script>
-    <div class="col-sm-4" id="toolTipContainer">
+
+    <div class="col-lg-4 col-xl-3" id="toolTipContainer">
       <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
       <div id="dropdownToolTip"></div>
-    </div>
+    </div><!-- end .col-lg-4 col-xl-3 -->
+  </div><!-- end .row -->
+  <!-- Dashboard-1 END -->
 
 
-
-    <div class="col-lg-4 col-xl-4" id="barGraphCont">
+  <!-- Dashboard-2 BEGIN -->
+  <div class="row text-center" id="dashboard-2">
+    <div class="col-lg-4 offset-lg-2 col-xl-4 offset-xl-2">
+      <br /><br />
+      <!-- Module for Specific Language -->
+      <% if(language != "ALL"){ %>
+      <!--<h5>Drill-Down Links:</h5>-->
+      <div class="drill-down">
+        <a href="/results/locale/<%= language %>/testresult/PASS">
+          <span class="legend Pass"></span>
+          <span class="LinksToResults">Pass</span>
+        </a>
+        <a href="/results/locale/<%= language %>/testresult/FAIL">
+          <span class="legend Fail"></span>
+          <span class="LinksToResults">Fail</span>
+        </a>
+        <a href="/results/locale/<%= language %>/testresult/SKIP">
+          <span class="legend Skip"></span>
+          <span class="LinksToResults">Skip</span>
+        </a>
+      </div><!-- end .drill-down -->
+      <%}%>
+        <!-- legend module here -->
+        <div id="pieChart-2"></div>
+        <!-- legend module here -->
+    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
+    
+    <div class="col-lg-6 col-xl-4" id="barGraphCont">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
-
-        <!-- used to hide dashboard dropdown tool tip on results by language page -->
-        <script>document.getElementById('toolTipContainer').style.display="none";</script>
-
         <div id="barGraph" class="pieChart">BarGraph</div>
         <%  } %>
       <!-- Secondary Bar Graph Ends here -->
     </div><!-- end .col-lg-4 col-xl-4 -->
   </div><!-- end .row -->
+    <!-- Dashboard-2 END -->
 
-
+  <br />
+    
   <div class="row">
     <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
       <!-- Dashboard button links : BEGIN-->
@@ -257,5 +291,8 @@
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
 
+<script>
+document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
+</script>
 
 <%- include('footer') %>
