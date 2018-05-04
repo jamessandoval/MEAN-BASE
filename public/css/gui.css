@@ -38,7 +38,7 @@
     text-align: center !important;
   }
   #toolTipContainer {
-    padding-top: 100px !important;
+    padding-top: 25px !important;
   }
   #toolTipTitle {
     display: block !important;
@@ -56,7 +56,7 @@
     border: 0px solid #000;
   }
   #barGraphCont {
-    padding-top: 75px !important;
+    padding-top: 25px !important;
   }
   .dashboardDropdown {
     width: 80% !important;
@@ -221,7 +221,11 @@ body {
   display: none; /* full css can be found under - @media (min-width: 992px) */
 }
 
-#pieChart {
+#pieChart-1 {
+  width: 90%;
+  height: 350px;
+}
+#pieChart-2 {
   width: 90%;
   height: 350px;
 }

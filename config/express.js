@@ -236,6 +236,9 @@ module.exports = function() {
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
   app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
   app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin)
+  app.post('/clean-gherkin', isLoggedIn, api_DB_writer.cleanGherkin_DB);
+  //app.post('/clean-gherkin', isLoggedIn, test_case_editor.cleanGherkin_DB)
+
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);
