@@ -7,7 +7,7 @@
     "ng": "ng",
     "run": "ng build && nodemon ./bin/www",
     "start": "node ./bin/www",
-    "dev": "PORT=3001 nodemon ./bin/www",
+    "dev": "PORT=3001 node ./bin/www",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
