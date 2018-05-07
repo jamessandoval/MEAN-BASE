@@ -40,7 +40,7 @@ function broadcastData(req, res, dataString) {
 
   let testId = "";
 
-  if(dataString.search(/The test pass/) !== -1){
+  if (dataString.search(/The test pass/) !== -1) {
 
     testId = dataString.match(/'([^']+)'/)[1]
 
@@ -49,7 +49,7 @@ function broadcastData(req, res, dataString) {
     //io.sockets.emit('message', dataString);
   }
 
-  if (testId){
+  if (testId) {
 
     io.sockets.emit('message', testId);
     console.log(testId);
@@ -229,3 +229,53 @@ exports.startProcess = function(req, res) {
 
 }
 
+exports.stopTest = function(req, res) {
+
+  let id = req.query.testid;
+
+  // Query Test Pass by id, get the PID
+  db.sequelize.query(`SELECT Note from TestPass where TestPassId = "${id}"`).then(pid => {
+
+    pid = pid[0][0].Note;
+    // Remove extraneous Text
+    pid = pid.replace(/PID: /i, '');
+
+    /*
+
+    // Execute System command to stop the process by PID
+
+    let spawn = require('child_process').spawn,
+      script = spawn('kill', ['-9', pid]);
+
+    // get output 
+    script.stdout.on('data', (data) => {
+      //script.stdin.write(data);
+      let dataString = String(data)
+      console.log(dataString);
+    });
+
+    script.stderr.on('data', (data) => {
+      console.log(`ps stderr: ${data}`);
+    });
+
+    script.on('close', (code) => {
+      if (code !== 0) {
+        console.log(`stop Script process exited with code ${code}`);
+      }
+      script.stdin.end();
+    });
+
+    console.log(" I should be killing the process.")
+
+    */
+
+    res.sendStatus(200);
+
+    return null;
+
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+
+  });
+}

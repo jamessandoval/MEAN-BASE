@@ -218,16 +218,18 @@ module.exports = function() {
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
 
   // Test Runner Routes
-  app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
+  //app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
-  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
+  app.get('/test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
 
   app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);
   app.get('/startprocess', isLoggedIn, api_tests.startProcess);
 
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
+  app.get('/stop-test', isLoggedIn, api_tests.stopTest);
+
   app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
 
   // Edit Test Cases

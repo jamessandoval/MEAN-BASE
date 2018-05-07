@@ -3,86 +3,86 @@
   <br>
   <br>
   <br>
-      <!--end of loading-->
-      <div class="container-fluid" id="page">
-        <div class="row">
-          <div class="col-lg-4 offset-lg-4 text-center">
-            <br />
-            <br>
-            <h1><%= title %></h1>
-            <br>
-          </div>
-          <!-- end .col-lg-4 -->
-        </div>
-        <!-- end .row -->
-        <!-- Check the Status of Selenium & Phantom JS Driver-->
-        <div class="row text-center">
-          <div class="col-lg-4"></div>
-          <div class="col-lg-2">
-            <h6>Selenium:&nbsp;
+  <!--end of loading-->
+  <div class="container-fluid" id="page">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4 text-center">
+        <br />
+        <br>
+        <h1><%= title %></h1>
+        <br>
+      </div>
+      <!-- end .col-lg-4 -->
+    </div>
+    <!-- end .row -->
+    <!-- Check the Status of Selenium & Phantom JS Driver-->
+    <div class="row text-center">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-2">
+        <h6>Selenium:&nbsp;
           <% if(driverStatus.selenium === "on") { %>
           <span class="dot-light-on"></span>
           <% } else {%>
             <span class="dot-light-off"></span>  
           <% } %>
         </h6>
-          </div>
-          <div class="col-lg-2">
-            <h6>PhantomJS:&nbsp;
+      </div>
+      <div class="col-lg-2">
+        <h6>PhantomJS:&nbsp;
           <% if(driverStatus.selenium === "on") { %>
          <span class="dot-light-on"></span></h6>
-            <% } else {%>
-              <span class="dot-light-off"></span>
-              <% } %>
-          </div>
-          <div class="col-lg-4"></div>
-        </div>
-        <!-- End Row -->
-        <div class="row text-center">
-          <div class="col-lg-12">
-            <br>
-            <p>Choose the language/locale you wish to test.
-              <br> Next, choose which specific pages, and the test cases you want to run.</p>
-          </div>
-        </div>
-        <div class="row exportTool">
-          <div class="col-lg-3"></div>
-          <div class="col-lg-3">
-            <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
-            <div class="button-group">
-              <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
-              <ul class="dropdown-menu btn-block width-set">
-                <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
+        <% } else {%>
+          <span class="dot-light-off"></span>
+          <% } %>
+      </div>
+      <div class="col-lg-4"></div>
+    </div>
+    <!-- End Row -->
+    <div class="row text-center">
+      <div class="col-lg-12">
+        <br>
+        <p>Choose the language/locale you wish to test.
+          <br> Next, choose which specific pages, and the test cases you want to run.</p>
+      </div>
+    </div>
+    <div class="row exportTool" >
+      <div class="col-lg-3"></div>
+      <div class="col-lg-3" >
+        <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
+        <div class="button-group">
+          <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
+          <ul class="dropdown-menu btn-block width-set">
+            <% var allLangs=['en-us', 'en-au', 'en', 'en-ca', 'en-gb', 'en-id', 'en-ie', 'en-in', 'en-my','en-ph', 'en-sg', 'en-th', 'en-tt', 'en-vn', 'cs-cz', 'da-dk', 'de-de', 'de-at', 'de-ch','es-es','es-mx', 'es-ar', 
       'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
       'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];%>
-                  <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none; if wanted-->
-                  <li class="width-set dropdown-item" style="display:none;">
-                    <a href="#" data-value="optionA" tabIndex="-1" id="Lang">
-                      <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;All</a>
-                  </li>
-                  <%
+              <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none; if wanted-->
+              <li class="width-set dropdown-item" style="display:none;">
+                <a href="#" data-value="optionA" tabIndex="-1" id="Lang">
+                  <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;All</a>
+              </li>
+              <%
       for(var i=0; i < allLangs.length; i++) { %>
-                    <li class="width-set dropdown-item">
-                      <a href="#" data-value="optionA" tabIndex="-1" class="locale">
+                <li class="width-set dropdown-item">
+                  <a href="#" data-value="optionA" tabIndex="-1" class="locale">
               <input id="<%= allLangs[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= allLangs[i] %></a>
-                    </li>
-                    <% } %>
-              </ul>
-            </div>
-            <!-- End Button group -->
-            <!--  ------------------------------------------------------ Feature Page Drop Down Options ---------------------------- -->
-            <div class="button-group">
-              <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
-              <ul class="dropdown-menu btn-block width-set">
-                <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none; if wanted-->
-                <li class="dropdown-item" style="display:none;">
-                  <a href="#">
-                    <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All
-                  </a>
                 </li>
-                <%  for(var i=1; i < 26; i++) { var featurePage="F" + [i]; %>
-                  <li class="dropdown-item">
-                    <a href="#" class="Fx">
+                <% } %>
+          </ul>
+        </div>
+        <!-- End Button group -->
+        <!--  ------------------------------------------------------ Feature Page Drop Down Options ---------------------------- -->
+        <div class="button-group">
+          <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
+          <ul class="dropdown-menu btn-block width-set">
+            <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none; if wanted-->
+            <li class="dropdown-item" style="display:none;">
+              <a href="#">
+                <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All
+              </a>
+            </li>
+            <%  for(var i=1; i < 26; i++) { var featurePage="F" + [i]; %>
+              <li class="dropdown-item">
+                <a href="#" class="Fx">
               <input id="<%= featurePage %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
               <% 
                 var thePage="";
@@ -166,149 +166,164 @@
                     thePage="features[i]";
                 } %> <%=thePage%>
             </a>
-                  </li>
-                  <% }%>
-              </ul>
-            </div>
-            <!-- end .button-group -->
-            <!--  ----NOTE: when we bring in the Scenarios we need to filter down to the common scenarios across feature pages and make sure the ID works (no spaces)------ -->
-            <%  var scenarios = [1,3,7,9];
-      if(scenarios){ %>
-              <div class="button-group" style="display:none;">
-                <!-- TEST CASE options are not currently working and should have style="display:none;" removed when put into use -->
-                <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" data-toggle="dropdown">Test Cases <span class="caret"></span></button>
-                <ul class="dropdown-menu btn-block width-set">
-                  <li class="width-set dropdown-item">
-                    <a href="#" data-value="optionA" tabIndex="-1" id="case">
-                      <input id="0" class="case double" onclick="displayChecked(this.id)" type="checkbox" checked />&nbsp;Default</a>
-                  </li>
-                  <% for(var i=0; i < scenarios.length; i++) { %>
-                    <li class="width-set dropdown-item">
-                      <a href="#" data-value="optionA" tabIndex="-1" id="case">
-            <input id="<%= scenarios[i] %>" class="case double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= scenarios[i] %></a>
-                    </li>
-                    <% }%>
-                </ul>
-              </div>
+              </li>
               <% }%>
-                <!-- end .button-group -->
-                <div class="button-group">
-                  <button type="button" id="runTest" class="btn btn-warning" onclick="runTest()">Run Test</button>
-                  &nbsp;
-                  <button type="button" class="btn btn-secondary">Schedule Test</button>
-                </div>
-                <!-- ## Temporary Add Status Section ## -->
-                <ul class="list-group" id="status">
-                </ul>
+          </ul>
+        </div>
+        <!-- end .button-group -->
+        <!--  ----NOTE: when we bring in the Scenarios we need to filter down to the common scenarios across feature pages and make sure the ID works (no spaces)------ -->
+        <%  var scenarios = [1,3,7,9];
+      if(scenarios){ %>
+          <div class="button-group" style="display:none;">
+            <!-- TEST CASE options are not currently working and should have style="display:none;" removed when put into use -->
+            <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace" data-toggle="dropdown">Test Cases <span class="caret"></span></button>
+            <ul class="dropdown-menu btn-block width-set">
+              <li class="width-set dropdown-item">
+                <a href="#" data-value="optionA" tabIndex="-1" id="case">
+                  <input id="0" class="case double" onclick="displayChecked(this.id)" type="checkbox" checked />&nbsp;Default</a>
+              </li>
+              <% for(var i=0; i < scenarios.length; i++) { %>
+                <li class="width-set dropdown-item">
+                  <a href="#" data-value="optionA" tabIndex="-1" id="case">
+            <input id="<%= scenarios[i] %>" class="case double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= scenarios[i] %></a>
+                </li>
+                <% }%>
+            </ul>
           </div>
-          <div class="col-lg-5">
-            <table class="fixed_headers-3 table">
+          <% }%>
+            <!-- end .button-group -->
+            <div class="button-group">
+              <button type="button" id="runTest" class="btn btn-warning" onclick="runTest()">Run Test</button>
+              &nbsp;
+              <button type="button" class="btn btn-secondary">Schedule Test</button>
+            </div>
+            <!-- ## Temporary Add Status Section ## -->
+            <ul class="list-group" id="status">
+            </ul>
+      </div>
+      <div class="col-lg-5">
+        <h3 align="left">Test Parameters:</h3>
+        <div class="exportTool topSpace" >
+          <div class="row">
+            <div class="col-lg-4">
+              <h5>Page Types:</h5>
+              <div id="pageChildren" ></div>
+            </div>
+            <div class="col-lg-4">
+              <h5>Languages:</h5>
+              <div id="langChildren"></div>
+            </div>
+            <div class="col-lg-4" style="display:none">
+              <h5>Test Cases:</h5>
+              <div id="caseChildren" style="display:none"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end test Parameters Column -->
+      <!--  ##    Option Display Section ### -->
+    </div>
+    <!-- end of Row -->
+    <div class="row" style="margin-top:2em;">
+      <div class="col-lg-3"></div>
+      <div class="col-lg-8">
+        <h3>Test Status:</h3>
+        <table class="fixed_headers-3 table">
+          <tr>
+            <thead>
               <tr>
-                <thead>
-                  <tr>
-                    <th>ID:
-                    </th>
-                    <th>Start Time:
-                    </th>
-                    <th>Running:
-                    </th>
-                    <th>More Info:</th>
-                    <th>Stop Test:</th>
+                <th>ID:
+                </th>
+                <th>Start Time:
+                </th>
+                <th>Running:
+                </th>
+                <th>More Info:</th>
+                <th>Stop Test:</th>
+              </tr>
+            </thead>
+            <tbody id="test-status-table">
+              <% if (liveStatus){ %>
+                <% for(let i = 0; i < liveStatus.length;i++){ %>
+                  <tr id="<%= liveStatus[i].id %>">
+                    <td>
+                      <%= liveStatus[i].id %>
+                    </td>
+                    <td>
+                      <%= liveStatus[i].runDate %>
+                    </td>
+                    <td>
+                      <% if(liveStatus[i].status === "success"){%>
+                        <span class="dot-light-on"></span>
+                        <% }else {%>
+                          <span class="dot-light-off"></span>
+                          <% } %>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-primary" onclick="getInfo(<%= liveStatus[i].id %>)">Info</button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-danger" onclick="stopTest(<%= liveStatus[i].id %>)">Stop</button>
+                    </td>
                   </tr>
-                </thead>
-                <tbody id="test-status-table">
-                  <% if (liveStatus){ %>
-                    <% for(let i = 0; i < liveStatus.length;i++){ %>
-                      <tr>
-                        <td>
-                          <%= liveStatus[i].id %>
-                        </td>
-                        <td>
-                          <%= liveStatus[i].runDate %>
-                        </td>
-                        <td>
-                          <% if(liveStatus[i].status === "success"){%>
-                            <span class="dot-light-on"></span>
-                            <% }else {%>
-                              <span class="dot-light-off"></span>
-                              <% } %>
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-sm btn-primary">Info</button>
-                        </td>
-                          <td>
-                          <button type="button" class="btn btn-sm btn-danger">Stop</button>
+                  <% } %>
+                    <% } else { %>
+                      <tr id="no-tests-running">
+                        <td colspan="4" rowspan="5">
+                          <h4 class="display-4">No Tests Currently Running</h4>
                         </td>
                       </tr>
                       <% } %>
-                        <% } else { %>
-                          <tr id="no-tests-running">
-                            <td colspan="4" rowspan="5">
-                              <h4 class="display-4">No Tests Currently Running</h4>
-                            </td>
-                          </tr>
-                          <% } %>
-                </tbody>
-            </table>
-            <!-- end test status column -->
-          </div>
-          <!-- end test status column -->
-        </div>
+            </tbody>
+        </table>
       </div>
-      </div>
-      <!-- end .row -->
-      <!--  ##    Option Display Section ### -->
-      <div class="row exportTool topSpace">
-        <div class="col-lg-12 topSpace">
-          <h1>Test Parameters:</h1>
-        </div>
-        <!-- end .col-lg-12 -->
-      </div>
-      <!-- end .row -->
-      <div class="container topSpace">
-        <div class="row ">
-          <div class="col-md-6 col-lg-6 center">
-            <h3>Page Types</h3>
-            <div id="pageChildren"></div>
-          </div>
-          <!-- end .col-md-5 .col-lg-6 -->
-          <div class="col-md-6 col-lg-6 center">
-            <h3>Languages</h3>
-            <div id="langChildren"></div>
-          </div>
-          <!-- end .col-md-5 .col-lg-6 -->
-          <!-- the Test Cases are not currently functioning and so the two sections above where changed from class="col-md-4 col-lg-4 center" - change them back if we start using the Test Case option -->
-          <div class="col-md-4 col-lg-4 center" style="display:none;">
-            <h3>Test Cases</h3>
-            <div id="caseChildren"></div>
-          </div>
-        </div>
-        <!-- end .row -->
-      </div>
-      <!-- end .container-fluid -->
-      <br>
-      <br>
-      <script>
-      let socket = io.connect('http://localhost:3000');
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+  <!-- end .container-fluid -->
+  <br>
+  <br>
+  <script>
+  let socket = io.connect('http://localhost:3000');
 
-      socket.on('message', function(msg) {
+  socket.on('message', function(msg) {
 
-        let timestamp = getTimeStamp()
-        let id = msg.replace("id:", "");
+    // Remove temporary loading row
 
-        let $cell1 = `<td>${id}</td>`;
-        let $cell2 = `<td>${timestamp}</td>`;
-        let $cell3 = '<td><span class="dot-light-on"></span></td>';
-        let $cell4 = '<td><button type="button" class="btn btn-sm btn-primary">Info</button></td>';
-        let $cell5 = '<td><button type="button" class="btn btn-sm btn-danger">Stop</button></td>';
+    if (msg.includes("start-id")) {
 
-        let $newRow = $('#test-status-table').append($(`<tr id="${id}">`));
+      console.log(msg);
 
-        $newRow = $(`#${id}`);
+      $(".temp-loader-row").empty().remove(); // removes the row and the contents within row
 
-        let $newRowItem = $($newRow).prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5);
+      let timestamp = getTimeStamp()
+      let id = msg.replace("start-id:", ""); 
 
-      });
+      let $cell1 = `<td>${id}</td>`;
+      let $cell2 = `<td>${timestamp}</td>`;
+      let $cell3 = '<td><span class="dot-light-on"></span></td>';
+      let $cell4 = `<td><button type="button" class="btn btn-sm btn-primary" onclick="getInfo(${id})">Info</button></td>`;
+      let $cell5 = `<td><button type="button" class="btn btn-sm btn-danger" onclick="stopTest(${id})">Stop</button></td>`;
 
-      </script>
-      <%- include('footer') %>
+      let $newRow = $('#test-status-table').append($(`<tr id="${id}">`));
+
+      $newRow = $(`#${id}`);
+
+      let $newRowItem = $($newRow).hide().prepend($cell1 + $cell2 + $cell3 + $cell4 + $cell5).fadeIn(1000);
+
+    }else if (msg.includes("complete-id")) {
+
+      console.log(msg);
+
+      let id = msg.replace("complete-id:", "");
+
+      $oldRow = $(`#${id}`);
+
+      $($oldRow).empty().remove(); // removes the row and the contents within row
+
+    }
+
+  });
+
+  </script>
+  <%- include('footer') %>

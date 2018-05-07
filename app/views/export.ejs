@@ -41,7 +41,7 @@ function displayInfo(data){
         <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Test Date</button>
         <ul class="dropdown-menu btn-block width-set">
           <% for(var i=0; i < dates.length; i++) {
-            if (statusEndTime[i] != null){ %>
+            if (statusEndTime[i] != "Fri Jan 02 1970 00:00:00 GMT-0800 (PST)"){ %>
               <li class="dropdown-item">
               <a href="#" id="dateParent-<%=[i]%>">
               <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id); displayInfo(this.value);" type="radio" name="date" />&nbsp; <%= dates[i] %></a>
