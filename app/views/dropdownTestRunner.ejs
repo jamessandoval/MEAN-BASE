@@ -284,7 +284,7 @@
   <br>
   <br>
   <script>
-  let socket = io.connect('http://localhost:3000');
+  let socket = io.connect('/');
 
   socket.on('message', function(msg) {
 
@@ -305,7 +305,7 @@
       let $cell4 = `<td><button type="button" class="btn btn-sm btn-primary" onclick="getInfo(${id})">Info</button></td>`;
       let $cell5 = `<td><button type="button" class="btn btn-sm btn-danger" onclick="stopTest(${id})">Stop</button></td>`;
 
-      let $newRow = $('#test-status-table').append($(`<tr id="${id}">`));
+      let $newRow = $('#test-status-table').prepend($(`<tr id="${id}">`));
 
       $newRow = $(`#${id}`);
 
