@@ -21,12 +21,13 @@
       ]);
       // Optional; add a title and set the width and height of the chart
       // Options can be variables such as title: $Title
-
+      var myTitle = '';
       if (<%= language =='ALL' %>) {
         var legendLocation = { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' };
+        
       } else {
         var legendLocation = 'none';
-        var myTitle = '';
+        
       };
 
       var options = {
@@ -40,7 +41,7 @@
         <% } %>
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '350', height: '80%' },
+        'chartArea': { width: '90%', height: '90%' },
         'legend': legendLocation,
         'slices': {
           0: { offset: 0.0 },
@@ -50,8 +51,12 @@
       };
 
       // Display the chart inside the <div> element with id="pieChart"
-      var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-      chart.draw(data, options);
+      var chart1 = new google.visualization.PieChart(document.getElementById('pieChart-1'));
+      chart1.draw(data, options);
+
+      var chart3 = new google.visualization.PieChart(document.getElementById('pieChart-2'));
+      chart3.draw(data, options);
+      
 
       /////////////////////////////////// Bar Chart /////////////////////
       var data2 = google.visualization.arrayToDataTable([
@@ -65,7 +70,6 @@
 
       ]);
 
-
       var options2 = {
 
         'title': '<%= language %>',
@@ -75,7 +79,7 @@
         'colors': ['#109618', '#DC3912', '#2569ff'],
         'backgroundColor': '',
         'is3D': true,
-        'chartArea': { width: '350', height: '80%' },
+        'chartArea': { width: '90%', height: '90%' },
         'legend': { textStyle: { fontSize: 20 }, alignment: 'center', position: 'left' },
         'hAxis': {
           'minValue': 0,
@@ -83,9 +87,10 @@
         }
       };
 
-      // Display the chart inside the <div> element with id="pieChart"
+      // Display the chart inside the <div> element with id="barGraph"
       var chart2 = new google.visualization.BarChart(document.getElementById('barGraph'));
       chart2.draw(data2, options2);
+
     } //end of Draw Charts function 
 
   </script>
@@ -101,7 +106,7 @@
   <div class="row">
     <div class="col-lg-4 offset-lg-4 text-center">
       <br /><br>
-      <h2><%= title %></h2>
+      <h2 id="h2Title"><%= title %></h2>
       <!--<h5><span class="badge badge-light">ID: <%=// testPassInfo.TestPassId %></span> <%=// testPassInfo.Description %> </h5>-->
       <!--<h5><b><%= //testPassInfo.RunDate %></b><h5>-->
 
@@ -110,15 +115,15 @@
 
 <% if( title === "Dashboard") { %>
   <div class="row">
-    <div class="col-sm-12 col-lg-8 offset-lg-1 col-xl-8 offset-xl-3">
+    <div class="col-sm-12 col-lg-8 offset-lg-3">
 
       <form action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
 
-        <select class="form-control form-control-md" name="testpassid" id="testpassid">
+        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="dropdownToolTip(this)">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %><%= testPassData[i].Description %>">
             <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
           
@@ -128,7 +133,8 @@
         <br />
         <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
         </div><!-- end .form-group -->
-    </div><!-- end .col-lg-12 -->
+      </form><!-- end form -->
+    </div><!-- end .col-sm-12 col-lg-8 offset-lg-3 -->
   </div><!-- end .row -->
 
   <% } %>
@@ -136,24 +142,31 @@
   <br />
 
   <div class="row text-center">
-    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-4">
+    <div class="col-sm-12 col-lg-8 offset-lg-3">
+
+      <!-- Title BEGIN -->
+      <div class="dashboardTitle">
+        <% if(testPassId == null){ %>
+        <h3><%= language %></h3> 
+        <% } else { console.log(testPassInfo);%>
+          <h3><%= testPassInfo.Description %></h3>
+        <% } %>
+        
+        <!-- Note (if unreliable) -->
+        <% if(testPassInfo.Reliable == 0){ %>
+          <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
+        <% } %>
+      </div>
+    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
+  </div><!-- end .row -->
+  <!-- Title END -->
 
 
-      <!-------- title -------->
-      <% if(testPassId == null){ %>
-      <h3><%= language %></h3> 
-      <% } else { console.log(testPassInfo);%>
-        <h3><%= testPassInfo.Description %></h3> 
-      <% } %>
-      
-      <!--------- Note (if unreliable) -------->
-      <% if(testPassInfo.Reliable == 0){ %>
-        <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
-      <% } %>
-
+  <!-- Dashboard-1 BEGIN -->
+  <div class="row text-center" id="dashboard-1">
+    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-3">
 
       <!-- Module for Specific Language -->
-
       <% if(language != "ALL"){ %>
       <!--<h5>Drill-Down Links:</h5>-->
       <div class="drill-down">
@@ -172,11 +185,60 @@
       </div><!-- end .drill-down -->
       <%}%>
         <!-- legend module here -->
-        <div id="pieChart"></div>
+        <div id="pieChart-1"></div>
+        <!-- legend module here -->
+    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
+
+    <script>
+      function dropdownToolTip(sel) {
+        var toolTipVal = sel.value;
+        var toolTipSlicedVal = toolTipVal.slice(1);
+        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedVal;
+
+        /*var elemToolTip = document.getElementById('testpassid');
+        var toolTipText = elemToolTip.options[elemToolTip.selectedIndex].text;
+        var toolTipSlicedText = toolTipText.slice(34);
+        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedText;*/
+
+      } // end dropdownToolTip()
+    </script>
+
+    <div class="col-lg-4 col-xl-3" id="toolTipContainer">
+      <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
+      <div id="dropdownToolTip"></div>
+    </div><!-- end .col-lg-4 col-xl-3 -->
+  </div><!-- end .row -->
+  <!-- Dashboard-1 END -->
+
+
+  <!-- Dashboard-2 BEGIN -->
+  <div class="row text-center" id="dashboard-2">
+    <div class="col-lg-4 offset-lg-2 col-xl-4 offset-xl-2">
+      <br /><br />
+      <!-- Module for Specific Language -->
+      <% if(language != "ALL"){ %>
+      <!--<h5>Drill-Down Links:</h5>-->
+      <div class="drill-down">
+        <a href="/results/locale/<%= language %>/testresult/PASS">
+          <span class="legend Pass"></span>
+          <span class="LinksToResults">Pass</span>
+        </a>
+        <a href="/results/locale/<%= language %>/testresult/FAIL">
+          <span class="legend Fail"></span>
+          <span class="LinksToResults">Fail</span>
+        </a>
+        <a href="/results/locale/<%= language %>/testresult/SKIP">
+          <span class="legend Skip"></span>
+          <span class="LinksToResults">Skip</span>
+        </a>
+      </div><!-- end .drill-down -->
+      <%}%>
+        <!-- legend module here -->
+        <div id="pieChart-2"></div>
         <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
-
-    <div class="col-lg-4 col-xl-4">
+    
+    <div class="col-lg-6 col-xl-4" id="barGraphCont">
       <!-- Secondary Bar Graph Goes here -->
       <% if(resultsTotal){ %>
         <div id="barGraph" class="pieChart">BarGraph</div>
@@ -184,8 +246,10 @@
       <!-- Secondary Bar Graph Ends here -->
     </div><!-- end .col-lg-4 col-xl-4 -->
   </div><!-- end .row -->
+    <!-- Dashboard-2 END -->
 
-
+  <br />
+    
   <div class="row">
     <div class="col-lg-8 offset-lg-2 col-xl-6 offset-xl-3">
       <!-- Dashboard button links : BEGIN-->
@@ -223,9 +287,12 @@
         <% }} %><!-- end for(var i=1; i < 25; i++) -->
       <% } %><!-- end if(resultsTotal) -->
       <!-- Results by Language button links : END -->
-    </div><!-- end .col-lg-4 -->
+    </div><!-- end .col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 -->
   </div><!-- end .row -->
 </div><!-- end .container-fluid -->
 
-<br /><br /><br />
+<script>
+document.addEventListener('DOMContentLoaded', function() { dashboardPage(); }, false);
+</script>
+
 <%- include('footer') %>

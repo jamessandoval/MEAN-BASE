@@ -12,11 +12,28 @@
 
 
 
-  function loadingAnimation(){
+  function loadingAnimation() {
     document.getElementById("loading").style.display = "block";
     document.getElementById("page").style.display = "none";
     // alert("This might take a moment.  Hit OK");
   }
+
+
+  function dashboardPage() {
+    var dashboardTitle = document.getElementById('h2Title').innerHTML;
+
+    if (dashboardTitle === 'Dashboard') {
+      //alert('Dashboard');
+      //document.getElementById('dashboard-1').style.display = "block";
+      document.getElementById('dashboard-2').style.display = "none";
+    }
+    else {
+      //alert('NOT dashboard');
+      document.getElementById('dashboard-1').style.display = "none";
+      //document.getElementById('dashboard-2').style.display = "block";
+    }
+
+  } // end dashboardPage()
 
 
   function loadTester(){

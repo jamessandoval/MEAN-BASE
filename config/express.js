@@ -33,6 +33,8 @@ const authenticate = require('../app/routes/authentication');
 const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
 const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
+const runTestsModal = require('../app/routes/runTestsModal');
+
 
 // Angular App Routes
 const angular_results = require('../app/routes/angular_results')
@@ -223,6 +225,10 @@ module.exports = function() {
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
 
+  // test runner modal - to be deleted later
+  app.get('/modal', isLoggedIn, runTestsModal.modal);
+  app.post('/getTestCases', isLoggedIn, runTestsModal.getTestCases)
+
   app.get('/test-status', isLoggedIn, api_tests.getTestStatus);
   app.get('/getprocesses', isLoggedIn, api_tests.getProcesses);
   app.get('/startprocess', isLoggedIn, api_tests.startProcess);
@@ -231,6 +237,10 @@ module.exports = function() {
   app.get('/stop-test', isLoggedIn, api_tests.stopTest);
 
   app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
+  app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin)
+  app.post('/clean-gherkin', isLoggedIn, api_DB_writer.cleanGherkin_DB);
+  //app.post('/clean-gherkin', isLoggedIn, test_case_editor.cleanGherkin_DB)
+
 
   // Edit Test Cases
   app.get('/test-case-editor', isLoggedIn, test_case_editor.editTestCases);

@@ -59,15 +59,15 @@ exports.addNotesToResultTable_DB = function(req, res) {
     if (err) throw err;
     console.log("Connected!");
 
-    db.query("SELECT Notes FROM result WHERE Id = '"+id+"'", function (err, row) {
+    db.query("SELECT Notes FROM Result WHERE Id = '"+id+"'", function (err, row) {
       if (err) throw err;
       //console.log(row);
 
       if (row[0].Notes) {
-        var sql = "UPDATE result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"') WHERE Id = '"+id+"'";
+        var sql = "UPDATE Result SET Notes = CONCAT(Notes, '\n\n', '"+notes+"') WHERE Id = '"+id+"'";
       }
       else {
-        var sql = "UPDATE result SET Notes = '"+notes+"' WHERE Id = '"+id+"'";
+        var sql = "UPDATE Result SET Notes = '"+notes+"' WHERE Id = '"+id+"'";
         
       } //end if/else
 
@@ -105,7 +105,7 @@ exports.addOwnerToResultTable_DB = function(req, res) {
   db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    var sql = "UPDATE result SET Owner = '"+owner+"' WHERE Id = '"+id+"'";
+    var sql = "UPDATE Result SET Owner = '"+owner+"' WHERE Id = '"+id+"'";
 
     db.query(sql, function (err, result) {
       if (err) throw err;
@@ -117,3 +117,45 @@ exports.addOwnerToResultTable_DB = function(req, res) {
   }); // end db.connect(function(err)
   
 }; // end exports.addOwnerToResultTable_DB = function(req, res)
+
+
+
+
+
+
+// Removes empty Gherkin ids from testcase table in database
+exports.cleanGherkin_DB = function(req, res) {
+
+  // Gets the value from url string using get
+  let id = req.query.Id;
+
+  var db = mysql.createConnection({
+    host: "localhost",
+    port: "3306",
+    dialect: 'mysql',
+    user: "flukeqa",
+    password: "H0lidayApples",
+    database: "test"
+  });
+
+  db.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    //var sql = "SELECT Gherkin FROM testcase WHERE testCaseId = 829";
+    //var sql = "SELECT Gherkin FROM testcase";
+    //var sql = "SELECT testCaseDescription FROM testcase";
+    var sql = "DELETE FROM TestCase WHERE testCaseDescription = 'Scenario:'";
+
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      
+      console.log('Deleted Row(s):', result.affectedRows);
+
+      //console.log(result);
+      //console.log("All empty Gherkin records have been removed");
+
+    }); // end db.query(sql, function (err, result)
+
+  }); // end db.connect(function(err)
+  
+}; // end exports.cleanGherkin_DB = function(req, res)

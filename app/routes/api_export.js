@@ -4,8 +4,10 @@ const db = require('../../config/sequelize');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const Excel = require('exceljs');
+const XLSX = require('xlsx')
 const streamify = require('stream-array');
 const os = require('os');
+const dateFormat = require('dateformat');
 
 // Read Excel File Data
 const fs = require('fs');
@@ -53,7 +55,8 @@ exports.getExport = function(req, res) {
         // getting each date from TestPass table
         for (var i = 0; i < dateTimes.length; i++) {
           dateTimes[i].Output = String(dateTimes[i].Output);
-          dates.push(dateTimes[i].RunDate);
+          //dates.push(dateTimes[i].RunDate);
+          dates.push(dateTimes[i].RunDate = dateFormat(dateTimes[i].RunDate, "mm-dd-yy h:MM:ss TT")); // + " PST";
           datesIds.push(dateTimes[i].TestPassId);
           testDescription.push(dateTimes[i].Description);
           //console.log(testDescription[i] + "----------------------------description");
@@ -436,29 +439,43 @@ exports.export_to_excel = function(req, res) {
   let results = req.results;
   //let fileName = `Report-${results[0].Template}-${results[0].Language}.xlsx`;
 
-  let fileName = `export.xlsx`;
+  let fileName = 'export.xlsx';
   let filepath = rootPath + '/' + 'SelectedTestResults.xlsx';
   let status = "fail";
 
   res.status(200);
-  res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
-  res.setHeader('Content-type', 'application/vnd.ms-excel');
+
+  res.writeHead(200, {
+    'Content-Disposition': 'attachment; filename="export.xlsx"',
+    'Transfer-Encoding': 'chunked',
+    'Content-Type': 'application/vnd.ms-excel',
+    'responseType': 'arraybuffer'
+  })
+
+  //res.setHeader('Content-type', 'application/vnd.openxmlformats');
+  //res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  //res.setHeader('Content-type', 'application/vnd.ms-excel');
+  //res.setHeader('Content-disposition', `attachment; filename=${fileName}`);
+  //res.setHeader('responseType', 'arraybuffer');
 
   // Set options for Streaming large files
   let streamOptions = {
     filename: filepath,
     stream: res, // write to server response
     useStyles: false,
-    useSharedStrings: false
+    useSharedStrings: false,
+    bookType: 'xlsx', 
+    type: 'buffer'
   };
 
 
   let workbook = new Excel.stream.xlsx.WorkbookWriter(streamOptions);
-
-  let worksheet = workbook.addWorksheet('Raw_Data',{
+  
+  let worksheet = workbook.addWorksheet('Raw_Data', {
     views: [
     {state: 'frozen', ySplit: 1}
     ]
+    
     });
 
   worksheet.columns = [
@@ -472,8 +489,6 @@ exports.export_to_excel = function(req, res) {
     { header: 'Scenario:', key: 'Output', width: 100 }
   ];
   
-
-
   console.log("the size of results is " + results.length);
 
   processItems(0);
