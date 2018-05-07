@@ -11,6 +11,11 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 var port = normalizePort(process.env.PORT || '3000');
+
+
+
+console.log("app variable is " + process.env.PORT);
+
 app.set('port', port);
 /**
  * Create HTTP server.
@@ -34,7 +39,6 @@ io.on('connection', function(socket){
     console.log('message: ' + msg);
   });
 });
-
 
 console.log("port:" + port);
 /**
