@@ -220,10 +220,10 @@ module.exports = function() {
   app.get('/files', isLoggedIn, api_file_data.getAvailableTests);
 
   // Test Runner Routes
-  app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
+  //app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
-  app.get('/dropdown-test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
+  app.get('/test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
 
   // test runner modal - to be deleted later
   app.get('/modal', isLoggedIn, runTestsModal.modal);
@@ -234,6 +234,8 @@ module.exports = function() {
   app.get('/startprocess', isLoggedIn, api_tests.startProcess);
 
   app.post('/run-test', isLoggedIn, api_tests.postTest, api_tests.startProcess);
+  app.get('/stop-test', isLoggedIn, api_tests.stopTest);
+
   app.post('/post-gherkin', isLoggedIn, test_case_editor.postGherkin)
   app.post('/new-gherkin', isLoggedIn, test_case_editor.newGherkin)
   app.post('/clean-gherkin', isLoggedIn, api_DB_writer.cleanGherkin_DB);

@@ -24,6 +24,55 @@ function getTimeStamp(){
 
   return timestamp;
 
+}
+
+function getInfo(id) {
+
+
+  console.log("This is the id"+ id);
+  //let id = 
+
+/*
+  $.ajax({
+    url: '/stop-test',
+    type: 'get',
+    data: {
+      testId: id
+    },
+    error: function(data) {
+      console.log(data);
+    },
+    success: function(data) {
+
+      console.log("Test was a success billbo");
+      console.log(data);
+
+    }
+  })
+
+  */
+
+}
+
+function stopTest(id) {
+
+  $.ajax({
+    url: '/stop-test',
+    type: 'get',
+    data: {
+      testid: id
+    },
+    error: function(data) {
+      console.log(data);
+      
+    },
+    success: function(data) {
+
+      console.log("Test stop was a success");
+      console.log(data);
+
+    }
+  })
 
 }
 
@@ -81,7 +130,11 @@ function runTest() {
     },
     success: function(data) {
       console.log(data);
-      console.log("I am great success.");
+
+    let $newRow = $('#test-status-table').append($(`<tr><td colspan="5" class="temp-loader-row">`));
+
+    $(".temp-loader-row").hide().text("...Loading New Test Data").fadeIn(100);
+
     }
   })
 };

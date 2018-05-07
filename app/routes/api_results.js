@@ -575,26 +575,6 @@ exports.getResultByLanguage = function(req, res) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // results/feature/:template/locale/:language
 exports.getResultByIdAndLanguage = function(req, res) {
 

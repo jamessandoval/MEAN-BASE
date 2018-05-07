@@ -20,7 +20,7 @@ rootPath = rootPath + 'temp_directory';
 
 /*######################################
 ##
-## Check to see if a process is running
+## Check to see if a process is running 
 ## Uses promises and a call to system 
 ## PS grep "keyword to check if running"
 ## Parameters: 
@@ -43,6 +43,7 @@ function checkProcessByName(processName, nameToMatch) {
     });
 
     ps.stderr.on('data', (data) => {
+
       console.log(`ps stderr: ${data}`);
     });
 
@@ -94,7 +95,7 @@ function checkProcessByName(processName, nameToMatch) {
 ##
 ####################################### */
 
-function checkProcessByPID(pid) {
+function checkProcessByPID(pid, item) {
 
   return new Promise(function(resolve, reject) {
 
@@ -114,7 +115,7 @@ function checkProcessByPID(pid) {
     });
 
     ps.stderr.on('data', (data) => {
-      console.log(`grep stderr: ${data}`);
+      console.log(`ps stderr: ${data}`);
     });
 
     ps.on('close', (code) => {
@@ -130,7 +131,7 @@ function checkProcessByPID(pid) {
 
       if (matchFlag) {
         //console.log("We really have a match");  
-        resolve("success");
+        resolve(item);
 
       } else {
 
@@ -248,6 +249,7 @@ function checkEnvironmentSettings() {
     if (statusObject.phantom == "off" && statusObject.selenium == "off") {
 
       reject(statusObject);
+
     } else {
 
       resolve(statusObject);
@@ -324,44 +326,36 @@ function getTestProcessesFromDB() {
 
 function checkTestProcessWithSystemPS(testPassTableResults) {
 
-  let statusResults = [];
-
-  // TestPassId: 
-  // RunDate
-  // PID
-
-  let statusObject = {
-    id: null,
-    status: null,
-    runDate: null
-  }
-
   // Loop through testPassTableResults
   return new Promise(function(resolve, reject) {
 
-    async.each(testPassTableResults, function(item, callback) {
+    let statusResults = new Array();
+
+    async.each(testPassTableResults, function(item, callback, self) {
 
       let pid = item.Note.replace(/PID: /, '');
 
-      checkProcessByPID(pid).then(success => {
+      checkProcessByPID(pid, item).then(successItem => {
 
-        //console.log("This is successful");
+        let statusObject = new Object();
 
-        statusObject.id = item.TestPassId;
-        statusObject.status = success;
-        statusObject.runDate = item.RunDate;
+        statusObject.id = successItem.TestPassId;
+        statusObject.status = "success";
+        statusObject.runDate = successItem.RunDate;
 
         statusResults.push(statusObject);
+
         callback();
 
-      }).catch(function(fail) {
+      }).catch(function(failItem) {
 
-        //console.log("This is not successful");
-        statusObject.id = item.TestPassId;
-        statusObject.status = fail;
-        statusObject.runDate = item.RunDate;
+        let statusObject = new Object();
 
-        statusResults.push(fail);
+        statusObject.id = failItem.TestPassId;
+        statusObject.status = "fail";
+        statusObject.runDate = failItem.RunDate;
+
+        statusResults.push("fail");
         callback();
 
       })
@@ -370,9 +364,21 @@ function checkTestProcessWithSystemPS(testPassTableResults) {
 
       if (err) {
 
+
         reject("error checking pids");
 
       } else {
+
+        //console.log("this is the end result of the async function::" + statusResults.length)
+
+        /*
+        for (let i = 0; i < statusResults.length; i++) {
+
+          console.log(util.inspect(statusResults[i], false, null))
+
+        }
+
+        */
 
         resolve(statusResults);
       }
@@ -404,7 +410,7 @@ exports.getOverview = function(req, res) {
 
       checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
-        for (var i = statusResults.length - 1; i >= 0; i--) {
+        for (var i = 0; i < statusResults.length; i++) {
           //console.log(statusResults[i]);
         }
 
