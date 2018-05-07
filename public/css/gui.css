@@ -693,11 +693,11 @@ button[type=submit].login {
   padding:2px;
   margin:2px;
 }
-#theTestCases li input{
+.boxAlign{
   padding-bottom:0px;
   margin-bottom:0px;
 }
-#theTestCases li{
+.liAlign li{
   border-bottom: 1px solid grey;
   margin-right: 40px;
   margin-bottom:10px;

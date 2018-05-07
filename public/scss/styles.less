@@ -138,7 +138,8 @@
   }
   tbody {
     display: block;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden !important;
     width: 100%;
     min-height: 5px;
     max-height: 250px;
@@ -153,6 +154,7 @@
   table-layout: fixed;
   border-collapse: collapse;
   border: 1px solid #cdcdcd;
+  overflow-x: hidden;
 
 
   th,
@@ -174,18 +176,24 @@
   }
   td:nth-child(2),
   th:nth-child(2) {
-    min-width: 12vw;
+    min-width: 25vw;
     width: @column_two_width
   }
   td:nth-child(3),
   th:nth-child(3) {
-    min-width: 6vw;
+    min-width: 20vw;
     width: @column_three_width
   }
-    td:nth-child(4),
+  td:nth-child(4),
   th:nth-child(4) {
-    min-width: 3vw;
+    min-width: 8vw;
+    width: @column_four_width;
+  }
+  td:nth-child(5),
+  th:nth-child(5) {
+    min-width: 20vw;
     width: @column_four_width
+
   }
 
   thead {

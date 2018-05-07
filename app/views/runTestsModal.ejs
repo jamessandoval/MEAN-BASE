@@ -58,8 +58,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">Run</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Run</button>
                     </div>
                     </div>
                 </div>
@@ -98,15 +98,15 @@
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="showLangs()">Save selections</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn btn-primary" onclick="showLangs()" data-dismiss="modal">Save selections</button>
                     </div>
                     </div>
                 </div>
             </div>
 
             <!--  ------------------------------------------------------Templates ---------------------------- -->
-            <button type="button" id="tb" style="border: 1px solid green;"  class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#FxModal">
+            <button type="button" id="tb" style="border: 1px solid green;"  class="btn btn-lg width-set topSpace" data-toggle="modal" data-target="#FxModal" disabled>
                 F(x) Template
                 </button>
                 <br \>    
@@ -142,12 +142,12 @@
                                         <input class="form-check-input double" type="radio" name="featureRadios" id="F4" value="F4"> (F4) Product Display
                                 </label>
                             </div>    
-                            <div class="form-check">
+                            <div class="form-check" style = "display: none">
                                 <label for="F5">
                                         <input class="form-check-input double" type="radio" name="featureRadios" id="F5" value="F5"> (F5) HTML Page
                                 </label>
                             </div>   
-                            <div class="form-check">
+                            <div class="form-check" style = "display: none">
                                 <label for="F6">
                                         <input class="form-check-input double" type="radio" name="featureRadios" id="F6" value="F6"> (F6)
                                 </label>
@@ -207,7 +207,7 @@
                                         <input class="form-check-input double" type="radio" name="featureRadios" id="F17" value="F17"> (F17) Webinars
                                 </label>
                             </div>   
-                            <div class="form-check">
+                            <div class="form-check" style = "display: none">
                                 <label for="F18">
                                         <input class="form-check-input double" type="radio" name="featureRadios" id="F18" value="F18"> (F18)
                                 </label>
@@ -249,8 +249,8 @@
                             </div> 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="showTemplates()">Save selection</button>
+                            <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                            <button type="button" class="btn btn-primary" onclick="showTemplates(); grabTCsForFeature();" data-dismiss="modal">Save selection</button>
                         </div>
                     </div>
                 </div>
@@ -273,17 +273,13 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <ul style="text-align:left; list-style-type: none;" id="theTestCases">
-                        <% for (var x = 0; x < tcs.length; x++){ %>
-                            <li>
-                                <input value="<%= tcs[x].TestCaseId %>" class="testCase double" onclick="" type="checkbox" />&nbsp;<%= tcs[x].TestCaseId %> | <%= tcs[x].TestCaseDescription %>
-                            </li>
-                        <% } %>
+                        <ul style="text-align:left; list-style-type: none;" class="liAlign" id="theTestCases">
+                            <!-- <input class="double testcasechoice" type="checkbox" />    These are populated by the grabTCsForFeature function on the runTestsModalScript.js page-->
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="showTCs()">Save selections</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" class="btn btn-primary" onclick="showTCs()" data-dismiss="modal">Save selections</button>
                     </div>
                     </div>
                 </div>
@@ -305,15 +301,30 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <% for (var x = 0; x < urls.length; x++){ %>
+                        <ul style="text-align:left; list-style-type: none;" >
+                            <li>
+                                <input id="alltheURLs" class="double aURL" type="radio" name="urlRadios"/> &nbsp;All URLs
+                            </li>
+                            <li>
+                                <input id="tenURLs" class="double topSpace aURL" type="radio" name="urlRadios"/> &nbsp;Ten URLs
+                            </li>
+                            <li style="display:none;">
+                                <input id="oneURL" onclick="showInput()" class="double topSpace aURL" type="radio" name="urlRadios"/> &nbsp;Enter a URL for testing
+                            </li>
+                            <li style="display: none"  id="typedURL">
+                                <input class="topSpace" id="enteredURL" type="text"/>
+                            </li>
+
+                        <!-- <% for (var x = 0; x < urls.length; x++){ %>
                             <li>
                                 <input id="" class=" double" onclick="" type="checkbox" />&nbsp;<%= urls[x].UrlId %> | <%= urls[x].Url %>
                             </li>
-                        <% } %>
+                        <% } %> -->
+                        </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save selections</button>
+                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <button type="button" onclick="showURLChoice()" class="btn btn-primary" data-dismiss="modal">Save selections</button>
                     </div>
                     </div>
                 </div>
@@ -329,7 +340,7 @@
         <div class = "col-lg-4" style="background-color:white;">
             <p id="testNames"></p>
             <p id="selectedLanguages">Languages: </p>
-            <p id="selectedTemplates">Templates:</p>
+            <p id="selectedTemplates">Template:</p>
             <p id="selectedTestCases">Test Cases: </p>
             <p id="selectedURLs">URLs: </p>
 
@@ -339,61 +350,135 @@
 </div><!-- end .container-fluid -->
 <script>
     // this needs work - it currently removes the checkboxes
-    $(document).ready(function(){
-        $("#langSearch").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myUL *").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-        });
-    });
+    // $(document).ready(function(){
+    //     $("#langSearch").on("keyup", function() {
+    //         var value = $(this).val().toLowerCase();
+    //         $("#myUL *").filter(function() {
+    //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    //         });
+    //     });
+    // });
 
 
 let langArray = document.getElementsByClassName('lang double');
 let templateArray = document.getElementsByClassName("form-check-input double");
-let testCaseArray = document.getElementsByClassName("testCase double");
+
 
 let langParagraph = document.getElementById("selectedLanguages");
 let tcParagraph = document.getElementById("selectedTestCases");
 let templateParagraph= document.getElementById("selectedTemplates");
+let urlParagraph = document.getElementById("selectedURLs");
 
+let templateButton = document.getElementById("tb");
 let testCaseButton = document.getElementById("tcb");
 let urlButton = document.getElementById("url");
 
-function showLangs(){
-    let templateParagraphlength = document.getElementById("selectedTemplates").innerHTML;
+
+let node = document.createElement("LI");
+
+function showLangs(){ //this shows the languages selected in the selections area
+    langParagraph.innerHTML = "Languages: ";
     for(var x=0; x<langArray.length; x++){
         if (langArray[x].checked == true){
-            langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArray[x].id;
+            langParagraph.innerHTML = langParagraph.innerHTML + "&nbsp" + langArray[x].id + ", ";
+            templateButton.removeAttribute("disabled");
         }
-    }
-    if (templateParagraphlength.length > 11){
-        console.log("hi");
-        testCaseButton.removeAttribute("disabled");
-        urlButton.removeAttribute("disabled");
     }
 }
 
 function showTemplates(){  
     let langParagraphLength = document.getElementById("selectedLanguages").innerHTML;
-    for (var x = 0; x<templateArray.length; x++){
-        if (templateArray[x].checked == true){
-            templateParagraph.innerHTML = templateParagraph.innerHTML + "&nbsp" + templateArray[x].id;
+    templateParagraph.innerHTML = "Template: ";
+    for (var q = 0; q<templateArray.length; q++){
+        if (templateArray[q].checked == true){
+            templateParagraph.innerHTML = templateParagraph.innerHTML + "&nbsp" + templateArray[q].id;
         }
     }
-    if (langParagraphLength.length > 11){
-        console.log("hello");
-        testCaseButton.removeAttribute("disabled");
-        urlButton.disabled = false;                                //why am I not getting these buttons disabled?
-    }
+
+    testCaseButton.removeAttribute("disabled");
+    urlButton.removeAttribute("disabled");
 }
 
 function showTCs(){
+    let testCaseArray = document.getElementsByClassName("list testcasechoice");
+    let caseCheckboxes = document.getElementsByClassName("double testcasechoice");
+    tcParagraph.innerHTML = "Test Cases: ";
     for (var x = 0; x<testCaseArray.length; x++){
-        if (testCaseArray[x].checked == true){
-            tcParagraph.innerHTML = tcParagraph.innerHTML + "&nbsp" + testCaseArray[x].value;
+        if (caseCheckboxes[x].checked == true){
+            tcParagraph.innerHTML = tcParagraph.innerHTML + "<br>" + testCaseArray[x].innerText;
         }
     }
+}
+function showInput(){
+    let box = document.getElementById("typedURL");
+    box.setAttribute("style", "display:block;");
+
+}
+
+function showURLChoice(){
+
+    let urlChoiceArray = document.getElementsByClassName("aURL");
+    urlParagraph.innerHTML ="URLs: ";
+    for(var y = 0; y<urlChoiceArray.length; y++){
+        if(urlChoiceArray[y].checked == true){
+            urlParagraph.innerHTML = urlParagraph.innerHTML + urlChoiceArray[y].parentElement.innerText;
+        }
+    }
+    let typedInURL = document.getElementById("enteredURL").value;
+    console.log(typedInURL);
+    if (typedInURL.length >0){
+        console.log("something was typed");
+        urlParagraph.innerHTML = "URLs: "+ typedInURL;
+    }
+
+    let langs = langParagraph.innerHTML.substring(10);
+    langs = langs.replace(/&nbsp;/g,"");
+    langs = langs.replace(/ /g,"");
+    langs = langs.slice(0,-1);
+    langs=langs.split(",");
+
+    let temp = templateParagraph.innerHTML.substring(9);
+    temp = temp.replace(/&nbsp;/g,"");
+    temp = temp.replace(/ /g,"");
+
+    let tcs = tcParagraph.innerHTML.substring(11);
+    tcs = tcs.replace(/ /g,"");
+    let tcIDs=tcs.split("<br>");
+    for(var x=0; x<tcIDs.length; x++){
+        tcIDs[x]=tcIDs[x].split("\|")[0];
+    }
+    tcIDs.shift();
+
+
+    let urlChoices = urlParagraph.innerHTML.substring(7)
+    urlChoices = urlChoices.replace(/&nbsp;/g,"");
+    urlChoices = urlChoices.replace(" URLs", "");
+
+
+    let modalObject = {
+    "languages": langs,
+    "features": temp,
+    "TestCaseSelections": tcIDs,
+    "Urls": urlChoices
+    }; 
+
+    let object = JSON.stringify(modalObject);
+
+    console.log(object);
+
+    $.ajax({
+        url: '/run-test',
+        type: 'POST',
+        data: object,
+        contentType: "application/json",
+        error: function(data) {
+        console.log(data);
+        },
+        success: function(data) {
+        console.log(data);
+        console.log("I am great success.");
+        }
+    })
 }
 </script>
 

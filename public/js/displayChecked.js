@@ -1,6 +1,7 @@
 // Invoke 'strict' JavaScript mode
 'use strict';
 
+
 function displayChecked(checkedID) {
   
   var checkBox = document.getElementById(checkedID);  // Get the selected item
@@ -42,7 +43,6 @@ function displayChecked(checkedID) {
 	paragraph.appendChild(content);
 	paragraph.setAttribute('id',checkedID+'x');
 	placement.appendChild(paragraph);
-
 
 	// if the TEMPLATE ALL button was clicked, remove anything else from the paragraph section and check every feature box
 	if (checkedID == "All"){			

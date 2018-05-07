@@ -19,6 +19,12 @@ var server = http.createServer(app);
 
 const io = require('socket.io').listen(server);
 
+// Disable memory leak feature completely:
+io.sockets.setMaxListeners(0);
+
+// Specify Max Listeners :: 
+//io.sockets.setMaxListeners(15);
+
 app.set('socketio', io);
 
 io.on('connection', function(socket){

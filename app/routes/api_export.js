@@ -59,7 +59,7 @@ exports.getExport = function(req, res) {
           dates.push(dateTimes[i].RunDate = dateFormat(dateTimes[i].RunDate, "mm-dd-yy h:MM:ss TT")); // + " PST";
           datesIds.push(dateTimes[i].TestPassId);
           testDescription.push(dateTimes[i].Description);
-          console.log(testDescription[i] + "----------------------------description");
+          //console.log(testDescription[i] + "----------------------------description");
         }
 
         // getting EndTimes from Status table
@@ -67,7 +67,7 @@ exports.getExport = function(req, res) {
           statuses[x].Output = String(statuses[x].Output);
           statusId.push(statuses[x].TestPassId);
           statusEndTime.push(statuses[x].EndTime);
-          // console.log(statuses[x].EndTime + "----------------------------------------");
+          //console.log(statuses[x].EndTime + "----------------------------------------");
         }
 
         res.render('export', {
