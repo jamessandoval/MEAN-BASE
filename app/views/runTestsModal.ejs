@@ -308,7 +308,7 @@
                             <li>
                                 <input id="tenURLs" class="double topSpace aURL" type="radio" name="urlRadios"/> &nbsp;Ten URLs
                             </li>
-                            <li>
+                            <li style="display:none;">
                                 <input id="oneURL" onclick="showInput()" class="double topSpace aURL" type="radio" name="urlRadios"/> &nbsp;Enter a URL for testing
                             </li>
                             <li style="display: none"  id="typedURL">
@@ -402,6 +402,7 @@ function showTemplates(){
 function showTCs(){
     let testCaseArray = document.getElementsByClassName("list testcasechoice");
     let caseCheckboxes = document.getElementsByClassName("double testcasechoice");
+    tcParagraph.innerHTML = "Test Cases: ";
     for (var x = 0; x<testCaseArray.length; x++){
         if (caseCheckboxes[x].checked == true){
             tcParagraph.innerHTML = tcParagraph.innerHTML + "<br>" + testCaseArray[x].innerText;
@@ -417,6 +418,7 @@ function showInput(){
 function showURLChoice(){
 
     let urlChoiceArray = document.getElementsByClassName("aURL");
+    urlParagraph.innerHTML ="URLs: ";
     for(var y = 0; y<urlChoiceArray.length; y++){
         if(urlChoiceArray[y].checked == true){
             urlParagraph.innerHTML = urlParagraph.innerHTML + urlChoiceArray[y].parentElement.innerText;
@@ -429,6 +431,54 @@ function showURLChoice(){
         urlParagraph.innerHTML = "URLs: "+ typedInURL;
     }
 
+    let langs = langParagraph.innerHTML.substring(10);
+    langs = langs.replace(/&nbsp;/g,"");
+    langs = langs.replace(/ /g,"");
+    langs = langs.slice(0,-1);
+    langs=langs.split(",");
+
+    let temp = templateParagraph.innerHTML.substring(9);
+    temp = temp.replace(/&nbsp;/g,"");
+    temp = temp.replace(/ /g,"");
+
+    let tcs = tcParagraph.innerHTML.substring(11);
+    tcs = tcs.replace(/ /g,"");
+    let tcIDs=tcs.split("<br>");
+    for(var x=0; x<tcIDs.length; x++){
+        tcIDs[x]=tcIDs[x].split("\|")[0];
+    }
+    tcIDs.shift();
+
+
+    let urlChoices = urlParagraph.innerHTML.substring(7)
+    urlChoices = urlChoices.replace(/&nbsp;/g,"");
+    urlChoices = urlChoices.replace(" URLs", "");
+
+
+    let modalObject = {
+    "languages": langs,
+    "features": temp,
+    "TestCaseSelections": tcIDs,
+    "Urls": urlChoices
+    }; 
+
+    let object = JSON.stringify(modalObject);
+
+    console.log(object);
+
+    $.ajax({
+        url: '/run-test',
+        type: 'POST',
+        data: object,
+        contentType: "application/json",
+        error: function(data) {
+        console.log(data);
+        },
+        success: function(data) {
+        console.log(data);
+        console.log("I am great success.");
+        }
+    })
 }
 </script>
 
