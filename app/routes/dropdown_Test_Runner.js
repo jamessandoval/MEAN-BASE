@@ -62,7 +62,6 @@ function checkProcessByName(processName, nameToMatch) {
     });
 
     grep.stderr.on('data', (data) => {
-      console.log("error found here part 1")
       console.log(`grep stderr: ${data}`);
     });
 
@@ -116,8 +115,7 @@ function checkProcessByPID(pid, item) {
     });
 
     ps.stderr.on('data', (data) => {
-      console.log("error found here part 2")
-      console.log(`grep stderr: ${data}`);
+      console.log(`ps stderr: ${data}`);
     });
 
     ps.on('close', (code) => {
