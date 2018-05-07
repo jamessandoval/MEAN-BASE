@@ -32,7 +32,7 @@ function grabTCsForFeature(){
     success: function(data) {
       // console.log(data);
       console.log("I got Test Case IDs from the database.");
-
+      
       for (var x = 0; x<data.length; x++){
         var node = document.createElement("LI");                 // Create a <li> node
         node.setAttribute("class", "list testcasechoice");
