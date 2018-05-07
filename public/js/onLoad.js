@@ -23,12 +23,10 @@
     var dashboardTitle = document.getElementById('h2Title').innerHTML;
 
     if (dashboardTitle === 'Dashboard') {
-      //alert('Dashboard');
       //document.getElementById('dashboard-1').style.display = "block";
       document.getElementById('dashboard-2').style.display = "none";
     }
     else {
-      //alert('NOT dashboard');
       document.getElementById('dashboard-1').style.display = "none";
       //document.getElementById('dashboard-2').style.display = "block";
     }
