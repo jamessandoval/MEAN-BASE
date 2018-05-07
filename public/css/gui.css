@@ -177,6 +177,10 @@ body {
   background-color: #2569ff;
 }
 
+.passFailSkipLegend a {
+  text-decoration: none;
+}
+
 .drill-down {
   position: relative;
   margin: auto;
@@ -190,7 +194,7 @@ body {
 }
 
 .LinksToResults {
-  float: left;
+  /*float: left;*/
   margin-left: 5px;
   font-size: 17px;
 }
