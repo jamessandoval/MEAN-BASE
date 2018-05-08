@@ -117,16 +117,16 @@
   <div class="row">
     <div class="col-sm-12 col-lg-8 offset-lg-3">
 
-      <form action="/dashboard" method="get" class="form-inline">
+      <form id="dashboardSelect" action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
 
         <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="dropdownToolTip(this)">
           <% for(var i=0; i < testPassData.length; i++) { %> 
 
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %><%= testPassData[i].Description %>">
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>'<br />'<%= testPassData[i].Template %>'<br />'<%= testPassData[i].Language %>'<br />'<%= testPassData[i].TestCases %>'<br />'<%= testPassData[i].RunDate %>'<br />'<%= testPassData[i].Reliable %>'<br />'<%= testPassData[i].Note %>'<br />'<%= testPassData[i].Description %>">
             <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
-          
+
           <% }%>
         </select>
         
@@ -171,10 +171,18 @@
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
 
     <script>
+      //window.onload = dropdownToolTip();
+
       function dropdownToolTip(sel) {
         var toolTipVal = sel.value;
-        var toolTipSlicedVal = toolTipVal.slice(1);
-        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedVal;
+        //var toolTipSlicedVal = toolTipVal.slice(1);
+        
+        //document.getElementById('dashboardSelect').submit();
+        document.getElementById('dropdownToolTip').innerHTML = toolTipVal;
+        /*setTimeout(function() {
+          alert("Where is Waldo?");
+        }, 3000);*/
+
 
         /*var elemToolTip = document.getElementById('testpassid');
         var toolTipText = elemToolTip.options[elemToolTip.selectedIndex].text;
@@ -182,6 +190,7 @@
         document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedText;*/
 
       } // end dropdownToolTip()
+
     </script>
 
     <div class="col-lg-4 col-xl-3" id="toolTipContainer">
