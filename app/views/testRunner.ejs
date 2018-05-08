@@ -105,7 +105,7 @@
                     'es-bo', 'es-cl', 'es-co', 'es-cr', 'es-do', 'es-ec', 'es-gt', 'es-pe','es-sv','es-us','es-uy','es-ve','fi-fi','fr-fr','fr','fr-be','fr-ca','fr-ch','id-id','it-it','ja-jp','ko-kr','nl-nl','nl-be','no-no',
                     'pl-pl','pt-br','pt-pt','ru-ru','sv-se','th-th','tr-tr','vi-vn','zh-cn','cn','zh-tw'];%>
                     <li class="width-set columnized">
-                      <input id="allLanguages" class="lang double" onclick="" type="checkbox" />&nbsp;All</a>
+                      <input id="allLanguages" class="lang double" onclick="" type="checkbox" />&nbsp;all</a>
                     </li>
                     <% for(var i=0; i < allLangs.length; i++) { %>
                       <li class="width-set columnized">
@@ -352,7 +352,8 @@
         <button type="button" class="btn btn-lg btn-success width-set" onclick="runit()">run</button>
         <br \>
       </div>
-      <div class="col-lg-4" style="background-color:white;">
+
+      <div class="col-lg-4 option-box">
         <p id="testNames"></p>
         <p id="selectedLanguages">Languages: </p>
         <p id="selectedTemplates">Template:</p>
@@ -570,7 +571,6 @@ function runit(){
     }
     tcIDs.shift();
 
-
     let urlChoices = urlParagraph.innerHTML.substring(7)
     urlChoices = urlChoices.replace(/&nbsp;/g,"");
     urlChoices = urlChoices.replace(" URLs", "");
@@ -597,7 +597,7 @@ function runit(){
         },
         success: function(data) {
         console.log(data);
-        console.log("I am great success.");
+        console.log("Successful post request.");
         }
     })
 }
