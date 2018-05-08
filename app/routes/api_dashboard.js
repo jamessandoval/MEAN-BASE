@@ -59,7 +59,7 @@ exports.getOverview = function(req, res) {
       //console.log('The value is - ' + lang[0].Language);
 
       // Select Run Dates from Status
-      db.sequelize.query('select TestPassId, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
