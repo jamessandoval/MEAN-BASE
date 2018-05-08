@@ -115,26 +115,24 @@
 
 <% if( title === "Dashboard") { %>
   <div class="row">
-    <div class="col-sm-12 col-lg-8 offset-lg-3">
-
+    <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
       <form id="dashboardSelect" action="/dashboard" method="get" class="form-inline">
         <div class="form-group">
 
-        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="dropdownToolTip(this)">
+        <select class="form-control dashboardDropdown" name="testpassid" id="testpassid" onchange="this.form.submit()">
           <% for(var i=0; i < testPassData.length; i++) { %> 
-
-          <option name="testpassid" value="<%= testPassData[i].TestPassId %>'<br />'<%= testPassData[i].Template %>'<br />'<%= testPassData[i].Language %>'<br />'<%= testPassData[i].TestCases %>'<br />'<%= testPassData[i].RunDate %>'<br />'<%= testPassData[i].Reliable %>'<br />'<%= testPassData[i].Note %>'<br />'<%= testPassData[i].Description %>">
-            <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
+          
+          <option name="testpassid" value="<%= testPassData[i].TestPassId %>+ <%= testPassData[i].Template %>+ <%= testPassData[i].Language %>+ <%= testPassData[i].TestCases %>+ <%= testPassData[i].RunDate %>+ <%= testPassData[i].Reliable %>+ <%= testPassData[i].Note %>+ <%= testPassData[i].Description %>">
+          
+          <%= testPassData[i].RunDate %> | Description: <%= testPassData[i].Description %>
           </option>
 
           <% }%>
         </select>
-        
-        <br />
-        <button class="btn btn-sm btn-primary date-submit-btn">Go</button>
+
         </div><!-- end .form-group -->
       </form><!-- end form -->
-    </div><!-- end .col-sm-12 col-lg-8 offset-lg-3 -->
+    </div><!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
   </div><!-- end .row -->
 
   <% } %>
@@ -142,7 +140,7 @@
   <br />
 
   <div class="row text-center">
-    <div class="col-sm-12 col-lg-8 offset-lg-3">
+    <div class="col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3">
 
       <!-- Title BEGIN -->
       <div class="dashboardTitle">
@@ -157,45 +155,36 @@
           <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
         <% } %>
       </div>
-    </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-4 -->
+    </div><!-- end .col-sm-12 col-lg-10 offset-lg-2 col-xl-9 offset-xl-3 -->
   </div><!-- end .row -->
   <!-- Title END -->
 
 
   <!-- Dashboard-1 BEGIN -->
   <div class="row text-center" id="dashboard-1">
-    <div class="col-lg-5 offset-lg-3 col-xl-4 offset-xl-3">
+    <div class="col-lg-5 offset-lg-1 col-xl-4 offset-xl-2">
       <!-- legend module here -->
       <div id="pieChart-1"></div>
       <!-- legend module here -->
     </div><!-- end .col-lg-5 offset-lg-3 col-xl-4 offset-xl-3 -->
 
-    <script>
-      //window.onload = dropdownToolTip();
-
-      function dropdownToolTip(sel) {
-        var toolTipVal = sel.value;
-        //var toolTipSlicedVal = toolTipVal.slice(1);
-        
-        //document.getElementById('dashboardSelect').submit();
-        document.getElementById('dropdownToolTip').innerHTML = toolTipVal;
-        /*setTimeout(function() {
-          alert("Where is Waldo?");
-        }, 3000);*/
-
-
-        /*var elemToolTip = document.getElementById('testpassid');
-        var toolTipText = elemToolTip.options[elemToolTip.selectedIndex].text;
-        var toolTipSlicedText = toolTipText.slice(34);
-        document.getElementById('dropdownToolTip').innerHTML = toolTipSlicedText;*/
-
-      } // end dropdownToolTip()
-
-    </script>
-
-    <div class="col-lg-4 col-xl-3" id="toolTipContainer">
+    <div class="col-lg-5 col-xl-4" id="toolTipContainer">
       <h4 id="toolTipTitle">Dropdown Tool Tip</h4>
-      <div id="dropdownToolTip"></div>
+      <div id="dropdownToolTip">
+        <% if(testPassId == null){ %>
+            <span><%= language %></span> 
+          <% } 
+          else { console.log(testPassInfo);%>
+            <span>ID: <%= testPassInfo.TestPassId %><br />
+              Template: <%= testPassInfo.Template %><br />
+              Language: <%= testPassInfo.Language %><br />
+              Test cases: <%= testPassInfo.TestCases %><br />
+              Run date: <%= testPassInfo.RunDate %><br />
+              Reliable: <%= testPassInfo.Reliable %><br />
+              Note: <%= testPassInfo.Note %><br />
+              Description: <%= testPassInfo.Description %></span>
+        <% } %>
+      </div>
     </div><!-- end .col-lg-4 col-xl-3 -->
   </div><!-- end .row / #dashboard-1 -->
   <!-- Dashboard-1 END -->
