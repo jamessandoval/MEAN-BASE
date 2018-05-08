@@ -30,7 +30,7 @@ const output = require('../app/routes/output');
 const api_dashboard = require('../app/routes/api_dashboard');
 const api_dashboardTWO = require('../app/routes/api_dashboardTWO');
 const authenticate = require('../app/routes/authentication');
-const dropdown_Test_Runner = require('../app/routes/dropdown_Test_Runner');
+const testRunner = require('../app/routes/api_testRunner');
 const api_login = require('../app/routes/api_login');
 const test_case_editor = require('../app/routes/test_case_editor');
 const runTestsModal = require('../app/routes/runTestsModal');
@@ -223,7 +223,7 @@ module.exports = function() {
   //app.get('/test-runner', isLoggedIn, api_file_data.getAvailableTests, api_file_data.getProcesses);
   app.get('/test-runner/:script', isLoggedIn, api_file_data.runTest);
   app.get('/test-runner/:script/:locale', isLoggedIn, api_file_data.runTest);
-  app.get('/test-runner', isLoggedIn, dropdown_Test_Runner.getOverview);
+  app.get('/test-runner', isLoggedIn, testRunner.getOverview);
 
   // test runner modal - to be deleted later
   app.get('/modal', isLoggedIn, runTestsModal.modal);
