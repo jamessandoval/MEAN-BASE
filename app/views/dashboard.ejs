@@ -144,12 +144,6 @@
 
       <!-- Title BEGIN -->
       <div class="dashboardTitle">
-        <% if(testPassId == null){ %>
-        <h3><%= language %></h3> 
-        <% } else { console.log(testPassInfo);%>
-          <h3><%= testPassInfo.Description %></h3>
-        <% } %>
-        
         <!-- Note (if unreliable) -->
         <% if(testPassInfo.Reliable == 0){ %>
           <h4 style="color:red;"><%= testPassInfo.Note %></h4> 
