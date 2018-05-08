@@ -22,6 +22,7 @@ function editTc(){ //this populates the boxes below the "Edit Selected Test Case
 
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
+    document.getElementById("createGherkin").disabled=true; 
 
     var checkbox = document.getElementById("funcitonalCheckbox");
     var checked = document.getElementById("functionality").innerHTML;
@@ -91,6 +92,7 @@ function classSwitch(thisOne){
 function createTc(){   //unhide the 'hiddenRow' section and put into it the basics of "scenario" and "when" - we then feed this to the database so that I can get an ID to display
     var hidden=document.getElementById("hiddenRow");
     hidden.setAttribute("style", "display:visible");
+    document.getElementById("editGherkin").disabled=true;    
     // document.getElementById("theID").innerHTML = "";
     var Scenario = document.getElementById("theScenario");
     Scenario.value = "Scenario:";
