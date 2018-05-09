@@ -5,6 +5,8 @@ const db = require('../../config/sequelize');
 
 exports.getTestCases = function(req, res) {
 
+  console.log("I am called.");
+
   // let jsonObject = JSON.stringify(req.body);
   let template = (req.body[0].theTemplate);
   // console.log("hello i have a template " + template);  // f8
@@ -16,7 +18,13 @@ exports.getTestCases = function(req, res) {
     let templatesList = list.split(",");
     let queryString = templatesList.join("' OR TestCaseId = '");
 
-    db.sequelize.query("select * from TestCase where TestCaseId = '" + queryString + "';").then(cases => {
+    //console.log(queryString);
+
+    let finalQueryString = "select * from TestCase where TestCaseId = '" + queryString + "';";
+
+    console.log(finalQueryString);
+
+    db.sequelize.query(finalQueryString).then(cases => {
       let caseList = cases[0];
       for (let i = caseList.length - 1; i >= 0; i--) {
         caseList[i].TestCaseDescription = String(caseList[i].TestCaseDescription);
@@ -24,10 +32,17 @@ exports.getTestCases = function(req, res) {
 
       // caseList = JSON.stringify(object);
       res.send(caseList);
+
+      return null;
+
     }).catch(function(err) {
       console.log('error: ' + err);
       return err;
-    })
+    })  
+
+    return null;
+
+
   }).catch(function(err) {
     console.log('error: ' + err);
     return err;
