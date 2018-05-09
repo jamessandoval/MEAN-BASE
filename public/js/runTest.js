@@ -273,7 +273,7 @@ function exportSelections(){
     t=t.slice(0,-1);
     template=template + "," + t;
   }
-  
+  console.log("template "+template);
   
   language = document.getElementById("langChildren").children[0].id; // this takes the first language child and puts it in 'language'
   language = language.slice(0, -1);
@@ -283,15 +283,14 @@ function exportSelections(){
     l=l.slice(0,-1);
     language =language + "," + l;
   }
-  
+  console.log("language " +language);
+
   var testdate = document.getElementById("dateChild").children[0].id;
   testdate = testdate.slice(0, -1);
+  console.log("testdate "+testdate);
 
   //the href will contain a list of each languages as 'en-us,de-de' and features will be 'f1,f3,f5' 
   // in the getExportFromResults() function on 'api_export.js' these commas are watched for, so that the string can be split to an array and a query created for all the selections
-
-
-  //thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
   thehref="/export?feature="+ template + "&language=" + language + "&testresult=" + testresult + "&query=" + query + "&testpassid=" + testdate;
   document.getElementById("myhref").href=thehref;
 }
