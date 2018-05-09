@@ -18,6 +18,68 @@ const path = require('path');
 let rootPath = path.normalize(__dirname + '../../../');
 rootPath = rootPath + 'temp_directory';
 
+exports.getTestCases = function(req, res) {
+
+  // let jsonObject = JSON.stringify(req.body);
+  let template = (req.body[0].theTemplate);
+  // console.log("hello i have a template " + template);  // f8
+
+  db.sequelize.query("select * from Template where Id = '" + template + "';").then(templates => {
+    let list = templates[0];
+    // console.log(list);
+    list = list[0].TestCaseId;
+    let templatesList = list.split(",");
+    let queryString = templatesList.join("' OR TestCaseId = '");
+
+    db.sequelize.query("select * from TestCase where TestCaseId = '" + queryString + "';").then(cases => {
+      let caseList = cases[0];
+      for (let i = caseList.length - 1; i >= 0; i--) {
+        caseList[i].TestCaseDescription = String(caseList[i].TestCaseDescription);
+      }
+
+      // caseList = JSON.stringify(object);
+      res.send(caseList);
+    }).catch(function(err) {
+      console.log('error: ' + err);
+      return err;
+    })
+  }).catch(function(err) {
+    console.log('error: ' + err);
+    return err;
+  })
+};
+
+
+
+function getTestCasesAndUrlsFromDB() { //this is not in use currently with URLs no longer being populated. Test case selections use the above function
+
+  return new Promise(function(resolve, reject) {
+
+    async.parallel({
+      testCases: function(cb) {
+        db.sequelize.query(`select * from TestCase limit 5;`).then(allTCs => {
+          allTCs = allTCs[0];
+          cb(null, allTCs);
+        });
+      },
+
+      allTheUrls: function(cb) {
+        db.sequelize.query(`select * from Urls limit 1;`).then(allUrls => {
+          let Urls = allUrls[0];
+          cb(null, Urls);
+        });
+      }
+    }, (err, results) => {
+      if (results) {
+        resolve(results);
+        //  console.log(results);
+      } else {
+        reject(err);
+      }
+    });
+  });
+};
+
 /*######################################
 ##
 ## Check to see if a process is running 
@@ -401,61 +463,72 @@ exports.getOverview = function(req, res) {
 
 exports.getOverview = function(req, res) {
 
-  checkEnvironmentSettings().then(environmentStatus => {
+  getTestCasesAndUrlsFromDB().then(tcsAndUrls => {
+    checkEnvironmentSettings().then(environmentStatus => {
+      getTestProcessesFromDB().then(results => {
 
-    getTestProcessesFromDB().then(results => {
+        let theTCs = tcsAndUrls.testCases;
+        let theURLs = tcsAndUrls.allTheUrls;
 
-      let statusTableResults = results.statusResults;
-      let testPassTableResults = results.testPassResults;
+        for (var i = 1; i < theTCs.length; i++) {
+          theTCs[i].HashValue = JSON.stringify(theTCs[i].HashValue);
 
-      checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
-
-        for (var i = 0; i < statusResults.length; i++) {
-          //console.log(statusResults[i]);
         }
 
-        // { id: 65, status: 'success' }
+        let statusTableResults = results.statusResults;
+        let testPassTableResults = results.testPassResults;
 
-        for (var i = statusTableResults.length - 1; i >= 0; i--) {
-          //console.log(statusTableResults[i]);
-        }
+        checkTestProcessWithSystemPS(testPassTableResults).then(statusResults => {
 
-        // TestPassId: 65,
-        // RunDate: '04-19-18 4:35:14 PM',
-        // StartTime: '04-19-18 4:35:14 PM',
-        // EndTime: '01-02-70 12:00:00 AM' }
+          for (var i = 0; i < statusResults.length; i++) {
+            //console.log(statusResults[i]);
+          }
+
+          // { id: 65, status: 'success' }
+
+          for (var i = statusTableResults.length - 1; i >= 0; i--) {
+            //console.log(statusTableResults[i]);
+          }
+
+          // TestPassId: 65,
+          // RunDate: '04-19-18 4:35:14 PM',
+          // StartTime: '04-19-18 4:35:14 PM',
+          // EndTime: '01-02-70 12:00:00 AM' }
 
 
-        for (var i = testPassTableResults.length - 1; i >= 0; i--) {
-          //console.log(testPassTableResults[i]);
-        }
+          for (var i = testPassTableResults.length - 1; i >= 0; i--) {
+            //console.log(testPassTableResults[i]);
+          }
 
-        /*
+          /*
 
-          TestPassId: 40,
-          Template: 'F1',
-          Language: 'en-us',
-          TestCases: 'F1 - all',
-          RunDate: '04-19-18 3:44:55 PM',
-          UrlIds: buffer string,
-          Description: buffer string,
-          Reliable: null,
-          Note: 'PID: 15827' }
+            TestPassId: 40,
+            Template: 'F1',
+            Language: 'en-us',
+            TestCases: 'F1 - all',
+            RunDate: '04-19-18 3:44:55 PM',
+            UrlIds: buffer string,
+            Description: buffer string,
+            Reliable: null,
+            Note: 'PID: 15827' }
 
-        */
+          */
 
-        //req.flash('message', 'test flash!');
+          //req.flash('message', 'test flash!');
 
-        //console.log(req.flash('message'));  // [ 'test flash!' ]
+          //console.log(req.flash('message'));  // [ 'test flash!' ]
 
-        res.render('dropdownTestRunner', {
-          title: 'Run Tests',
-          driverStatus: environmentStatus,
-          user: req.user.firstname,
-          liveStatus: statusResults,
-          status: statusTableResults,
-          testPass: testPassTableResults
-
+          res.render('testRunner', {
+            title: 'Run Tests',
+            driverStatus: environmentStatus,
+            user: req.user.firstname,
+            liveStatus: statusResults,
+            status: statusTableResults,
+            testPass: testPassTableResults,
+            currentUrl: req.url,
+            tcs: theTCs,
+            urls: theURLs
+          });
         });
       });
     });

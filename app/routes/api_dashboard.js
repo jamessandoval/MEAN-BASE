@@ -15,15 +15,18 @@ exports.getOverview = function(req, res) {
   let testPassData = null;
   let testPassId = null;
   let testPassInfo = null;
+  let template = null;
+  let testCases = null;
+  let runDate = null;
   let reliability = null;
   let note = null;
+  let description = null;
 
   let overall = {
     pass: 0,
     fail: 0,
     skip: 0
   }
-
 
 
   // 1st Get latest test Pass id
@@ -59,19 +62,22 @@ exports.getOverview = function(req, res) {
       //console.log('The value is - ' + lang[0].Language);
 
       // Select Run Dates from Status
-      db.sequelize.query('select TestPassId, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
+      db.sequelize.query('select TestPassId, Template, Language, TestCases, RunDate, Description, Reliable, Note from TestPass order by RunDate DESC').then(results => {
 
         results = results[0];
 
         testPassData = results;
 
         for (let i = testPassData.length - 1; i >= 0; i--) {
-          testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM:ss TT"); // + " PST";
-
+          testPassData[i].RunDate = dateFormat(testPassData[i].RunDate, "mm-dd-yy h:MM TT"); // + " PST";
+          
           if (testPassData[i].TestPassId === testPassId) {
             testPassInfo = testPassData[i];
+            template = testPassData[i].Template;
+            testCases = testPassData[i].TestCases;
             reliability = testPassData[i].Reliable;
             note = testPassData[i].Note;
+            description = testPassData[i].Description;
           }
         
         }

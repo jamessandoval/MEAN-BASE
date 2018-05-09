@@ -13,6 +13,7 @@
   .dashboardDropdown {
     width: 80% !important;
   }
+  
 }
 
 @media (min-width: 768px) {
@@ -40,21 +41,11 @@
   #toolTipContainer {
     padding-top: 25px !important;
   }
-  #toolTipTitle {
-    display: block !important;
+
+  #pieChart-1 {
+    padding-top: 25px !important;
   }
-  #dropdownToolTip {
-    width: 100%;
-    height: 300px;
-    display: block !important;
-    text-align: left;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: #FFF;
-    white-space: normal;
-    overflow: auto;
-    border: 0px solid #000;
-  }
+
   #barGraphCont {
     padding-top: 25px !important;
   }
@@ -218,16 +209,26 @@ body {
 }
 
 #toolTipTitle {
-  display: none; /* display block can be found under - @media (min-width: 992px) */
+  display: block; /* display block can be found under - @media (min-width: 992px) */
 }
 
-#dropdownToolTipCont {
-  display: none; /* full css can be found under - @media (min-width: 992px) */
+#dropdownToolTip {
+  width: 100%;
+  height: 300px;
+  display: block;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FFF;
+  white-space: normal;
+  overflow: auto;
+  border: 0px solid #000;
 }
 
 #pieChart-1 {
   width: 90%;
   height: 350px;
+  padding-top: 0px;
 }
 #pieChart-2 {
   width: 90%;
@@ -701,5 +702,14 @@ button[type=submit].login {
   border-bottom: 1px solid grey;
   margin-right: 40px;
   margin-bottom:10px;
+}
+
+
+.option-box {
+   margin-top:3em;
+   background-color:white; 
+   border: 1px solid #349e3c;
+   border-radius: 1%;
+
 }
 /* END of Run Tests Modals section */

@@ -22,7 +22,7 @@ function grabTCsForFeature(){
 
   // This function sends the data from the runTestsModal page, per the express.js page to the getTestCases() function on runTestsModal.js where the database is accessed and updated
   $.ajax({
-    url: 'http://localhost:3000/getTestCases',
+    url: '/getTestCases',
     type: 'POST',
     data: finalObject,
     contentType: "application/json",
@@ -32,6 +32,8 @@ function grabTCsForFeature(){
     success: function(data) {
       // console.log(data);
       console.log("I got Test Case IDs from the database.");
+
+      console.log("the data is: " + data.length);
       
       for (var x = 0; x<data.length; x++){
         var node = document.createElement("LI");                 // Create a <li> node
