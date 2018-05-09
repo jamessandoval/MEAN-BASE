@@ -212,6 +212,7 @@ module.exports = function() {
   // Export Tool
   app.get('/export-tool', isLoggedIn, api_export.getExport);
   app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
+  app.post('/getTemplatesAndLangFromTestPass', isLoggedIn, api_export.getLangsAndTemps);
 
   // old .. deprececated
   //app.post('/export', isLoggedIn, api_results.postResults, api_results.export_to_excel);

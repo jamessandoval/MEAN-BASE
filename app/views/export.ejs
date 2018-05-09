@@ -1,8 +1,173 @@
 <%- include('header') %>
 
 <script>
-function displayInfo(data){
+
+  // This function populates the languages and template pages for display in the drop-down menus.
+function displayInfo(data, id){
   document.getElementById("testData").innerHTML = (data);
+  document.getElementById("langButton").disabled = false;
+  document.getElementById("mybutton").disabled = false;
+  document.getElementById("runTest").disabled = false;
+  
+  var langParent = document.getElementById("langList");
+    while(langParent.hasChildNodes()){
+      langParent.removeChild(langParent.lastChild);
+    }
+
+  var templateParent = document.getElementById("featureUL");
+    while(templateParent.hasChildNodes()){
+      templateParent.removeChild(templateParent.lastChild);
+    }
+
+
+  let exportObject = {
+  "testPass": id
+  }; 
+
+  let object = JSON.stringify(exportObject);
+  
+  $.ajax({
+      url: '/getTemplatesAndLangFromTestPass',
+      type: 'POST',
+      data: object,
+      contentType: "application/json",
+      error: function(data) {
+      console.log(data);
+      },
+      success: function(data) {
+        console.log(data);
+
+        // -----------------------------------------------------------------------------------------------------
+        var theTemplates = data[0].Template.split(",");
+        var theLanguages = data[0].Language.split(",");
+        console.log(theTemplates+"<---");
+        console.log(theLanguages +"<---");
+
+        for (var x = 0; x<theLanguages.length; x++){
+          var node = document.createElement("LI");                 // Create a <li> node
+          node.setAttribute("class", "width-set dropdown-item");         
+
+          var langinputItem = document.createElement("input");
+          langinputItem.setAttribute("class", "lang double");
+          langinputItem.setAttribute("type", "checkbox");
+          langinputItem.setAttribute("id", "L"+[x]);
+          langinputItem.setAttribute("onclick", "displayChecked(this.id, 'langList', 'LAll', 'langChildren')");
+          
+          var langtextnode = document.createTextNode("  " + theLanguages[x]);         // Create a text node
+          node.appendChild(langinputItem);
+          node.appendChild(langtextnode);                              // Append the text to <li>
+          document.getElementById("langList").appendChild(node);     // Append <li> to <ul> with id="myList"
+        }
+
+        for (var x = 0; x<theTemplates.length; x++){
+
+          var node2 = document.createElement("LI"); 
+          node2.setAttribute("class", "width-set dropdown-item");
+          
+          var span = document.createElement("SPAN");
+          span.setAttribute("id", "templateParent-"+[x]);
+          myString = "displayChecked(this.id, 'templateParent-" + [x] + "','ALll','pageChildren')";
+
+          var templateItem=document.createElement("input");
+          templateItem.setAttribute("class", "FX double");
+          templateItem.setAttribute("type", "checkbox");
+          templateItem.setAttribute("id", "T"+[x]);
+          templateItem.setAttribute("onclick", myString);
+
+          var thePage="";
+          switch (theTemplates[x]){
+            case "F1":
+              thePage="(F1) Home Page";
+              break;
+            case "F2":
+              thePage="(F2) Product Tabe of Contents";
+              break;
+            case "F3":
+              thePage="(F3) Product Sub-Category";
+              break;
+            case "F4":
+              thePage="(F4) Product Display";
+              break;
+            case "F5":
+              thePage="(F5) HTML Page";
+              break;
+            case "F6":
+              thePage="(F6)";
+              break;
+            case "F7":
+              thePage="(F7) New Fluke Products";
+              break;
+            case "F8":
+              thePage="(F8) Promotions and Contests TOC";
+              break;
+            case "F9":
+              thePage="(F9) Article Table of Contents";
+              break;
+            case "F10":
+              thePage="(F10) Webcard Table of Contents";
+              break;
+            case "F11":
+              thePage="(F11) Webcard";
+              break;
+            case "F12":
+              thePage="(F12) Fluke News Table of Contents";
+              break;
+            case "F13":
+              thePage="(F13) Fluke News Sub-Category";
+              break;
+            case "F14":
+              thePage="(F14) Article";
+              break;
+            case "F15":
+              thePage="(F15) Tradeshows and Seminars";
+              break;
+            case "F16":
+              thePage="(F16) Training Library";
+              break;
+            case "F17":
+              thePage="(F17) Webinars";
+              break;
+            case "F18":
+              thePage="(F18)";
+              break;
+            case "F19":
+              thePage="(F19) Manuals";
+              break;
+            case "F20":
+              thePage="(F20) Press Releases";
+              break;
+            case "F21":
+              thePage="(F21) Safety Notices";
+              break;
+            case "F22":
+              thePage="(F22) Software Downloads";
+              break;
+            case "F23":
+              thePage="(F23) Where to Buy";
+              break;
+            case "F24":
+              thePage="(F24) Link to Offsite Location";
+              break;
+            case "F25":
+              thePage="(F25) Promotions and Contests Page";
+              break;
+            default:
+              thePage="unknown";
+          }
+
+          var templateTextNode = document.createTextNode("  " + thePage);         // Create a text node
+          node2.appendChild(span);
+          span.appendChild(templateItem);
+          span.appendChild(templateTextNode);       
+          document.getElementById("featureUL").appendChild(node2); 
+        }
+        // -----------------------------------------------------------------------------------------------------
+
+        console.log("I am a success.");
+      }
+  })
+
+
 }
 </script>
 
@@ -39,12 +204,12 @@ function displayInfo(data){
         <% if(dates){ %>
       <div class="button-group">
         <button type="button" style="border: 1px solid green;" class="btn btn-lg dropdown-toggle width-set" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">Test Date</button>
-        <ul class="dropdown-menu btn-block width-set">
+        <ul class="dropdown-menu btn-block width-set" id="dateUL">
           <% for(var i=0; i < dates.length; i++) {
             if (statusEndTime[i] != "Fri Jan 02 1970 00:00:00 GMT-0800 (PST)"){ %>
               <li class="dropdown-item">
               <span id="dateParent-<%=[i]%>">
-                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id); displayInfo(this.value);" type="radio" name="date" />&nbsp; <%= dates[i] %></span>
+                  <input id="<%= dateIds[i] %>" class="date double" value="<%=testDescription[i] %>" onclick="displayChecked(this.id, 'dateParent-<%=[i]%>', 'none', 'dateChild'); displayInfo(this.value, this.id);" type="radio" name="date" />&nbsp; <%= dates[i] %></span>
 
               </li>
           <% }} %>
@@ -60,151 +225,58 @@ function displayInfo(data){
 <!--  ------------------------------------------------------Language / Locale Drop Down Options ---------------------------- -->
   <div class="row exportTool">
     <div class="col-lg-12">
-    <% if(languages){ %>
+
       <div class="button-group">
-        <button type="button" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown">Language Locale <span class="caret"></span></button>
-        <ul class="dropdown-menu btn-block width-set">
+        <button type="button" id ="langButton" class="btn btn-lg dropdown-toggle width-set bottomSpace topSpace" data-toggle="dropdown" disabled >Language Locale <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block width-set" id="langList">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to style="display:none;" -->
                 <li class="dropdown-item" style="display:none;"> 
                   <span id="Lang">
-                    <input id="LAll" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</span>
+                    <input id="LAll" class="lang double" onclick="displayChecked(this.id, 'langList', 'LAll', 'langChildren')" type="checkbox" />&nbsp; All</span>
                 </li>
 
-          <% for(var i=0; i < languages.length; i++) { %>
-            <li class="width-set dropdown-item" >
-              <span data-value="optionA" tabIndex="-1" class="locale">
-              <input id="<%= languages[i] %>" class="lang double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp;<%= languages[i] %></span>
-            </li>
-            <% }%>
+
+       
         </ul>
       </div><!-- end .button-group -->
-      <% }%>
+
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
 
-<!--  ------------------------------------------------------Feature/Scenario Drop Down Options ---------------------------- -->
+<!--  ------------------------------------------------------Feature/Template Drop Down Options ---------------------------- -->
   <div class="row exportTool">
     <div class="col-lg-12">
-        <% if(features){ %>
+      
       <div class="button-group">
-        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">(FX) Page <span class="caret"></span></button>
-        <ul class="dropdown-menu btn-block width-set">
+        <button type="button" id="mybutton" class="btn btn-lg dropdown-toggle width-set bottomSpace" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown" disabled>(FX) Page <span class="caret"></span></button>
+        <ul class="dropdown-menu btn-block width-set" id="featureUL">
 
           <!-- the 'ALL' option has to be available for the displaychecked.js funciton to work properly - set to display:none;-->
                 <li class="dropdown-item" style="display:none;">   
                   <span>
-                    <input id="All" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; All</span>
+                    <input id="All" class="FX double" onclick="displayChecked(this.id, 'featureUL', 'All', 'pageChildren')" type="checkbox" />&nbsp; All</span>
                 </li>
-                
-          <% for(var i=0; i < features.length; i++) { %>
-          <li class="dropdown-item">
-            <span class="Fx">
-              <input id="<%= features[i] %>" class="FX double" onclick="displayChecked(this.id)" type="checkbox" />&nbsp; 
-              <% 
-                var thePage="";
-                switch (features[i]){
-                  case "F1":
-                    thePage="(F1) Home Page";
-                    break;
-                  case "F2":
-                    thePage="(F2) Product Tabe of Contents";
-                    break;
-                  case "F3":
-                    thePage="(F3) Product Sub-Category";
-                    break;
-                  case "F4":
-                    thePage="(F4) Product Display";
-                    break;
-                  case "F5":
-                    thePage="(F5) HTML Page";
-                    break;
-                  case "F6":
-                    thePage="(F6)";
-                    break;
-                  case "F7":
-                    thePage="(F7) New Fluke Products";
-                    break;
-                  case "F8":
-                    thePage="(F8) Promotions and Contests TOC";
-                    break;
-                  case "F9":
-                    thePage="(F9) Article Table of Contents";
-                    break;
-                  case "F10":
-                    thePage="(F10) Webcard Table of Contents";
-                    break;
-                  case "F11":
-                    thePage="(F11) Webcard";
-                    break;
-                  case "F12":
-                    thePage="(F12) Fluke News Table of Contents";
-                    break;
-                  case "F13":
-                    thePage="(F13) Fluke News Sub-Category";
-                    break;
-                  case "F14":
-                    thePage="(F14) Article";
-                    break;
-                  case "F15":
-                    thePage="(F15) Tradeshows and Seminars";
-                    break;
-                  case "F16":
-                    thePage="(F16) Training Library";
-                    break;
-                  case "F17":
-                    thePage="(F17) Webinars";
-                    break;
-                  case "F18":
-                    thePage="(F18)";
-                    break;
-                  case "F19":
-                    thePage="(F19) Manuals";
-                    break;
-                  case "F20":
-                    thePage="(F20) Press Releases";
-                    break;
-                  case "F21":
-                    thePage="(F21) Safety Notices";
-                    break;
-                  case "F22":
-                    thePage="(F22) Software Downloads";
-                    break;
-                  case "F23":
-                    thePage="(F23) Where to Buy";
-                    break;
-                  case "F24":
-                    thePage="(F24) Link to Offsite Location";
-                    break;
-                  case "F25":
-                    thePage="(F25) Promotions and Contests Page";
-                    break;
-                  default:
-                    thePage=features[i];
-                } %> <%=thePage%>
-            </span>
-            </li>
-            <% }%>
         </ul>
       </div><!-- end .button-group -->
-        <% } %>
+        
     </div><!-- end .col-sm-12 -->
   </div><!-- end .row -->
 
 
-<!--  ------------------------------------------------------Run Reports buttons ---------------------------- -->
+<!--  ------------------------------------------------------ Run Reports buttons ---------------------------- -->
     <div class="row exportTool">
       <div class="col-lg-12">
         <div class="button-group">
           <a id="myhref">
-            <button type="button" class="btn btn-lg width-set bottomSpace" id="runTest" onclick="exportSelections()"><b>Export Data</b></button> 
+            <button type="button" class="btn btn-lg width-set bottomSpace" id="runTest" onclick="exportSelections()" disabled><b>Export Data</b></button> 
             <!-- the exportSelections() function is in the "runTests.js" file, the api_export.js file has the database query -->
           </a><br>
           <!--<button type="button" class="btn btn-md" id="exportLanguageSet" onclick="exportLanguageSet()"><b>Export Language Set</b></button>&nbsp;-->
 
 
-<!--------------------------- taking out the comprehensive report for now------------------------->
+<!--------------------------- taking out the comprehensive report for now ----------------------- -->
           <!-- <a href="/export?feature=All&language=All&testresult=&query=&testpassid=All">
             <button type="button" class="btn btn-md btn-danger exportToolBtn" id="exportAll"><b>Build Comprehensive Report</b></button> 
             </a>
@@ -234,7 +306,7 @@ function displayInfo(data){
         </div><!-- end .col-md-5 .col-lg-6 -->
 
         <div class="col-md-4 col-lg-4 center">
-          <h3>Pages</h3>
+          <h3>Templates</h3>
           <div id="pageChildren"></div>
         </div><!-- end .col-md-5 .col-lg-6 -->
 

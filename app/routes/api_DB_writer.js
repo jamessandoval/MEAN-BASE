@@ -119,10 +119,6 @@ exports.addOwnerToResultTable_DB = function(req, res) {
 }; // end exports.addOwnerToResultTable_DB = function(req, res)
 
 
-
-
-
-
 // Removes empty Gherkin ids from testcase table in database
 exports.cleanGherkin_DB = function(req, res) {
 
@@ -141,9 +137,6 @@ exports.cleanGherkin_DB = function(req, res) {
   db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    //var sql = "SELECT Gherkin FROM testcase WHERE testCaseId = 829";
-    //var sql = "SELECT Gherkin FROM testcase";
-    //var sql = "SELECT testCaseDescription FROM testcase";
     var sql = "DELETE FROM TestCase WHERE testCaseDescription = 'Scenario:'";
 
     db.query(sql, function (err, result) {

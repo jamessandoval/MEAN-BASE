@@ -20,37 +20,44 @@ rootPath = rootPath + 'temp_directory';
 // Excel functionality:
 // https://github.com/guyonroche/exceljs#create-a-workbook
 
-// OLD Export tool
+
+
+// This function is called when the user goes to the export-tool page or Export Results link -
+// on express.js we have - app.get('/export-tool', isLoggedIn, api_export.getExport);
+// This function provides the Test Date options for the user.  Results information is commented out
 exports.getExport = function(req, res) {
 
-  db.Result.findAll().then(results => {
+  //db.Result.findAll().then(results => {
     db.TestPass.findAll().then(dateTimes =>{
       db.Status.findAll().then(statuses => {
 
-        var features = [];
-        var languages = [];
+        // var features = [];
+        // var languages = [];
         var dates =[];
         var datesIds = [];
         var statusId= [];
         var statusEndTime = [];
         var testDescription = [];
+        var templates = []; //will delete
+        // var langLoc = []; // will delete
 
-        // Needed To convert the blob object into a string 
-        // Otherwise it returns a buffer array object.
-        for (var i = 0; i < results.length; i++) {
-          results[i].Output = String(results[i].Output);
+        // -------------------commenting out the "Result" table query, etc.  will use an ajax call for these things after the test pass is selected--------------
+        // // Needed To convert the blob object into a string 
+        // // Otherwise it returns a buffer array object.
+        // for (var i = 0; i < results.length; i++) {
+        //   results[i].Output = String(results[i].Output);
 
-          // Save each unique template
-          if (!features.includes(results[i].Template)) {
-            features.push(results[i].Template);
-          }
+        //   // Save each unique template
+        //   if (!features.includes(results[i].Template)) {
+        //     features.push(results[i].Template);
+        //   }
 
-          // Save Each unique Language
-          if (!languages.includes(results[i].Language)) {
-            languages.push(results[i].Language);
-          }
+        //   // Save Each unique Language
+        //   if (!languages.includes(results[i].Language)) {
+        //     languages.push(results[i].Language);
+        //   }
 
-        }
+        // }
 
         // getting each date from TestPass table
         for (var i = 0; i < dateTimes.length; i++) {
@@ -59,6 +66,8 @@ exports.getExport = function(req, res) {
           dates.push(dateTimes[i].RunDate = dateFormat(dateTimes[i].RunDate, "mm-dd-yy h:MM:ss TT")); // + " PST";
           datesIds.push(dateTimes[i].TestPassId);
           testDescription.push(dateTimes[i].Description);
+          // templates.push(dateTimes[i].Template); //will delete
+          // langLoc.push(dateTimes[i].LangLoc); //will delete
           //console.log(testDescription[i] + "----------------------------description");
         }
 
@@ -72,8 +81,10 @@ exports.getExport = function(req, res) {
 
         res.render('export', {
           title: 'Export Results',
-          features: features,
-          languages: languages,
+          // features: features,
+          // languages: languages,
+          // languages:langLoc, //will delete
+          // features:templates, //will delete
           user: req.user.firstname,
           dates: dates,
           dateIds: datesIds,
@@ -99,21 +110,17 @@ exports.getExport = function(req, res) {
 
     return null;
 
-  }).catch(function(err) {
-    console.log('error: ' + err);
-    return err;
-  });
+  // }).catch(function(err) {
+  //   console.log('error: ' + err);
+  //   return err;
+  // });
 };
 
 
-// New export tool
+// This funciton is called when the EXPORT DATA button is selected, the html points to 'exportSelections()" (found on the runTest.js page)
+// which takes us through the express.js page with  app.get('/export', isLoggedIn, api_export.getExportFromResults, api_export.export_to_excel);
+// which takes us here...  the "return next();" lines take us to the export_to_excel function
 exports.getExportFromResults = function(req, res, next) {
-
-  //console.log(req.query.feature);
-  //console.log(req.query.language);
-  //console.log(req.query.testresult);
-  //console.log(typeof(req.query.testresult));
-
   // TODO: Export all tool
 
   let language = req.query.language;
@@ -129,9 +136,6 @@ exports.getExportFromResults = function(req, res, next) {
     let loopedQuery='SELECT * from Result;';
   }
   let results = null;
-
- 
-
 
   //---------------------------------------------------------start of multiple choice query builder ------------------>
   //below we are looking to see if multiple choices were selected for either template or language and build a query that works for the selections
@@ -179,13 +183,11 @@ exports.getExportFromResults = function(req, res, next) {
   ///results/locale/:locale'
   if (langArray.length > 0 || fArray.length > 0){
     db.sequelize.query(loopedQuery).then(results =>{
-
       results = results[0];
       // Needed To convert the blob object into a string Otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {
         results[i].Output = String(results[i].Output);
       }
-
       req.results = results;
       req.language = language;
       req.testresult = testresult;
@@ -194,17 +196,15 @@ exports.getExportFromResults = function(req, res, next) {
       console.log('error: ' + err);
       return err;
     })
-
-  }else if (feature ==="All" && language ==="All"){
- 
+  }else if (feature ==="All" && language ==="All"){ 
       db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}';`).then(results => {
-
         results = results[0];
         // Needed To convert the blob object into a string 
         // Otherwise it returns a buffer array object.
         for (var i = 0; i < results.length; i++) {
           results[i].Output = String(results[i].Output);
         }
+
         req.results = results;
         req.language = language;
         req.testresult = testresult;
@@ -212,17 +212,12 @@ exports.getExportFromResults = function(req, res, next) {
       }).catch(function(err) {
         console.log('error: ' + err);
         return err;
-      })
-
-    
+      })    
 
 
   }else if (feature === "All" && testresult === "") {
-
     db.sequelize.query(`SELECT * from Result where TestPassId = '${testPass}' AND Language = '${language}';`).then(results => {
-
       results = results[0];
-
       // Needed To convert the blob object into a string 
       // Otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {
@@ -251,13 +246,11 @@ exports.getExportFromResults = function(req, res, next) {
       // Otherwise it returns a buffer array object.
       for (var i = 0; i < results.length; i++) {
         results[i].Output = String(results[i].Output);
-
       }
 
       req.results = results;
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -280,10 +273,8 @@ exports.getExportFromResults = function(req, res, next) {
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -306,10 +297,8 @@ exports.getExportFromResults = function(req, res, next) {
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -331,10 +320,8 @@ exports.getExportFromResults = function(req, res, next) {
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -356,10 +343,8 @@ exports.getExportFromResults = function(req, res, next) {
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -383,10 +368,8 @@ exports.getExportFromResults = function(req, res, next) {
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -410,10 +393,8 @@ exports.getExportFromResults = function(req, res, next) {
       }
 
       req.results = results;
-
       req.language = language;
       req.testresult = testresult;
-
       return next();
 
     }).catch(function(err) {
@@ -522,4 +503,23 @@ exports.export_to_excel = function(req, res) {
 
     }
   };
+};
+
+
+// This function posts back to the Export Results page (export.ejs) sending back the Languages and Templates related to the selected Test Pass
+// so that the languages and templates can be displayed and selected in the html dropdown options before exporting to excel.
+exports.getLangsAndTemps = function (req, res) { 
+
+  let testPass = (req.body.testPass);
+
+  db.sequelize.query("select Template, Language from TestPass where TestPassID = '"+ testPass + "';").then(testPassInfo => {
+    let info = testPassInfo[0];
+    // console.log(info);
+
+    res.send(info);
+ 
+  }).catch(function(err) {
+        console.log('error: ' + err);
+        return err;
+  })
 };
